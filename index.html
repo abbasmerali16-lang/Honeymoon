@@ -279,6 +279,41 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: s
 .credit { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 8px; font-size: 13px; }
 .credit .ph { width: 72px; height: 54px; border-radius: 8px; }
 .credit a { word-break: break-word; }
+
+/* Printable packs */
+.sheet { background: #fff; color: #222; max-width: 820px; margin: 24px auto; padding: 36px 40px; border-radius: 6px; box-shadow: var(--shadow); font-size: 13.5px; line-height: 1.45; }
+@media (max-width: 600px) { .sheet { padding: 20px 16px; margin: 12px 8px; } }
+.sheet h1 { font-size: 30px; } .sheet h2 { font-size: 19px; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 2px solid #C9A88A; } .sheet h3 { font-size: 15px; margin: 0 0 4px; }
+.sheet .cover { position: relative; height: 150px; border-radius: 6px; overflow: hidden; margin-bottom: 16px; }
+.sheet .cover .ph { position: absolute; inset: 0; } .sheet .cover .ph::after { display: none; }
+.sheet .glance { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 18px; background: #FAF3EA; border: 1px solid #E6D3BE; border-radius: 6px; padding: 12px 14px; margin-top: 12px; }
+@media (max-width: 600px) { .sheet .glance { grid-template-columns: 1fr; } }
+.sheet .glance div b { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: #8A7360; }
+.sheet table { font-size: 12.5px; } .sheet td, .sheet th { padding: 4px 6px; }
+.sheet .pday { break-inside: avoid; margin-bottom: 10px; }
+.sheet .pday h3 { display: flex; justify-content: space-between; gap: 10px; background: #F3E7DA; padding: 5px 8px; border-radius: 4px; }
+.sheet .pday h3 span { font-family: var(--sans); font-weight: 700; font-size: 11.5px; color: #7A5512; }
+.sheet .pslot { display: grid; grid-template-columns: 70px 1fr; gap: 8px; padding: 2px 8px; }
+.sheet .pslot b { font-variant-numeric: tabular-nums; }
+.sheet .pslot.pray { color: #7A5512; font-style: italic; }
+.sheet .boxes { columns: 2; column-gap: 24px; } .sheet .boxes.three { columns: 3; }
+@media (max-width: 600px) { .sheet .boxes, .sheet .boxes.three { columns: 1; } }
+.sheet .boxes h3 { break-after: avoid; margin-top: 8px; }
+.sheet .box { break-inside: avoid; display: grid; grid-template-columns: 16px 1fr; gap: 6px; padding: 1.5px 0; }
+.sheet .box::before { content: ''; width: 11px; height: 11px; border: 1.3px solid #555; border-radius: 2px; margin-top: 3px; }
+.sheet ul { margin: 0; padding-left: 18px; } .sheet li { margin: 2px 0; }
+.sheet .act { break-inside: avoid; border: 1px solid #E6D3BE; border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; }
+.sheet .act p { margin: 2px 0; } .sheet .url { font-size: 11px; color: #666; word-break: break-all; }
+.sheet h2, .sheet h3 { break-after: avoid; } .sheet .act, .sheet table tr { break-inside: avoid; }
+.printbar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; max-width: 820px; margin: 18px auto 0; padding: 0 8px; }
+@media print {
+  @page { size: A4; margin: 12mm; }
+  body { background: #fff !important; }
+  header.top, nav.bottom, footer, .printbar, nav.sub { display: none !important; }
+  main { padding: 0 !important; }
+  .sheet { box-shadow: none; margin: 0; padding: 0; max-width: none; border-radius: 0; }
+  .view { animation: none; }
+}
 [hidden] { display: none !important; }
 </style>
 
@@ -322,7 +357,11 @@ const WALES_DAYS = [
     facts: [['car', '200 miles home'], ['clock', 'Check out 10:00']] }
 ];
 
-const PRIVATE = null;
+/* Stay addresses and host phone numbers */
+const PRIVATE = {
+  wales: { address: 'Cae Gwyn Country Cottages, Tremeirchion, St Asaph, LL17 0UN', w3w: 'aimlessly.tributes.blanks', maps: 'Cae Gwyn Country Cottages Tremeirchion', phone: '07923 911546' },
+  mru: { address: '242 Avenue Souffleur, Flic en Flac, Rivière Noire 90506', maps: '242 Avenue Souffleur, Flic en Flac, Mauritius' }
+};
 
 const STAYS = {
   wales: {
@@ -468,7 +507,7 @@ const WALES_ESSENTIALS = [
   ['Parking', 'Free, one car, at the end of the drive'],
   ['Emergency', '999. Nearest A&E: Glan Clwyd Hospital, Bodelwyddan'],
   ['Christmas hours', 'Shops shut on 25 Dec, short hours on 26 and 28 Dec'],
-  ['House rules', 'No smoking inside (£100 charge). Keep music low in the courtyard.']
+  ['House rules', 'No shoes inside. Smoking only in your courtyard (£100 fee). No loud music']
 ];
 
 const MRU_DAYS = [
@@ -1002,7 +1041,7 @@ function walesPage(sec) {
         <div class="panel raised"><h2>Key details</h2><dl class="kv">
           <dt>Dates</dt><dd>Thu 24 – Tue 29 December, 5 nights</dd><dt>Check-in</dt><dd>16:00–18:00 on the 24th. Checkout 10:00 on the 29th</dd><dt>Drive</dt><dd>About 200 miles each way, 4–5 hours on Christmas Eve</dd>
           <dt>Food</dt><dd>All cooked at the barn. Big shop by 20 Dec (before the wedding), fresh bits on the 23rd</dd><dt>Daylight</dt><dd>Sunrise 8:20, sunset 15:55</dd></dl>
-          <div class="linkrow"><button class="btn" data-go="wales-itinerary" type="button">See the week</button><button class="btn ghost" data-go="wales-food" type="button">Meals and shopping</button></div></div>
+          <div class="linkrow"><button class="btn" data-go="wales-itinerary" type="button">See the week</button><button class="btn ghost" data-go="wales-food" type="button">Meals and shopping</button><button class="btn ghost" data-go="print-wales" type="button">Printable pack</button></div></div>
         <div class="stack"><div class="panel raised"><h2>Progress</h2>${progress(todoIds('wales'), 'to-dos')}${progress(shopIds, 'shopping bought')}${progress(packIds(WALES_PACK, 'wales'), 'packed')}</div>
           <div class="note tip">Check the Met Office each morning and swap the walk days around. Moel Famau is only worth it on a clear day.</div></div></div>`,
     itinerary: () => `<div class="head"><h2>Your week, day by day</h2><p class="muted">Rough timings only, with Fajr, Dhuhr and Maghrib built in (highlighted in gold). Nothing is booked, so move anything around.</p></div><div class="days">${WALES_DAYS.map(d => dayCard(d)).join('')}</div>`,
@@ -1041,7 +1080,7 @@ function mruPage(sec) {
           <dt>Arrival</dt><dd>${moreLink('t-transfer', 'Private transfer to the villa')}</dd>
           <dt>Car</dt><dd>${moreLink('t-car', 'Delivered 5 Jan, returned at the airport 15 Jan')}</dd>
           <dt>Check-in</dt><dd>From 15:00 on the 4th. Checkout 12:00 on the 15th</dd><dt>Villa</dt><dd>11 nights, £943 still to pay</dd></dl>
-          <button class="btn" data-go="mauritius-itinerary" type="button">See the full itinerary</button></div>
+          <div class="linkrow"><button class="btn" data-go="mauritius-itinerary" type="button">See the full itinerary</button><button class="btn ghost" data-go="print-mauritius" type="button">Printable pack</button></div></div>
         <div class="stack">
           <div class="panel raised"><h2>Progress</h2>${progress(todoIds('mru'), 'to-dos')}${progress(packIds(MRU_PACK, 'mru'), 'packed')}</div>
           <div class="note tip">January is hot, humid and the start of cyclone season. The west coast is the driest side. Do outdoor trips in the morning, and keep the weather-dependent ones early with spare days to rebook.</div>
@@ -1088,7 +1127,7 @@ function checkCards(k) {
 }
 function addressPanel(k) {
   const p = PRIVATE && PRIVATE[k];
-  if (!p) return `<div class="panel"><h3>Address</h3><p class="small muted">The exact address and the host’s number are in your Airbnb booking and in the private version of this planner. They’re left off this public page.</p></div>`;
+  if (!p) return '';
   return `<div class="panel raised"><h3>Address</h3><p>${esc(p.address)}</p>
     <div class="linkrow"><a class="btn" href="${maps(p.maps)}" target="_blank" rel="noopener">${ic('pin')}Open in Google Maps</a>${p.w3w ? `<a class="btn ghost" href="https://what3words.com/${p.w3w}" target="_blank" rel="noopener">///${esc(p.w3w)}</a>` : ''}${p.phone ? `<a class="btn ghost" href="tel:${p.phone.replace(/\s/g, '')}">Call or text ${esc(STAYS[k].host)}: ${esc(p.phone)}</a>` : ''}</div></div>`;
 }
@@ -1192,6 +1231,57 @@ function viewCredits() {
     <div class="credits">${CREDITS.map(c => `<div class="credit">${photo(c.slug, '', '')}<div><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(c.file)}" target="_blank" rel="noopener">${esc(c.file.replace(/_/g, ' ').replace(/\.(jpe?g|png)$/i, ''))}</a><br><span class="muted">${esc(c.author || 'Unknown author')} · ${esc(c.license || 'see source')}</span></div></div>`).join('')}</div></div>`;
 }
 
+/* ================= Printable packs ================= */
+function printDay(d) {
+  return `<div class="pday"><h3>${d.dow} ${d.num} ${d.mon} · ${esc(d.title)}${d.pray ? `<span>Fajr ${d.pray[0]} · Dhuhr ${d.pray[1]} · Maghrib ${d.pray[2]}</span>` : ''}</h3>
+    ${(d.slots || []).map(([t, v, p]) => `<div class="pslot${p === 'p' ? ' pray' : ''}"><b>${esc(t)}</b><span>${esc(v)}</span></div>`).join('')}${d.note ? `<div class="pslot"><b></b><span><i>${esc(d.note)}</i></span></div>` : ''}</div>`;
+}
+const pbox = (t) => `<div class="box"><span>${esc(t)}</span></div>`;
+function printAct(x) {
+  return `<div class="act"><h3>${esc(x.title)} <span class="muted small">· ${esc(x.when)}</span></h3><p>${esc(x.summary)}</p>
+    <p><b>Cost:</b> ${esc(x.cost)}</p><p><b>Booking:</b> ${esc(x.booking)}</p>${x.vendor ? `<p><b>Who with:</b> ${esc(x.vendor)}</p>` : ''}
+    <p><b>Bring:</b> ${esc(x.bring.join(', '))}</p>${x.url ? `<p class="url">${esc(x.url)}</p>` : ''}</div>`;
+}
+function printStay(k) {
+  const s = STAYS[k], p = PRIVATE && PRIVATE[k];
+  return `<div class="glance">
+    <div><b>Stay</b>${esc(s.name)}</div><div><b>Host</b>${esc(s.host)}${p && p.phone ? ` · ${esc(p.phone)}` : ''}</div>
+    ${p ? `<div style="grid-column:1/-1"><b>Address</b>${esc(p.address)}${p.w3w ? ` · what3words ///${esc(p.w3w)}` : ''}</div>` : ''}
+    <div><b>Check-in</b>${esc(s.checkin[0])}</div><div><b>Checkout</b>${esc(s.checkout[0])}</div>
+    ${k === 'wales' ? `<div><b>Drive</b>About 200 miles, M1, M6 and A55</div><div><b>Emergency</b>999 · A&amp;E: Glan Clwyd Hospital, Bodelwyddan</div>`
+      : `<div><b>Flights</b>Emirates · out Sun 3 Jan 20:20 · back Fri 15 Jan 22:30</div><div><b>Emergency</b>Police 999 · Ambulance (SAMU) 114</div>`}
+  </div>`;
+}
+function viewPrint(trip) {
+  const w = trip === 'wales', k = w ? 'wales' : 'mru', s = STAYS[k];
+  const days = w ? WALES_DAYS : MRU_DAYS;
+  const todo = w ? WALES_TODO : MRU_TODO, pack = w ? WALES_PACK : MRU_PACK;
+  const essentials = w ? WALES_ESSENTIALS : MRU_ESSENTIALS;
+  const body = `
+    <div class="cover">${photo(w ? 'stay-wales-1' : 'mru-sunset2', '', '')}</div>
+    <span class="eyebrow">Sabira &amp; Abbas’ Honeymoon</span>
+    <h1>${w ? 'North Wales · 24–29 December 2026' : 'Mauritius · 3–16 January 2027'}</h1>
+    ${printStay(k)}
+    <h2>Arriving</h2><ul>${s.arrive.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+    <h2>Day by day</h2><p class="small muted" style="margin-bottom:8px">Rough timings. Prayer times (in italics) are calculated with the Jafari method; check with the local Jamaat.</p>
+    ${days.map(printDay).join('')}
+    ${w ? `<h2>Meals</h2><table><thead><tr><th>Day</th><th>Late breakfast</th><th>Snacks</th><th>Dinner</th></tr></thead><tbody>${WALES_MEALS.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
+      <h2>Shopping list</h2><p class="small muted">Big shop by Sun 20 Dec, fresh bits on Wed 23 Dec. Small fridge at the barn, so keep the cool box going.</p>
+      <div class="boxes three">${WALES_SHOP.map(g => `<h3>${esc(g.cat)}</h3>${g.items.map(pbox).join('')}`).join('')}</div>
+      <h2>Walks and things to do</h2>${WALES_EXP.map(printAct).join('')}`
+    : `<h2>Activities and bookings</h2>${MRU_EXP.map(printAct).join('')}
+      <h2>Getting around</h2>${TRANSPORT.map(printAct).join('')}
+      <h2>Food</h2><p><b>First shop (5 Jan):</b> Super U, Tamarin or Winner’s, Cascavelle. Halal meat: An-Nurr Meat Shop, Port Louis, or Monop’, Rivière Noire.</p>
+      <div class="boxes">${MRU_FOOD_SHOP.map(pbox).join('')}</div>
+      <h3 style="margin-top:10px">Places to eat</h3><table><tbody>${PLACES.map(p => `<tr><td>${esc(p[0])}</td><td><b>${esc(p[1])}</b></td><td>${esc(p[2])}</td></tr>`).join('')}</tbody></table>`}
+    <h2>To-do</h2><div class="boxes">${['now', 'before', 'day'].map(g => { const it = todo.filter(t => t.when === g); return it.length ? `<h3>${WHEN[g][0]}</h3>${it.map(t => pbox(t.t)).join('')}` : ''; }).join('')}</div>
+    <h2>Packing</h2><div class="boxes three">${Object.entries(pack).map(([c, items]) => `<h3>${esc(c)}</h3>${items.map(pbox).join('')}`).join('')}</div>
+    <h2>Already at the ${w ? 'barn' : 'villa'}</h2><ul>${s.provided.map(x => `<li>${esc(x)}</li>`).join('')}</ul>${s.missing.length ? `<p class="small"><b>Not there:</b> ${esc(s.missing.join('. '))}.</p>` : ''}
+    <h2>House rules</h2><ul>${s.rules.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
+    <h2>Need to know</h2><table><tbody>${essentials.map(([a, b]) => `<tr><td><b>${esc(a)}</b></td><td>${esc(b)}</td></tr>`).join('')}</tbody></table>`;
+  return `<div class="view"><div class="printbar">${backBtn('print-' + trip, trip, w ? 'Wales overview' : 'Mauritius overview')}<button class="btn" type="button" id="doPrint">Print or save as PDF</button></div><article class="sheet">${body}</article></div>`;
+}
+
 /* ================= Router ================= */
 const cameFrom = {};       // detail key -> the page it was opened from
 const scrollMem = {};      // page -> last scroll position
@@ -1202,6 +1292,7 @@ function labelFor(h) {
   if (h === 'credits') return 'Photo credits';
   if (h === 'w-arrive') return 'Arriving at the barn';
   if (h === 'm-arrive') return 'Arriving at the villa';
+  if (h.startsWith('print-')) return 'Printable pack';
   if (DETAIL[h]) return DETAIL[h].title;
   const m = h.match(/^(wales|mauritius)(?:-([a-z]+))?$/);
   if (m) { const sec = SECTIONS[m[1]].find(s => s[0] === (m[2] || 'overview')); return (m[1] === 'wales' ? 'Wales' : 'Mauritius') + ' ' + (sec ? sec[1].toLowerCase() : 'overview'); }
@@ -1217,6 +1308,7 @@ function parseHash() {
   const h = (location.hash || '').slice(1);
   if (h === 'budget' || h === 'credits') return { page: h, sec: '' };
   if (DETAIL[h]) return { page: 'detail', sec: h, nav: DETAIL[h].trip };
+  if (h === 'print-wales' || h === 'print-mauritius') return { page: 'print', sec: h.slice(6), nav: h.slice(6) };
   if (h === 'w-arrive' || h === 'm-arrive') return { page: 'arrive', sec: h, nav: h[0] === 'w' ? 'wales' : 'mauritius' };
   const m = h.match(/^(wales|mauritius)(?:-([a-z]+))?$/);
   if (m) { const sec = m[2] || 'overview'; return { page: m[1], sec: SECTIONS[m[1]].some(s => s[0] === sec) ? sec : 'overview' }; }
@@ -1234,14 +1326,14 @@ function render(fromSync) {
   const y = window.scrollY;
   renderNav();
   const p = cur.page;
-  document.getElementById('main').innerHTML = (p === 'wales' ? walesPage(cur.sec) : p === 'mauritius' ? mruPage(cur.sec) : p === 'budget' ? viewBudget() : p === 'detail' ? viewDetail(cur.sec) : p === 'arrive' ? viewArrive(cur.sec) : p === 'credits' ? viewCredits() : viewHome()) + footer();
+  document.getElementById('main').innerHTML = (p === 'wales' ? walesPage(cur.sec) : p === 'mauritius' ? mruPage(cur.sec) : p === 'budget' ? viewBudget() : p === 'detail' ? viewDetail(cur.sec) : p === 'arrive' ? viewArrive(cur.sec) : p === 'print' ? viewPrint(cur.sec) : p === 'credits' ? viewCredits() : viewHome()) + footer();
   if (fromSync) window.scrollTo(0, y);
 }
 function route() {
   const h = (location.hash || '#home').slice(1) || 'home';
   if (lastHash !== null) scrollMem[lastHash] = window.scrollY;
   const next = parseHash();
-  const isDetail = next.page === 'detail' || next.page === 'arrive';
+  const isDetail = next.page === 'detail' || next.page === 'arrive' || next.page === 'print';
   if (isDetail && !backNav && lastHash !== null && lastHash !== h) cameFrom[h] = lastHash;
   const returning = backNav || (lastHash !== null && cameFrom[lastHash] === h);
   backNav = false;
@@ -1255,6 +1347,7 @@ function route() {
 }
 
 document.addEventListener('click', (e) => {
+  if (e.target.closest('#doPrint')) { window.print(); return; }
   const bk = e.target.closest('[data-go-back]');
   if (bk) { e.preventDefault(); backNav = true; location.hash = bk.dataset.goBack; return; }
   const go = e.target.closest('[data-go]');
