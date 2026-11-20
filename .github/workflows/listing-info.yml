@@ -1,0 +1,25 @@
+name: Fetch listing info
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/listing-info.yml]
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch listing pages
+        run: |
+          mkdir -p out
+          UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+          for pair in "wales:17906338" "mru:1357946069051895868"; do
+            k=${pair%%:*}; id=${pair##*:}
+            curl -sfL -A "$UA" -H "Accept-Language: en-GB" "https://www.airbnb.co.uk/rooms/$id" -o out/$k.html
+            curl -sfL -A "$UA" -H "Accept-Language: en-GB" "https://www.airbnb.co.uk/rooms/$id/house-rules" -o out/$k-rules.html
+            ls -la out
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: listing-pages
+          path: out
+          retention-days: 1
