@@ -9,13 +9,13 @@
 <style>
 :root, :root[data-theme="dark"], :root[data-theme="light"] {
   color-scheme: light;
-  --bg: #FBF6EF; --surface: #F5ECE1; --card: #FFFDF9; --fg: #33261F; --muted: #7D6B5F; --line: #EBDDCC;
-  --accent: #B4533F; --accent-soft: #F6E1D8; --gold: #B98428; --gold-soft: #F6EAD2;
-  --wales: #5D7A4C; --wales-soft: #E6EDDD; --mru: #C46A45; --mru-soft: #F8E3D7;
+  --bg: #E9D9C3; --surface: #DFCBB0; --card: #F8EFE3; --fg: #33261F; --muted: #7D6B5F; --line: #D8C2A5;
+  --accent: #B4533F; --accent-soft: #F2D3C6; --gold: #B98428; --gold-soft: #F1DFBC;
+  --wales: #5D7A4C; --wales-soft: #DCE4CF; --mru: #C46A45; --mru-soft: #F3D6C4;
   --shadow: 0 1px 2px rgba(70,40,20,.06), 0 8px 24px rgba(70,40,20,.08);
   --r: 18px; --serif: 'Fraunces', Georgia, serif; --sans: 'Nunito Sans', system-ui, sans-serif;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: light; --bg: #FBF6EF; --fg: #33261F; } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: light; --bg: #E9D9C3; --fg: #33261F; } }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 var(--sans); }
@@ -39,7 +39,7 @@ button { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) { .view { animation: none; } }
 
 /* Header */
-header.top { position: sticky; top: 0; z-index: 30; background: rgba(251,246,239,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+header.top { position: sticky; top: 0; z-index: 30; background: rgba(233,217,195,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 header.top .wrap { display: flex; align-items: center; gap: 16px; height: 64px; }
 .brand { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--fg); font-family: var(--serif); font-size: 20px; font-weight: 600; white-space: nowrap; }
 .brand svg { width: 26px; height: 26px; color: var(--accent); }
@@ -53,7 +53,7 @@ header.top .wrap { display: flex; align-items: center; gap: 16px; height: 64px; 
 @media (min-width: 760px) { .sync { margin-left: 8px; } }
 .sync .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gold); }
 .sync.ok .dot { background: var(--wales); } .sync.local .dot { background: var(--muted); }
-nav.bottom { position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-around; background: rgba(255,253,249,.97); border-top: 1px solid var(--line); padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px)); }
+nav.bottom { position: fixed; z-index: 30; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-around; background: rgba(248,239,227,.97); border-top: 1px solid var(--line); padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px)); }
 nav.bottom .navbtn { flex-direction: column; gap: 2px; font-size: 12px; padding: 6px 10px; border-radius: 12px; }
 nav.bottom .navbtn[aria-current="true"] { background: var(--accent-soft); color: var(--accent); }
 @media (min-width: 760px) { nav.bottom { display: none; } }
@@ -74,7 +74,7 @@ main { padding-bottom: 90px; } @media (min-width: 760px) { main { padding-bottom
 .hero .ph .lbl { position: absolute; z-index: 2; left: 16px; bottom: 14px; color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; text-shadow: 0 1px 6px rgba(0,0,0,.5); }
 @media (min-width: 760px) { .hero .ph .lbl { left: 24px; bottom: 22px; } .hero .ph + .ph .lbl { left: auto; right: 24px; } }
 .hero .center { position: absolute; z-index: 3; inset: 0; display: grid; place-items: center; padding: 16px; pointer-events: none; }
-.hero .card { pointer-events: auto; text-align: center; background: rgba(255,251,245,.94); border-radius: 26px; padding: 26px 22px 22px; box-shadow: 0 20px 60px rgba(40,20,10,.25); max-width: 560px; width: 100%; }
+.hero .card { pointer-events: auto; text-align: center; background: rgba(248,239,227,.95); border-radius: 26px; padding: 26px 22px 22px; box-shadow: 0 20px 60px rgba(40,20,10,.25); max-width: 560px; width: 100%; }
 @media (min-width: 760px) { .hero .card { padding: 38px 44px 30px; } }
 .hero h1 { font-size: clamp(32px, 5.4vw, 54px); }
 .hero h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
