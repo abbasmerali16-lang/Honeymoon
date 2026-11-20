@@ -1,0 +1,44 @@
+name: Fetch photos
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [img/sources.txt, .github/workflows/fetch-images.yml]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download and resize photos from Wikimedia Commons
+        env:
+          UA: "HoneymoonPlannerSite/1.0 (GitHub Actions; static site build)"
+        run: |
+          sudo apt-get install -y -qq imagemagick jq >/dev/null
+          echo "[" > img/credits.json; first=1
+          while IFS='|' read -r slug file; do
+            [ -z "$slug" ] && continue
+            enc=$(jq -rn --arg f "$file" '$f|@uri')
+            if curl -sfL -A "$UA" "https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=1600" -o "/tmp/$slug"; then
+              if file "/tmp/$slug" | grep -qiE 'jpeg|png'; then
+                convert "/tmp/$slug" -auto-orient -resize '1600x1600>' -strip -quality 72 "img/$slug.jpg"
+                meta=$(curl -sf -A "$UA" -G "https://commons.wikimedia.org/w/api.php" --data-urlencode "action=query" --data-urlencode "titles=File:${file}" --data-urlencode "prop=imageinfo" --data-urlencode "iiprop=extmetadata" --data-urlencode "format=json" || echo '{}')
+                artist=$(echo "$meta" | jq -r '[.query.pages[]?.imageinfo[0].extmetadata.Artist.value][0] // ""' | sed -e 's/<[^>]*>//g' | tr -s ' \n' ' ' | sed 's/^ //;s/ $//')
+                lic=$(echo "$meta" | jq -r '[.query.pages[]?.imageinfo[0].extmetadata.LicenseShortName.value][0] // ""')
+                [ $first -eq 0 ] && echo "," >> img/credits.json; first=0
+                jq -n --arg s "$slug" --arg f "$file" --arg a "$artist" --arg l "$lic" '{slug:$s,file:$f,author:$a,license:$l}' >> img/credits.json
+                echo "OK $slug $(identify -format '%wx%h' img/$slug.jpg) $lic"
+              else echo "NOT IMAGE $slug"; fi
+            else echo "FAIL $slug"; fi
+            sleep 1
+          done < img/sources.txt
+          echo "]" >> img/credits.json
+          jq . img/credits.json > /tmp/c.json && mv /tmp/c.json img/credits.json
+      - name: Commit photos
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898213+github-actions[bot]@users.noreply.github.com"
+          git add img
+          git diff --cached --quiet || git commit -m "Add photos from Wikimedia Commons"
+          git push
