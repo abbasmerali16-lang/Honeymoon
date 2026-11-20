@@ -1,0 +1,41 @@
+name: Fill photo credits
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/fill-credits.yml]
+permissions:
+  contents: write
+jobs:
+  credits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Look up missing authors and licences
+        env:
+          UA: "HoneymoonPlannerSite/1.0 (GitHub Actions; static site build)"
+        run: |
+          cp img/credits.json /tmp/in.json
+          n=$(jq length /tmp/in.json)
+          for i in $(seq 0 $((n-1))); do
+            lic=$(jq -r ".[$i].license" /tmp/in.json)
+            [ -n "$lic" ] && continue
+            file=$(jq -r ".[$i].file" /tmp/in.json)
+            for try in 1 2 3; do
+              meta=$(curl -sf -A "$UA" -G "https://commons.wikimedia.org/w/api.php" --data-urlencode "action=query" --data-urlencode "titles=File:${file}" --data-urlencode "prop=imageinfo" --data-urlencode "iiprop=extmetadata" --data-urlencode "format=json" || echo '{}')
+              lic=$(echo "$meta" | jq -r '[.query.pages[]?.imageinfo[0].extmetadata.LicenseShortName.value][0] // ""')
+              [ -n "$lic" ] && break; sleep 5
+            done
+            artist=$(echo "$meta" | jq -r '[.query.pages[]?.imageinfo[0].extmetadata.Artist.value][0] // ""' | sed -e 's/<[^>]*>//g' | tr -s ' \n' ' ' | sed 's/^ //;s/ $//')
+            echo "$file -> $artist / $lic"
+            jq --argjson i $i --arg a "$artist" --arg l "$lic" '.[$i].author=$a | .[$i].license=$l' /tmp/in.json > /tmp/o.json && mv /tmp/o.json /tmp/in.json
+            sleep 3
+          done
+          cp /tmp/in.json img/credits.json
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898213+github-actions[bot]@users.noreply.github.com"
+          git add img/credits.json
+          git diff --cached --quiet || git commit -m "Fill missing photo credits"
+          git push
