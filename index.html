@@ -322,6 +322,35 @@ const WALES_DAYS = [
     facts: [['car', '200 miles home']] }
 ];
 
+const STAYS = {
+  wales: {
+    name: 'The Hideaway, Tremeirchion', host: 'Thomas',
+    arrive: [
+      'The exact address and directions only appear in your Airbnb booking. Save them offline before you leave, because signal is patchy on the hills.',
+      'The barn is a converted 19th-century stone block in the grounds of a Georgian country house. You drive in through the main gates.',
+      'Parking is free for one car, behind locked gates. Ask Thomas how the gates open.',
+      'Thomas greets you in person, so send him your arrival time on the day. He asks guests to share their ETA.',
+      'Check-in and check-out times are in your booking. Confirm them with Thomas.',
+      'When you book you agree to the House Manual. It explains the hot tub, sauna and house rules, and lists local tips, so read it in the app before you go.'
+    ],
+    provided: ['Towels, bed linen, body soap and toilet paper', 'Pots and pans, oil, salt and pepper', 'Two-ring gas hob, plus a combi microwave, fan oven and air fryer', 'Espresso machine', 'Small under-counter fridge with an icebox, plus a separate wine fridge', 'Central heating', 'TV with Netflix and Prime Video', 'Board games and books', 'Firepit wood at £15 a load, with marshmallows and toasting sticks', 'First aid kit, smoke alarm and carbon monoxide alarm'],
+    missing: ['No washing machine or tumble dryer', 'No proper freezer, only a small icebox'],
+    rules: ['Quiet hours are 23:00 to 09:00. No loud music in the courtyard.', 'Smoking is only allowed in the marked outdoor spots, and there’s a £100 charge for smoke indoors.', 'Couples only, with a maximum of 2 guests.', 'Three dogs, two cats and three horses live on the property.', 'The hot tub has no gate or lock.', 'Walks start right from the door.']
+  },
+  mru: {
+    name: 'Solara West, Flic en Flac', host: 'Javed and Zareen',
+    arrive: [
+      'The exact address and directions are in your Airbnb booking. Save them offline and send them to your transfer driver.',
+      'Javed and Zareen greet you in person, and guests say check-in is flexible. Message them your landing time (17:10) and that you expect to arrive about 19:15.',
+      'Check-in and check-out times are in your booking. Ask now for a late checkout on 15 January.',
+      'There’s free parking on the property and on the street, so the hire car can be delivered straight to the villa on the 5th.'
+    ],
+    provided: ['Beach towels, chairs, an umbrella and sun loungers', 'Washing machine and a free dryer', 'Air conditioning and ceiling fans', 'Fast wifi (112 Mbps)', '65-inch TV', 'Nespresso machine and an induction hob', 'Pots and pans, oil, salt and pepper', 'Private pool open 24 hours, and an outdoor shower', 'Extra pillows and blankets', 'Housekeeping, for an extra charge'],
+    missing: ['No smoke or carbon monoxide alarm reported, so bring a small travel one'],
+    rules: ['No smoking anywhere.', 'Quiet hours are 23:00 to 09:00. No parties.', 'There are four security cameras covering the outside of the villa.', 'The villa has two bedrooms (a queen bed and a bunk bed) and one bathroom.', 'The hosts speak English and French.']
+  }
+};
+
 const WALES_EXP = [
   { id: 'famau', title: 'Moel Famau and the Jubilee Tower', img: 'wales-tower', when: 'Fri 25 Dec, 13:00', kind: 'Walk', pick: true,
     summary: 'The best walk in the area: a steady climb to the highest point of the Clwydian Range, with huge views on a clear day.',
@@ -395,13 +424,14 @@ const WALES_SHOP = [
   { cat: 'Breakfasts', items: ['Eggs, 18', 'Avocados, 8 (buy some firm so they ripen through the week)', 'Sourdough, 2 loaves', 'Butter', 'Smoked salmon', 'Feta', 'Cherry tomatoes', 'Spinach', 'Chilli flakes', 'Lemons', 'Tomatoes and 2 peppers (shakshuka)', 'Chopped tomatoes, 1 tin (shakshuka)'] },
   { cat: 'Halal meat (freeze what you’ll use after day 2)', items: ['Chicken thighs, about 1kg (Christmas dinner)', 'Lamb chops, 6 to 8', '2 steaks', 'Chicken breast, 2 (pasta night)', 'Home-made curry, frozen flat in bags'] },
   { cat: 'Dinners', items: ['Potatoes, 1.5kg', 'Carrots', 'Onions, 4', 'Garlic and ginger', 'Mushrooms', 'Salad bag and cucumber', 'Fresh coriander', 'Double cream', 'Basmati rice', 'Pasta', 'Couscous', 'Naan, 4', 'Frozen oven chips', 'Gravy granules (check they’re halal)', 'Stock cubes', 'Christmas dessert'] },
-  { cat: 'Snacks', items: ['Hummus and veg sticks', 'Cheese and crackers', 'Crisps', 'Mixed nuts', 'Dates', 'Clementines and grapes', 'Chocolate', 'Biscuits', 'Hot chocolate', 'Marshmallows (check they’re halal)'] },
+  { cat: 'Snacks', items: ['Hummus and veg sticks', 'Cheese and crackers', 'Crisps', 'Mixed nuts', 'Dates', 'Clementines and grapes', 'Chocolate', 'Biscuits', 'Hot chocolate', 'Halal marshmallows (the ones that come with the firepit wood may not be)'] },
   { cat: 'Drinks', items: ['Milk, 2 litres', 'Orange juice', 'Sparkling drinks'] },
-  { cat: 'Kitchen basics to bring', items: ['Olive oil', 'Salt and pepper', 'Spice kit: cumin, garam masala, chilli, turmeric, paprika', 'Tea bags and coffee', 'Foil and zip bags', 'Kitchen roll', 'Cool box and ice packs'] }
+  { cat: 'Kitchen basics to bring', items: ['Spice kit: cumin, garam masala, chilli, turmeric, paprika', 'Tea bags', 'Ground coffee for the espresso machine', 'Foil and zip bags', 'Kitchen roll', 'Cool box and ice packs'] }
 ];
 
 const WALES_TODO = [
-  { id: 'wales-host', when: 'now', t: 'Message Thomas with your questions', d: 'Check-in and check-out times, how you get in (keys or gate code), and whether wood for the log burner is included.' },
+  { id: 'wales-host', when: 'now', t: 'Message Thomas with your questions', d: 'Check-in and check-out times, how the gates open, and your arrival time (he meets you in person).' },
+  { id: 'wales-manual', when: 'before', t: 'Read the House Manual in the Airbnb app', link: 'wales', d: 'You agree to it when you book. It covers the hot tub, sauna, rules and local tips.' },
   { id: 'wales-howto', when: 'before', t: 'Ask Thomas for instructions', link: 'w-barn', d: 'Hot tub (temperature, cover, when it’s ready), sauna (switching on, warm-up time), log burner, firepit and BBQ, heating and hot water, wifi and TV logins, bins and recycling, and what to do at check-out.' },
   { id: 'wales-fuel', when: 'now', t: 'Check the fuel estimate', link: 'wales-budget', d: 'Put your car’s mpg into the calculator on the Budget tab.' },
   { id: 'wales-shop', when: 'before', t: 'Big food shop by Sun 20 Dec', link: 'wales-food', d: 'Before the wedding. Meat, dry food, snacks and drinks. Freeze the meat.' },
@@ -597,7 +627,7 @@ const MRU_TODO = [
   { id: 'seaplane', when: 'now', t: 'Book the Le Morne seaplane for 11 January', d: 'Free cancellation, and ask how rebooking works.', link: 'm-seaplane' },
   { id: 'catamaran', when: 'now', t: 'Book the private sunset catamaran for 7 January', d: 'Private boats sell out in peak season.', link: 'm-catamaran' },
   { id: 'spa', when: 'before', t: 'Book the couples spa for 13 January', d: '1–2 weeks ahead.', link: 'm-spa' },
-  { id: 'hosts', when: 'before', t: 'Message Javed and Zareen', d: 'Check-in time, late checkout on the 15th, transfer driver, nearest halal butcher, and a spa recommendation.' },
+  { id: 'hosts', when: 'before', t: 'Message Javed and Zareen', d: 'Your arrival time (landing 17:10, at the villa about 19:15), late checkout on the 15th, a transfer driver they trust, the nearest halal butcher and a spa they recommend.' },
   { id: 'jamaat', when: 'before', t: 'Contact the Khoja Shia Jamaat', d: 'Mosque and Friday prayer times, community contacts and halal food tips.' },
   { id: 'casela', when: 'before', t: 'Buy Casela tickets and add-ons', d: 'Entry a few days before, add-ons a week before.', link: 'm-casela' },
   { id: 'chamarel-rest', when: 'before', t: 'Reserve lunch at Le Chamarel Restaurant', d: 'Terrace table, 12 January.', link: 'm-chamarel' },
@@ -614,7 +644,7 @@ const MRU_TODO = [
 
 const MRU_PACK = {
   'Documents': ['Passports (valid 6 months after return)', 'Driving licences', 'Travel insurance documents', 'Emirates and Airbnb confirmations offline', 'Car hire and transfer confirmations', 'Bank cards and some cash'],
-  'Clothes': ['Swimwear, at least two each', 'Light, loose clothes', 'Modest clothes for the mosque and Port Louis', 'Light rain jackets', 'Trainers for the Gorges', 'Sandals', 'Water shoes for coral', 'Something nice for dinners'],
+  'Clothes (pack light: there’s a washing machine and dryer)': ['Swimwear, at least two each', 'Light, loose clothes', 'Modest clothes for the mosque and Port Louis', 'Light rain jackets', 'Trainers for the Gorges', 'Sandals', 'Water shoes for coral', 'Something nice for dinners'],
   'Sun and health': ['Reef-safe suncream SPF 50', 'After-sun', 'Hats and sunglasses', 'Mosquito repellent', 'Medicines and a small first aid kit', 'Rehydration sachets'],
   'Gear': ['Adaptor (UK plugs fit many sockets, but bring one)', 'Snorkel set', 'Dry bag', 'Power bank', 'Prayer mats and travel mats', 'Turbah', 'Reusable water bottles']
 };
@@ -709,12 +739,12 @@ const BUDGET_ROWS = [
 ];
 
 const CREDITS = [{"slug": "home-wales", "file": "Gaeaf_yr_Wyddfa.jpg", "author": "Mazaruni", "license": "CC BY-SA 4.0"}, {"slug": "wales-snowdonia", "file": "Tryfan_in_snow_from_Y_Garn.jpg", "author": "Stemonitis", "license": "CC BY-SA 3.0"}, {"slug": "wales-famau", "file": "Moel_Famau_gyda_dron_-_Moel_Famau,_Clwydian_Hills,_Wales_(Area_of_Outstanding_Beauty)_29.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-tower", "file": "The_Jubilee_Tower_on_Moel_Famau_-_geograph.org.uk_-_3543166.jpg", "author": "Ian Greig ", "license": "CC BY-SA 2.0"}, {"slug": "wales-church", "file": "Eglwys_Llangwyfa,_Bryniau_Clwyd_-_The_Clwydian_Range_and_Dee_Valley_AONB,_Cymru_(Wales)_06.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-talacre", "file": "Goleudy_Talacre_a_thywynau_Gronant_-_Point_of_Ayr_Lighthouse_and_Talacre_and_Gronant_Dunes_SSSI_13.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-talacre2", "file": "Goleudy_Talacre_a_thywynau_Gronant_-_Point_of_Ayr_Lighthouse_and_Talacre_and_Gronant_Dunes_SSSI_04.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "mru-flic", "file": "Spiaggia_di_Flic_en_Flac_-_Mauritius.jpg", "author": "Raffaele pagani", "license": "CC BY-SA 4.0"}, {"slug": "mru-flic2", "file": "Mauritius_flic_en_flac_beach.jpg", "author": "Arne Müseler", "license": "CC BY-SA 3.0 de"}, {"slug": "mru-flic3", "file": "Flic_en_Flac_Beach_in_Mauiritius_(53697781931).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-sunset2", "file": "Mauritius_sunset,_July_2016.jpg", "author": "Bryn Pinzgauer", "license": "CC BY 2.0"}, {"slug": "mru-lemorne", "file": "Le_Morne_Peninsula_in_Mauritius_(53697779236).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-aerial", "file": "Aerial_view_of_the_peninsula_Le_Morne_in_Mauritius_(53698115579).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-underwater", "file": "Underwater_waterfall_Mauritius_HDR.jpg", "author": "Christopher Brown", "license": "CC0"}, {"slug": "mru-lemorne2", "file": "Le_Morne_mountain_morning_shadow.jpg", "author": "Gavish Barosee", "license": "CC BY-SA 4.0"}, {"slug": "mru-seven", "file": "Seven_Coloured_Earths_Geopark_in_Chamarel,_Mauritius_(53697998768).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-gorges", "file": "Mauritius_Black-River-Gorges-National-Park-01.jpg", "author": "CEphoto, Uwe Aranas", "license": "CC BY-SA 3.0"}, {"slug": "mru-gorges2", "file": "Mauritius_Black-River-Gorges-National-Park-01.jpg", "author": "CEphoto, Uwe Aranas", "license": "CC BY-SA 3.0"}, {"slug": "mru-falls", "file": "Cascada_Chamarel,_parque_nacional_Gargantas_del_Río_Negro,_Mauricio,_2025-09-25,_DD_14.jpg", "author": "Diego Delso", "license": "CC BY-SA 4.0"}, {"slug": "mru-catamaran", "file": "Sunset_at_Mont_Choisy_Beach,_Mauritius_(53696897517).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-caudan", "file": "Mauritius_Port-Louis_CaudanWaterfront.JPG", "author": "B.navez", "license": "CC BY-SA 3.0"}, {"slug": "mru-portlouis", "file": "Evening_Port_Louis.jpg", "author": "Peter Kuchar (pkuchar)", "license": "CC BY-SA 3.0"}, {"slug": "mru-casela", "file": "Zebras_in_Casela_Nature_Parks,_Mauritius.jpg", "author": "7oanna", "license": "CC BY-SA 4.0"}, {"slug": "mru-troucerf", "file": "Sunset_from_Trou_au_Cerf_crater,_Mauritius,_2007-09-09.jpg", "author": "Hansueli Krapf", "license": "CC BY-SA 3.0"}, {"slug": "mru-bassin", "file": "Grand_Bassin,_Mauritius.jpg", "author": "Starts", "license": "CC BY-SA 4.0"}, {"slug": "mru-public", "file": "Flic_en_Flac_beach_.jpg", "author": "Gavish Barosee", "license": "CC BY-SA 4.0"}, {"slug": "wales-village", "file": "Dyffryn_Clwyd_(Vale_of_Clwyd)_uwch_ben_(above)_Llangynhafal,_Sir_Ddinbych,_Cymru_(Wales)_12.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "mru-beachsunset", "file": "Sunset_at_Flic_en_Flac_Beach_in_Mauritius_(53696897952).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-sunset3", "file": "Sunset_over_the_Indian_Ocean_at_Flic_en_Flac_Beach,_Mauritius_(53697787236).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "wales-dyserth", "file": "Rhaeadr_Dyserth_Waterfall,_Sir_Ddinbych,_Wales_-_Bryniau_Clwyd_AONB_02.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-snowlake", "file": "Snowdonia_in_Winter,_Fujifilm_(46895439682).jpg", "author": "Scott Wylie from UK", "license": "CC BY 2.0"}, {"slug": "wales-snowpeak", "file": "Snowdonia_in_Winter,_Fujifilm_(39983043193).jpg", "author": "Scott Wylie from UK", "license": "CC BY 2.0"}, {"slug": "wales-clwyd", "file": "DSC_0122_Clwydian_Range_(7197929950).jpg", "author": "paul_p!", "license": "CC BY 2.0"}, {"slug": "wales-hills", "file": "Dyffryn_Clwyd_(Vale_of_Clwyd)_uwch_ben_(above)_Llangynhafal,_Sir_Ddinbych,_Cymru_(Wales)_13.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}];
-return { CREDITS, WALES_DAYS, WALES_EXP, WALES_MEALS, WALES_SHOP, WALES_TODO, WALES_PACK, WALES_ESSENTIALS, MRU_DAYS, MRU_ORIGINAL, MRU_EXP, MRU_TODO, MRU_PACK, MRU_FOOD_SHOP, PLACES, MRU_ESSENTIALS, APPS_MRU, APPS_WALES, TRANSPORT, BUDGET_ROWS };
+return { STAYS, CREDITS, WALES_DAYS, WALES_EXP, WALES_MEALS, WALES_SHOP, WALES_TODO, WALES_PACK, WALES_ESSENTIALS, MRU_DAYS, MRU_ORIGINAL, MRU_EXP, MRU_TODO, MRU_PACK, MRU_FOOD_SHOP, PLACES, MRU_ESSENTIALS, APPS_MRU, APPS_WALES, TRANSPORT, BUDGET_ROWS };
 })();
 
 </script>
 <script>
-const { WALES_DAYS, WALES_EXP, WALES_MEALS, WALES_SHOP, WALES_TODO, WALES_PACK, WALES_ESSENTIALS, MRU_DAYS, MRU_ORIGINAL, MRU_EXP, MRU_TODO, MRU_PACK, MRU_FOOD_SHOP, PLACES, MRU_ESSENTIALS, APPS_MRU, APPS_WALES, TRANSPORT, BUDGET_ROWS, CREDITS } = window.TRIP;
+const { STAYS, WALES_DAYS, WALES_EXP, WALES_MEALS, WALES_SHOP, WALES_TODO, WALES_PACK, WALES_ESSENTIALS, MRU_DAYS, MRU_ORIGINAL, MRU_EXP, MRU_TODO, MRU_PACK, MRU_FOOD_SHOP, PLACES, MRU_ESSENTIALS, APPS_MRU, APPS_WALES, TRANSPORT, BUDGET_ROWS, CREDITS } = window.TRIP;
 
 /* ================= Icons & helpers ================= */
 const ICONS = {
@@ -955,6 +985,7 @@ function walesPage(sec) {
           <div class="amen"><span>${ic('tub')}Private hot tub</span><span>${ic('sun')}Infrared sauna</span><span>${ic('fire')}Log burner and firepit</span><span>${ic('cook')}Full kitchen and BBQ</span><span>${ic('park')}Gated parking</span><span>${ic('wifi')}Wifi</span></div>
           <div class="linkrow">${moreLink('w-barn', 'Hot tub, sauna and fire')}${ext('https://www.airbnb.co.uk/rooms/17906338', 'Open the listing')}</div></div></div>
       <div class="gallery">${[2, 3, 4, 5, 6].map(n => photo('stay-wales-' + n, 'wales-bg', 'Inside the barn')).join('')}</div>
+      ${stayPanels('wales')}
       <section class="sect" style="margin-top:12px"><div class="head"><h2>A slow day at the barn</h2><p class="muted">No alarms, no lunch. One gentle walk if you feel like it, and the evenings are for the hot tub and the fire.</p></div>
         <div class="rhythm"><div><b>06:31</b><span class="small">Fajr, then back to bed</span></div><div><b>10:00</b><span class="small">Wake up whenever</span></div><div><b>10:30</b><span class="small">Late breakfast: eggs, avocado, toast</span></div><div><b>12:16</b><span class="small">Dhuhr, then one easy walk (or none)</span></div><div><b>15:00</b><span class="small">Snacks and a hot drink</span></div><div><b>16:25</b><span class="small">Maghrib, then the hot tub as it gets dark</span></div><div><b>19:00</b><span class="small">Dinner, then the log burner</span></div></div></section>
       <div class="grid2">
@@ -973,7 +1004,7 @@ function walesPage(sec) {
         <tbody>${WALES_MEALS.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>
       <div class="toolbar"><div class="head"><h2>Shopping list</h2><p class="muted">Do the big shop by Sunday 20 December, before the wedding, and pick up the fresh bits (eggs, avocados, bread, salad, milk) on the 23rd. Shops near the barn are shut on Christmas Day.</p></div><div class="stack" style="min-width:220px">${progress(shopIds, 'bought')}<button class="btn ghost" id="clearShop" type="button">Untick everything</button></div></div>
       <div class="grid3">${WALES_SHOP.map(g => `<div class="panel"><h3>${esc(g.cat)}</h3><div class="checklist">${g.items.map(i => checkItem('s-' + slug(i), i)).join('')}</div></div>`).join('')}</div>
-      <div class="note tip">Pack the cool box last: frozen curry and meat at the bottom, eggs and avocados on top.</div>`,
+      <div class="note tip">The barn has only a small under-counter fridge with an icebox, plus a wine fridge you can use for drinks. Freeze the meat flat, keep the cool box going for the first couple of days, and cook the meat dishes early in the week. Pack the cool box last: frozen curry and meat at the bottom, eggs and avocados on top.</div>`,
     todo: () => `<div class="toolbar"><h2>To-do</h2>${progress(todoIds('wales'), 'done')}</div><div class="grid2">${todoBlocks(WALES_TODO, '')}</div>`,
     packing: () => `<div class="toolbar"><div class="head"><h2>Packing</h2><p class="muted">Cold, wet and windy outside. Cosy inside.</p></div>${progress(packIds(WALES_PACK, 'wales'), 'packed')}</div><div class="grid3">${packBlocks(WALES_PACK, 'wales')}</div>`,
     budget: () => tripBudget('wales'),
@@ -1005,6 +1036,7 @@ function mruPage(sec) {
           <div class="panel raised"><h2>Progress</h2>${progress(todoIds('mru'), 'to-dos')}${progress(packIds(MRU_PACK, 'mru'), 'packed')}</div>
           <div class="note tip">January is hot, humid and the start of cyclone season. The west coast is the driest side. Do outdoor trips in the morning, and keep the weather-dependent ones early with spare days to rebook.</div>
         </div></div>
+      ${stayPanels('mru')}
       <section class="sect" style="margin-top:12px"><div class="head"><h2>Highlights</h2></div><div class="picks">${MRU_EXP.filter(x => x.pick).map(x => xCard('m-' + x.id)).join('')}${TRANSPORT.filter(x => x.pick).map(x => xCard('t-' + x.id)).join('')}</div></section>`,
     itinerary: () => {
       const orig = state.plan === 'original';
@@ -1036,6 +1068,15 @@ function mruPage(sec) {
       <div class="stack"><h2>Useful apps</h2>${appCards(APPS_MRU.slice(5))}</div></div>`
   };
   return shell('mauritius', sec, (pages[sec] || pages.overview)());
+}
+
+function stayPanels(k) {
+  const s = STAYS[k];
+  const list = (arr) => `<ul class="small" style="margin:0;padding-left:18px;display:grid;gap:6px">${arr.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  return `<section class="sect" style="margin-top:8px"><div class="head"><h2>Arriving and checking in</h2><p class="muted">From the Airbnb listing. Your exact address and check-in times are in your booking.</p></div>
+    <div class="grid2"><div class="panel raised" style="align-self:start"><h3>Getting in</h3>${list(s.arrive)}</div>
+      <div class="stack"><div class="panel"><h3>Already there</h3>${list(s.provided)}${s.missing.length ? `<p class="small muted"><b>Not there:</b> ${esc(s.missing.join('. '))}.</p>` : ''}</div>
+      <div class="panel"><h3>House rules and good to know</h3>${list(s.rules)}</div></div></div></section>`;
 }
 
 /* ================= Detail pages ================= */
