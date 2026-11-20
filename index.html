@@ -235,6 +235,9 @@ tfoot td { font-weight: 800; border-bottom: 0; }
 .amen span { display: flex; gap: 8px; align-items: center; }
 .amen svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
 .btn { display: inline-flex; align-items: center; justify-self: start; gap: 6px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14px; padding: 10px 16px; border-radius: 10px; text-decoration: none; border: 0; cursor: pointer; font-family: inherit; }
+.fuel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.fuel-field { display: grid; gap: 4px; }
+.fuel-field .money { width: 100%; text-align: left; }
 .btn.ghost { background: none; color: var(--fg); border: 1px solid var(--line); }
 @media (prefers-reduced-motion: no-preference) { .page, .home { animation: fade .25s ease; } @keyframes fade { from { opacity: .5; transform: translateY(4px); } to { opacity: 1; transform: none; } } }
 </style>
@@ -309,8 +312,8 @@ const JOURNEY = [
 
 const WALES_DAYS = [
   { dow: 'Thu', num: 24, mon: 'Dec', title: 'Drive to the barn', travel: true,
-    slots: [['Morning', 'Load the car. Cool box last, straight from the freezer.'], ['Afternoon', 'Drive to Tremeirchion and unpack. If you arrive before 3pm, take the short loop through the village.'], ['Evening', 'Reheat the curry from home with rice and naan. First evening in the hot tub.']],
-    facts: [['clock', 'Sunset 3:55pm'], ['walk', 'Village loop, 1–2 miles']], q: 'Tremeirchion, Denbighshire',
+    slots: [['Morning', 'Load the car. Cool box last, straight from the freezer.'], ['Late morning', 'Leave home by 10am. About 200 miles on the M1, M6 and A55, around 4 to 5 hours with Christmas Eve traffic. Stop for lunch on the way.'], ['Afternoon', 'Arrive at the barn and unpack. If it’s still light, take the short loop through the village.'], ['Evening', 'Reheat the curry from home with rice and naan. First evening in the hot tub.']],
+    facts: [['car', '200 miles, 4–5 hrs'], ['clock', 'Sunset 3:55pm'], ['walk', 'Village loop, 1–2 miles']], q: 'Tremeirchion, Denbighshire',
     note: 'Check-in time is still to confirm with Thomas.' },
   { dow: 'Fri', num: 25, mon: 'Dec', title: 'Christmas Day on Moel Famau',
     slots: [['Morning', 'Croissants and coffee. Leave by 10am for Bwlch Penbarras car park.'], ['Midday', 'Walk up to the Jubilee Tower, the top of the Clwydian Range. About 3 miles return.'], ['Afternoon', 'Sauna, then a film by the log burner.'], ['Evening', 'Christmas dinner: roast chicken thighs and potatoes, honey carrots, gravy and dessert.']],
@@ -326,8 +329,8 @@ const WALES_DAYS = [
     slots: [['Morning', 'Drive to Talacre. A flat walk along the beach and dunes to the Point of Ayr lighthouse.'], ['Afternoon', 'Hot tub and sauna.'], ['Evening', 'Steak night with oven chips and peppercorn sauce. Marshmallows on the firepit.']],
     facts: [['car', '30 min drive'], ['walk', '2–3 miles, flat']], q: 'Talacre Beach lighthouse', note: 'Bank holiday, as Boxing Day falls on a Saturday.' },
   { dow: 'Tue', num: 29, mon: 'Dec', title: 'Check out and head home', travel: true,
-    slots: [['Morning', 'Use up the eggs and bread. Pack the cool box from the fridge.'], ['Late morning', 'Check out, then a short walk round St Asaph cathedral and the river, or Loggerheads Country Park on the way.'], ['Lunch', 'Lunch out on the drive home.']],
-    facts: [['car', '10 min to St Asaph']], q: 'St Asaph Cathedral' }
+    slots: [['Morning', 'Use up the eggs and bread. Pack the cool box from the fridge.'], ['Late morning', 'Check out, then a short walk round St Asaph cathedral and the river, or Loggerheads Country Park on the way.'], ['Afternoon', 'Lunch out, then the drive home. About 200 miles, around 4 hours.']],
+    facts: [['car', '10 min to St Asaph'], ['car', '200 miles home']], q: 'St Asaph Cathedral' }
 ];
 
 const WALES_ACTS = [
@@ -363,7 +366,7 @@ const WALES_SHOP = [
 
 const WALES_TODO = [
   { id: 'wales-host', when: 'now', t: 'Message Thomas', d: 'Ask for check-in and check-out times, whether wood for the log burner is included, and what kitchen basics are there (oil, salt, washing-up liquid, coffee pods).' },
-  { id: 'wales-budget', when: 'now', t: 'Add the barn cost to the budget', d: 'On the Budget page.' },
+  { id: 'wales-budget', when: 'now', t: 'Check the fuel estimate', d: 'Put your car’s mpg into the calculator on the Budget tab.' },
   { id: 'wales-shop', when: 'before', t: 'Do the food shop (21–23 Dec)', d: 'Use the list on the Food tab. Shops near the barn are shut on the 25th and on short hours on the 26th and 28th.' },
   { id: 'wales-freeze', when: 'before', t: 'Cook and freeze the first-night curry', d: 'Freeze it flat in bags so it doubles as an ice pack.' },
   { id: 'wales-car', when: 'before', t: 'Check the car for a winter drive', d: 'Tyres, screenwash, and a scraper for frosty mornings.' },
@@ -384,6 +387,7 @@ const WALES_ESSENTIALS = [
   ['Host', 'Thomas (Superhost, replies within an hour)'],
   ['Daylight', 'Sunrise about 8:20am, sunset about 3:55pm'],
   ['Weather', 'Usually 3–8°C, wet and windy, frost possible'],
+  ['Drive', 'About 200 miles each way via the M1, M6 and A55'],
   ['Parking', 'One car, behind gates'],
   ['Emergency', '999. Nearest A&E: Glan Clwyd Hospital, Bodelwyddan'],
   ['Christmas hours', 'Closed 25 Dec. Short hours 26 and 28 Dec'],
@@ -527,9 +531,11 @@ const APPS_WALES = [
 ];
 
 const BUDGET_ROWS = [
-  ['wales', 'Wales barn (Tremeirchion)', 0, 0, 'wales'],
-  ['walesfood', 'Wales food shop', 150, 0, 'wales'],
-  ['walesfuel', 'Wales fuel and parking', 80, 0, 'wales'],
+  ['wales', 'Barn in Tremeirchion, 5 nights', 1045, 1045, 'wales'],
+  ['walesfood', 'Food shop before you go', 150, 0, 'wales'],
+  ['waleseat', 'Eating out (lunch on the way home, coffees)', 40, 0, 'wales'],
+  ['walesfuel', 'Fuel (from the calculator below)', 0, 0, 'wales'],
+  ['walesparking', 'Parking at walks', 15, 0, 'wales'],
   ['flights', 'Flights to Mauritius', 1711, 1711, 'mru'],
   ['villa', 'Solara West villa', 2233, 1290, 'mru'],
   ['activities', 'Activities and food', 2250, 0, 'mru'],
@@ -608,8 +614,11 @@ function progress(ids, label) {
   return `<div class="progress"><span>${done} of ${ids.length} ${label}</span><div class="bar"><i style="width:${pct}%"></i></div></div>`;
 }
 const factRow = (arr) => arr && arr.length ? `<div class="facts">${arr.map(([i, t]) => `<span>${ic(i)}${esc(t)}</span>`).join('')}</div>` : '';
+const FUEL_DEFAULT = { trip: 400, local: 80, mpg: 45, ppl: 1.40 };
+function fuel() { return Object.assign({}, FUEL_DEFAULT, state.budget.fuelcalc || {}); }
+function fuelCost() { const f = fuel(); const miles = (+f.trip || 0) + (+f.local || 0); return f.mpg > 0 ? miles / f.mpg * 4.546 * (+f.ppl || 0) : 0; }
 function budgetRows(trip) {
-  return BUDGET_ROWS.filter(r => !trip || r[4] === trip).map(([k, name, cost, paid, tr]) => { const o = state.budget[k] || {}; return { k, name, tr, cost: o.cost ?? cost, paid: o.paid ?? paid }; });
+  return BUDGET_ROWS.filter(r => !trip || r[4] === trip).map(([k, name, cost, paid, tr]) => { const o = state.budget[k] || {}; return { k, name, tr, cost: k === 'walesfuel' ? Math.round(fuelCost()) : (o.cost ?? cost), paid: o.paid ?? paid, fixed: k === 'walesfuel' }; });
 }
 const sum = (rows, f) => rows.reduce((a, r) => a + (+r[f] || 0), 0);
 const todoIds = (trip) => trip === 'wales' ? WALES_TODO.map(t => t.id) : MRU_TODO.map(t => 'b-' + t.id);
@@ -708,8 +717,8 @@ function viewHome() {
 
 /* ================= Destination pages ================= */
 const SECTIONS = {
-  wales: [['overview', 'Overview', 'overview'], ['itinerary', 'Itinerary', 'itinerary'], ['activities', 'Walks', 'walk'], ['food', 'Food', 'food'], ['todo', 'To-do', 'todo'], ['packing', 'Packing', 'packing'], ['essentials', 'Essentials', 'essentials']],
-  mauritius: [['overview', 'Overview', 'overview'], ['itinerary', 'Itinerary', 'itinerary'], ['activities', 'Activities', 'activities'], ['food', 'Food', 'food'], ['todo', 'To-do', 'todo'], ['packing', 'Packing', 'packing'], ['transport', 'Getting around', 'transport'], ['essentials', 'Essentials', 'essentials']]
+  wales: [['overview', 'Overview', 'overview'], ['itinerary', 'Itinerary', 'itinerary'], ['activities', 'Walks', 'walk'], ['food', 'Food', 'food'], ['todo', 'To-do', 'todo'], ['packing', 'Packing', 'packing'], ['budget', 'Budget', 'budget'], ['essentials', 'Essentials', 'essentials']],
+  mauritius: [['overview', 'Overview', 'overview'], ['itinerary', 'Itinerary', 'itinerary'], ['activities', 'Activities', 'activities'], ['food', 'Food', 'food'], ['todo', 'To-do', 'todo'], ['packing', 'Packing', 'packing'], ['transport', 'Getting around', 'transport'], ['budget', 'Budget', 'budget'], ['essentials', 'Essentials', 'essentials']]
 };
 function shell(trip, sec, body) {
   const w = trip === 'wales';
@@ -751,7 +760,7 @@ function walesPage(sec) {
         <div class="stack">
           <div class="panel raised"><h2>Progress</h2>${progress(todoIds('wales'), 'to-dos')}${progress(shopIds, 'shopping items')}${progress(packIds(WALES_PACK, 'wales'), 'packed')}</div>
           <div class="panel raised"><h2>Budget</h2><div class="stat-row"><div class="stat"><span class="muted small">Total</span><b>${gbp(sum(b, 'cost'))}</b></div><div class="stat"><span class="muted small">To pay</span><b>${gbp(sum(b, 'cost') - sum(b, 'paid'))}</b></div></div>
-            <p class="small muted">Add the barn cost on the Budget page.</p></div>
+            <button class="btn ghost" data-go="wales-budget" type="button">Open Wales budget</button></div>
           <div class="note moss">The kitchen is small, with two gas rings, a combi microwave oven and an under-counter fridge. Bring a cool box and freeze the meat for later in the week.</div>
         </div></div>`,
     itinerary: () => `<div class="head"><h2>Day by day</h2><p class="muted">Sunset is around 3:55pm, so walks are planned for late morning and midday. Swap any day for a rainy-day idea on the Walks tab.</p></div>
@@ -766,6 +775,7 @@ function walesPage(sec) {
       <div class="note moss">Cool box tip: freeze the lamb, steaks and chicken breast, and pack them in the cool box. Move one day’s meat into the fridge each morning to defrost.</div>`,
     todo: () => `<div class="toolbar"><h2>To-do</h2>${progress(todoIds('wales'), 'done')}</div><div class="grid2">${todoBlocks(WALES_TODO, '')}</div>`,
     packing: () => `<div class="toolbar"><div class="head"><h2>Packing</h2><p class="muted">Cold, wet and dark by 4pm. Pack for the hills and for the hot tub.</p></div>${progress(packIds(WALES_PACK, 'wales'), 'packed')}</div><div class="grid3">${packBlocks(WALES_PACK, 'wales')}</div>`,
+    budget: () => tripBudget('wales'),
     essentials: () => `<div class="grid2"><div class="panel"><h2>Need to know</h2><dl class="kv">${WALES_ESSENTIALS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
       <div class="stack"><h2>Useful apps</h2>${appCards(APPS_WALES)}</div></div>`
   };
@@ -792,7 +802,7 @@ function mruPage(sec) {
           <button class="btn" data-go="mauritius-itinerary" type="button">Full itinerary</button></div>
         <div class="stack">
           <div class="panel raised"><h2>Progress</h2>${progress(todoIds('mru'), 'to-dos')}${progress(packIds(MRU_PACK, 'mru'), 'packed')}</div>
-          <div class="panel raised"><h2>Budget</h2><div class="stat-row"><div class="stat"><span class="muted small">Total</span><b>${gbp(sum(b, 'cost'))}</b></div><div class="stat"><span class="muted small">To pay</span><b>${gbp(sum(b, 'cost') - sum(b, 'paid'))}</b></div></div></div>
+          <div class="panel raised"><h2>Budget</h2><div class="stat-row"><div class="stat"><span class="muted small">Total</span><b>${gbp(sum(b, 'cost'))}</b></div><div class="stat"><span class="muted small">To pay</span><b>${gbp(sum(b, 'cost') - sum(b, 'paid'))}</b></div></div><button class="btn ghost" data-go="mauritius-budget" type="button">Open Mauritius budget</button></div>
           <div class="note tip">January is the hottest, wettest month and the start of cyclone season. The west coast is the driest side. Do outdoor trips in the morning, and keep the weather-dependent ones early in the trip.</div>
         </div></div>`,
     itinerary: () => {
@@ -828,25 +838,45 @@ function mruPage(sec) {
         <div class="panel"><h3>Driving tips</h3><ul class="small"><li>Drive on the left, like the UK.</li><li>Speed cameras are common, so stick to the limits.</li><li>Port Louis traffic is heavy from 7 to 9am and 4 to 6pm.</li><li>Avoid mountain roads after dark.</li><li>Photograph the car when it’s delivered.</li></ul></div>
       </div>
       <div class="head"><h2>Apps</h2></div>${appCards(APPS_MRU.slice(2, 5))}`,
+    budget: () => tripBudget('mru'),
     essentials: () => `<div class="grid2"><div class="panel"><h2>Need to know</h2><dl class="kv">${MRU_ESSENTIALS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
       <div class="stack"><h2>Useful apps</h2>${appCards(APPS_MRU.slice(5))}</div></div>`
   };
   return shell('mauritius', sec, (pages[sec] || pages.overview)());
 }
 
-function viewBudget() {
-  const rows = budgetRows(); const cost = sum(rows, 'cost'), paid = sum(rows, 'paid');
-  const group = (tr, label) => `<tr><td colspan="4" class="eyebrow" style="padding-top:18px">${label}</td></tr>` + rows.filter(r => r.tr === tr).map(r => `<tr><td>${esc(r.name)}</td>
-    <td class="num"><input class="money" id="cost-${r.k}" inputmode="decimal" data-b="${r.k}" data-f="cost" value="${r.cost}" aria-label="${esc(r.name)} cost"></td>
+function budgetTable(rows, groups) {
+  const cost = sum(rows, 'cost'), paid = sum(rows, 'paid');
+  const line = (r) => `<tr><td>${esc(r.name)}</td>
+    <td class="num">${r.fixed ? `<span id="cost-${r.k}">${gbp(r.cost)}</span>` : `<input class="money" id="cost-${r.k}" inputmode="decimal" data-b="${r.k}" data-f="cost" value="${r.cost}" aria-label="${esc(r.name)} cost">`}</td>
     <td class="num"><input class="money" id="paid-${r.k}" inputmode="decimal" data-b="${r.k}" data-f="paid" value="${r.paid}" aria-label="${esc(r.name)} paid"></td>
-    <td class="num" id="left-${r.k}">${gbp(r.cost - r.paid)}</td></tr>`).join('');
-  return `<div class="wrap page view">
-    <div class="head"><span class="eyebrow">Both trips</span><h1>Budget</h1><p class="muted">Edit any number and it saves. Add the Wales barn cost when you have it.</p></div>
-    <div class="stat-row"><div class="stat"><span class="muted small">Total</span><b id="bTotal">${gbp(cost)}</b></div><div class="stat"><span class="muted small">Paid</span><b id="bPaid">${gbp(paid)}</b></div><div class="stat"><span class="muted small">Still to pay</span><b id="bLeft">${gbp(cost - paid)}</b></div></div>
+    <td class="num" id="left-${r.k}">${gbp(r.cost - r.paid)}</td></tr>`;
+  const body = groups ? groups.map(([tr, label]) => `<tr><td colspan="4" class="eyebrow" style="padding-top:18px">${label}</td></tr>` + rows.filter(r => r.tr === tr).map(line).join('')).join('') : rows.map(line).join('');
+  return `<div class="stat-row"><div class="stat"><span class="muted small">Total</span><b data-tot="cost">${gbp(cost)}</b></div><div class="stat"><span class="muted small">Paid</span><b data-tot="paid">${gbp(paid)}</b></div><div class="stat"><span class="muted small">Still to pay</span><b data-tot="left">${gbp(cost - paid)}</b></div></div>
     <div class="panel"><div class="table-wrap"><table><thead><tr><th>Item</th><th class="num">Cost (£)</th><th class="num">Paid (£)</th><th class="num">Left</th></tr></thead>
-      <tbody>${group('wales', 'North Wales')}${group('mru', 'Mauritius')}</tbody>
-      <tfoot><tr><td>Total</td><td class="num" id="fCost">${gbp(cost)}</td><td class="num" id="fPaid">${gbp(paid)}</td><td class="num" id="fLeft">${gbp(cost - paid)}</td></tr></tfoot></table></div></div>
-    <p class="muted small">Car hire is 10 days at £38, which is £380 and leaves about £120 for the arrival transfer.</p></div>`;
+      <tbody>${body}</tbody>
+      <tfoot><tr><td>Total</td><td class="num" data-tot="cost">${gbp(cost)}</td><td class="num" data-tot="paid">${gbp(paid)}</td><td class="num" data-tot="left">${gbp(cost - paid)}</td></tr></tfoot></table></div></div>`;
+}
+function fuelPanel() {
+  const f = fuel();
+  const field = (k, label, step) => `<label class="fuel-field" for="fuel-${k}"><span class="small muted">${label}</span><input class="money" id="fuel-${k}" inputmode="decimal" data-fuel="${k}" value="${f[k]}" step="${step}"></label>`;
+  return `<div class="panel raised"><h2>Fuel calculator</h2>
+    <p class="small muted">The drive from home to the barn is about 200 miles each way on the M1, M6 and A55. That’s roughly 3 hours 45 minutes, but allow 4 to 5 hours on Christmas Eve. The local figure covers the drives to each walk. Change the numbers to match your car.</p>
+    <div class="fuel-grid">${field('trip', 'Return trip from home (miles)', 1)}${field('local', 'Local driving (miles)', 1)}${field('mpg', 'Your car (mpg)', 1)}${field('ppl', 'Fuel price (£ per litre)', .01)}</div>
+    <div class="stat"><span class="muted small">Estimated fuel cost</span><b id="fuelOut">${gbp(fuelCost())}</b></div></div>`;
+}
+function tripBudget(trip) {
+  const rows = budgetRows(trip);
+  const w = trip === 'wales';
+  return `<div class="head"><h2>${w ? 'Wales budget' : 'Mauritius budget'}</h2><p class="muted">${w ? 'Accommodation, food and travel. Edit any number and it saves.' : 'From your spreadsheet. Edit any number and it saves.'}</p></div>
+    ${budgetTable(rows)}${w ? fuelPanel() : '<p class="muted small">Car hire is 10 days at £38, which is £380 and leaves about £120 for the arrival transfer.</p>'}`;
+}
+function viewBudget() {
+  const rows = budgetRows();
+  return `<div class="wrap page view">
+    <div class="head"><span class="eyebrow">Both trips</span><h1>Budget</h1><p class="muted">Edit any number and it saves. Fuel for Wales comes from the calculator on the Wales budget tab.</p></div>
+    ${budgetTable(rows, [['wales', 'North Wales'], ['mru', 'Mauritius']])}
+    <p class="muted small">Car hire in Mauritius is 10 days at £38, which is £380 and leaves about £120 for the arrival transfer.</p></div>`;
 }
 
 /* ================= Router ================= */
@@ -865,7 +895,7 @@ function renderNav() {
   document.getElementById('bottomNav').innerHTML = html;
 }
 function render(fromSync) {
-  if (fromSync && document.activeElement && document.activeElement.classList.contains('money')) return;
+  if (fromSync && document.activeElement && document.activeElement.classList.contains('money')) { refreshTotals(); return; }
   const y = window.scrollY;
   renderNav();
   document.getElementById('main').innerHTML = cur.page === 'wales' ? walesPage(cur.sec) : cur.page === 'mauritius' ? mruPage(cur.sec) : cur.page === 'budget' ? viewBudget() : viewHome();
@@ -897,15 +927,24 @@ document.addEventListener('change', (e) => {
   const c = e.target.closest('[data-check]');
   if (c) { const id = c.dataset.check; state.checks[id] = c.checked; queue({ checks: { [id]: c.checked } }); render(true); }
 });
+function refreshTotals() {
+  const rows = budgetRows();
+  rows.forEach(r => { const el = document.getElementById('left-' + r.k); if (el) el.textContent = gbp(r.cost - r.paid); });
+  const fc = document.getElementById('cost-walesfuel'); if (fc && fc.tagName === 'SPAN') fc.textContent = gbp(Math.round(fuelCost()));
+  const fo = document.getElementById('fuelOut'); if (fo) fo.textContent = gbp(fuelCost());
+  const scope = cur.page === 'wales' ? 'wales' : cur.page === 'mauritius' ? 'mru' : null;
+  const shown = budgetRows(scope); const cost = sum(shown, 'cost'), paid = sum(shown, 'paid');
+  document.querySelectorAll('[data-tot]').forEach(el => { el.textContent = gbp(el.dataset.tot === 'cost' ? cost : el.dataset.tot === 'paid' ? paid : cost - paid); });
+}
 document.addEventListener('input', (e) => {
+  const num = (x) => { const v = parseFloat(String(x).replace(/[£,\s]/g, '')); return isNaN(v) ? 0 : v; };
+  const fl = e.target.closest('[data-fuel]');
+  if (fl) { const k = fl.dataset.fuel, val = num(fl.value); state.budget.fuelcalc = Object.assign({}, state.budget.fuelcalc, { [k]: val }); queue({ budget: { fuelcalc: { [k]: val } } }); refreshTotals(); return; }
   const m = e.target.closest('[data-b]'); if (!m) return;
-  const k = m.dataset.b, f = m.dataset.f;
-  const v = parseFloat(String(m.value).replace(/[£,\s]/g, '')); const val = isNaN(v) ? 0 : v;
+  const k = m.dataset.b, f = m.dataset.f, val = num(m.value);
   state.budget[k] = Object.assign({}, state.budget[k], { [f]: val });
   queue({ budget: { [k]: { [f]: val } } });
-  const rows = budgetRows(); const cost = sum(rows, 'cost'), paid = sum(rows, 'paid'); const r = rows.find(x => x.k === k);
-  document.getElementById('left-' + k).textContent = gbp(r.cost - r.paid);
-  for (const [id, v2] of [['bTotal', cost], ['bPaid', paid], ['bLeft', cost - paid], ['fCost', cost], ['fPaid', paid], ['fLeft', cost - paid]]) document.getElementById(id).textContent = gbp(v2);
+  refreshTotals();
 });
 window.addEventListener('hashchange', route);
 route();
