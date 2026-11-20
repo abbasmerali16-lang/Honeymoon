@@ -312,7 +312,7 @@ const JOURNEY = [
 
 const WALES_DAYS = [
   { dow: 'Thu', num: 24, mon: 'Dec', title: 'Drive to the barn', travel: true,
-    slots: [['Morning', 'Load the car. Cool box last, straight from the freezer.'], ['Late morning', 'Leave home by 10am. About 200 miles on the M1, M6 and A55, around 4 to 5 hours with Christmas Eve traffic. Stop for lunch on the way.'], ['Afternoon', 'Arrive at the barn and unpack. If it’s still light, take the short loop through the village.'], ['Evening', 'Reheat the curry from home with rice and naan. First evening in the hot tub.']],
+    slots: [['Morning', 'Load the car. Cool box last, straight from the freezer.'], ['Late morning', 'Leave home by 10am. About 200 miles on the M1, M6 and A55, around 4 to 5 hours with Christmas Eve traffic. Packed lunch for the drive.'], ['Afternoon', 'Arrive at the barn and unpack. If it’s still light, take the short loop through the village.'], ['Evening', 'Reheat the curry from home with rice and naan. First evening in the hot tub.']],
     facts: [['car', '200 miles, 4–5 hrs'], ['clock', 'Sunset 3:55pm'], ['walk', 'Village loop, 1–2 miles']], q: 'Tremeirchion, Denbighshire',
     note: 'Check-in time is still to confirm with Thomas.' },
   { dow: 'Fri', num: 25, mon: 'Dec', title: 'Christmas Day on Moel Famau',
@@ -329,7 +329,7 @@ const WALES_DAYS = [
     slots: [['Morning', 'Drive to Talacre. A flat walk along the beach and dunes to the Point of Ayr lighthouse.'], ['Afternoon', 'Hot tub and sauna.'], ['Evening', 'Steak night with oven chips and peppercorn sauce. Marshmallows on the firepit.']],
     facts: [['car', '30 min drive'], ['walk', '2–3 miles, flat']], q: 'Talacre Beach lighthouse', note: 'Bank holiday, as Boxing Day falls on a Saturday.' },
   { dow: 'Tue', num: 29, mon: 'Dec', title: 'Check out and head home', travel: true,
-    slots: [['Morning', 'Use up the eggs and bread. Pack the cool box from the fridge.'], ['Late morning', 'Check out, then a short walk round St Asaph cathedral and the river, or Loggerheads Country Park on the way.'], ['Afternoon', 'Lunch out, then the drive home. About 200 miles, around 4 hours.']],
+    slots: [['Morning', 'Use up the eggs and bread. Pack the cool box from the fridge.'], ['Late morning', 'Check out, then a short walk round St Asaph cathedral and the river, or Loggerheads Country Park on the way.'], ['Afternoon', 'Packed lunch, then the drive home. About 200 miles, around 4 hours.']],
     facts: [['car', '10 min to St Asaph'], ['car', '200 miles home']], q: 'St Asaph Cathedral' }
 ];
 
@@ -352,13 +352,13 @@ const WALES_MEALS = [
   ['Sat 26', 'Shakshuka brunch', '—', 'Lamb chops, couscous, salad'],
   ['Sun 27', 'Sausages, eggs, beans', 'Soup in a flask, wraps', 'Creamy chicken and mushroom pasta'],
   ['Mon 28', 'Granola, fruit', 'Picnic at Talacre', 'Steak, oven chips, peppercorn sauce'],
-  ['Tue 29', 'Use up eggs and bread', 'Lunch out on the way home', '—']
+  ['Tue 29', 'Use up eggs and bread', 'Packed lunch for the drive', '—']
 ];
 
 const WALES_SHOP = [
   { cat: 'Halal meat (freeze what you’ll use after day 2)', items: ['Chicken thighs, about 1kg (Christmas dinner)', 'Lamb chops, 6 to 8', '2 steaks', 'Chicken breast, 2 (pasta night)', 'Halal sausages and beef bacon (breakfasts)', 'Home-made curry, frozen flat in bags (first night)'] },
   { cat: 'Fresh', items: ['Eggs, 12', 'Milk, 2 litres', 'Butter', 'Cheese', 'Potatoes, 1.5kg', 'Carrots', 'Onions, 4', 'Garlic and ginger', 'Tomatoes and 2 peppers (shakshuka)', 'Mushrooms', 'Salad bag and cucumber', 'Lemons', 'Fresh coriander', 'Double cream (pasta and peppercorn sauce)', 'Fruit for breakfasts'] },
-  { cat: 'Bread and breakfast', items: ['Croissants', 'Sliced bread or bagels', 'Naan, 4', 'Wraps', 'Granola or oats', 'Jam and honey', 'Orange juice', 'Baked beans'] },
+  { cat: 'Bread and breakfast', items: ['Croissants', 'Sliced bread or bagels', 'Naan, 4', 'Wraps', 'Granola or oats', 'Jam and honey', 'Orange juice', 'Baked beans', 'Sandwich fillings for both drives'] },
   { cat: 'Cupboard', items: ['Basmati rice', 'Pasta', 'Couscous', 'Chopped tomatoes, 2 tins', 'Gravy granules (check they’re halal)', 'Stock cubes', 'Soup for the flask, 2 cartons', 'Frozen oven chips'] },
   { cat: 'Treats', items: ['Hot chocolate', 'Marshmallows for the firepit (check they’re halal)', 'Dates', 'Christmas dessert', 'Chocolates and biscuits', 'Crisps for the walks'] },
   { cat: 'Kitchen basics to bring', items: ['Olive oil', 'Salt and pepper', 'Small spice kit: cumin, garam masala, chilli, turmeric, paprika', 'Tea bags and coffee', 'Foil and zip bags', 'Kitchen roll', 'Cool box and ice packs'] }
@@ -533,9 +533,8 @@ const APPS_WALES = [
 const BUDGET_ROWS = [
   ['wales', 'Barn in Tremeirchion, 5 nights', 1045, 1045, 'wales'],
   ['walesfood', 'Food shop before you go', 150, 0, 'wales'],
-  ['waleseat', 'Eating out (lunch on the way home, coffees)', 40, 0, 'wales'],
   ['walesfuel', 'Fuel (from the calculator below)', 0, 0, 'wales'],
-  ['walesparking', 'Parking at walks', 15, 0, 'wales'],
+  ['walesparking', 'Parking at Moel Famau and Talacre', 10, 0, 'wales'],
   ['flights', 'Flights to Mauritius', 1711, 1711, 'mru'],
   ['villa', 'Solara West villa', 2233, 1290, 'mru'],
   ['activities', 'Activities and food', 2250, 0, 'mru'],
