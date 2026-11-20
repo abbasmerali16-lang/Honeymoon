@@ -79,9 +79,10 @@ main { padding-bottom: 90px; } @media (min-width: 760px) { main { padding-bottom
 .hero h1 { font-size: clamp(32px, 5.4vw, 54px); }
 .hero h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
 .hero p.lead { margin: 12px auto 0; color: var(--muted); max-width: 420px; }
-.counts { display: flex; justify-content: center; gap: 12px; margin-top: 20px; }
+.counts { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+@media (max-width: 480px) { .count b { font-size: 24px; } .count span { font-size: 12px; } .count { padding: 8px; } }
 .count { flex: 1; max-width: 170px; border-radius: 14px; padding: 10px 12px; }
-.count.w { background: var(--wales-soft); color: var(--wales); } .count.m { background: var(--mru-soft); color: var(--mru); }
+.count.w { background: var(--wales-soft); color: var(--wales); } .count.g { background: var(--gold-soft); color: #7A5512; } .count.m { background: var(--mru-soft); color: var(--mru); }
 .count b { display: block; font-family: var(--serif); font-size: 30px; line-height: 1.1; }
 .count span { font-size: 13px; font-weight: 700; }
 
@@ -128,7 +129,7 @@ main { padding-bottom: 90px; } @media (min-width: 760px) { main { padding-bottom
 .leg .rail::before { content: ''; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--line); }
 .leg:first-child .rail::before { top: 8px; } .leg:last-child .rail::before { bottom: calc(100% - 10px); }
 .leg .rail i { position: relative; margin-top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--muted); border: 3px solid var(--card); box-sizing: content-box; }
-.leg.wales .rail i { background: var(--wales); } .leg.mru .rail i { background: var(--mru); } .leg.home .rail i { background: var(--gold); }
+.leg.wales .rail i { background: var(--wales); } .leg.mru .rail i { background: var(--mru); } .leg.home .rail i { background: var(--muted); } .leg.gold .rail i { background: var(--gold); }
 .leg .what { display: grid; padding-bottom: 18px; }
 
 /* Picks strip */
@@ -166,6 +167,9 @@ nav.sub button[aria-current="true"] { background: var(--fg); color: var(--bg); }
 .stay { display: grid; gap: 0; background: var(--card); border-radius: 22px; overflow: hidden; box-shadow: var(--shadow); }
 @media (min-width: 860px) { .stay { grid-template-columns: 1.1fr 1fr; } }
 .stay .ph { min-height: 240px; }
+.gallery { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 30%); gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 6px; }
+.gallery .ph { aspect-ratio: 4/3; border-radius: 14px; scroll-snap-align: start; }
+.gallery .ph::after { display: none; }
 .stay .panel { border: 0; border-radius: 0; }
 .amen { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .amen span { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
@@ -178,7 +182,7 @@ dl.kv dt { font-weight: 800; color: var(--muted); } dl.kv dd { margin: 0; }
 
 /* Rhythm */
 .rhythm { display: grid; gap: 10px; }
-@media (min-width: 760px) { .rhythm { grid-template-columns: repeat(6, 1fr); } }
+@media (min-width: 760px) { .rhythm { grid-template-columns: repeat(7, 1fr); } }
 .rhythm div { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 2px; }
 .rhythm b { font-family: var(--serif); font-size: 20px; color: var(--wales); }
 
@@ -196,6 +200,11 @@ dl.kv dt { font-weight: 800; color: var(--muted); } dl.kv dd { margin: 0; }
 .slots { display: grid; gap: 0; }
 .slot { display: grid; grid-template-columns: 74px 1fr; gap: 12px; padding: 7px 0; border-top: 1px dashed var(--line); font-size: 15px; }
 .slot:first-child { border-top: 0; }
+.slot.pray { background: var(--gold-soft); border-radius: 10px; border-top-color: transparent; padding: 7px 10px; margin: 2px -10px; }
+.slot.pray + .slot { border-top-color: transparent; }
+.slot.pray b, .slot.pray span { color: #7A5512; }
+.prayers { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); font-weight: 700; }
+.prayers b { color: #7A5512; }
 .slot b { color: var(--accent); font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .seg { display: inline-flex; background: var(--surface); border-radius: 12px; padding: 4px; }
 .seg button { border: 0; background: none; padding: 8px 14px; border-radius: 9px; cursor: pointer; font-weight: 700; color: var(--muted); }
@@ -293,28 +302,28 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: s
 /* All trip content. Edit here; the page renders from it. */
 window.TRIP = (() => {
 const WALES_DAYS = [
-  { dow: 'Thu', num: 24, mon: 'Dec', title: 'Drive up and settle in', travel: true, img: 'wales-church',
-    slots: [['10:00', 'Leave home with the cool box packed last, straight from the freezer.'], ['12:00', 'Snack and stretch stop at motorway services.'], ['14:30', 'Arrive at the barn and unpack. Check-in time is still to confirm with Thomas.'], ['15:15', 'Short stroll through Tremeirchion as the sun sets at 15:55.'], ['17:00', 'First soak in the hot tub.'], ['19:00', 'Dinner: the curry from home, with rice and naan.']],
-    facts: [['car', '200 miles, 4–5 hrs'], ['sun', 'Sunset 15:55']], link: 'w-village' },
-  { dow: 'Fri', num: 25, mon: 'Dec', title: 'Christmas Day on Moel Famau', img: 'wales-famau',
-    slots: [['10:00', 'Lie-in.'], ['10:30', 'Breakfast: avocado and poached eggs on sourdough.'], ['12:15', 'Drive to Bwlch Penbarras car park (25 min).'], ['12:45', 'Walk up to the Jubilee Tower and back, about 1.5 hours.'], ['14:45', 'Back at the barn. Snacks and a hot drink.'], ['15:30', 'Sauna, then the hot tub.'], ['19:00', 'Christmas dinner: roast chicken thighs and potatoes, honey carrots, gravy and dessert.']],
+  { dow: 'Thu', num: 24, mon: 'Dec', title: 'Drive up and settle in', travel: true, img: 'wales-church', pray: ['06:31', '12:16', '16:25'], sun: ['08:27', '15:59'],
+    slots: [['06:31', 'Fajr at home.', 'p'], ['10:00', 'Leave home with the cool box packed last, straight from the freezer.'], ['12:00', 'Motorway services: snack, stretch, and pray Dhuhr there (12:16).', 'p'], ['14:30', 'Arrive at the barn and unpack. Check-in time is still to confirm with Thomas.'], ['15:15', 'Short stroll through Tremeirchion as the sun sets at 15:59.'], ['16:25', 'Maghrib back at the barn.', 'p'], ['17:00', 'First soak in the hot tub.'], ['19:00', 'Dinner: the curry from home, with rice and naan.']],
+    facts: [['car', '200 miles, 4–5 hrs'], ['sun', 'Sunset 15:59']], link: 'w-village' },
+  { dow: 'Fri', num: 25, mon: 'Dec', title: 'Christmas Day on Moel Famau', img: 'wales-famau', pray: ['06:31', '12:16', '16:26'], sun: ['08:28', '15:59'],
+    slots: [['06:31', 'Fajr, then back to bed.', 'p'], ['10:30', 'Lazy breakfast: avocado and poached eggs on sourdough.'], ['12:16', 'Dhuhr at the barn.', 'p'], ['12:35', 'Drive to Bwlch Penbarras car park (25 min).'], ['13:00', 'Walk up to the Jubilee Tower and back, about 1.5 hours.'], ['15:00', 'Back at the barn. Snacks and a hot drink.'], ['15:30', 'Sauna, then the hot tub.'], ['16:26', 'Maghrib.', 'p'], ['19:00', 'Christmas dinner: roast chicken thighs and potatoes, honey carrots, gravy and dessert.']],
     facts: [['walk', '3 miles, 1.5 hrs'], ['car', '25 min']], link: 'w-famau' },
-  { dow: 'Sat', num: 26, mon: 'Dec', title: 'A proper lazy day', img: 'wales-tower2',
-    slots: [['10:30', 'Wake up whenever.'], ['11:00', 'Brunch: shakshuka with sourdough.'], ['Afternoon', 'Films, games and snacks by the log burner. Sauna whenever you fancy it.'], ['16:00', 'Light the firepit as it gets dark.'], ['18:30', 'Dinner: lamb chops on the BBQ or hob, couscous and salad.']],
+  { dow: 'Sat', num: 26, mon: 'Dec', title: 'A proper lazy day', img: 'wales-snowdonia', pray: ['06:32', '12:16', '16:27'], sun: ['08:28', '16:00'],
+    slots: [['06:32', 'Fajr, then back to sleep.', 'p'], ['10:30', 'Wake up whenever.'], ['11:00', 'Brunch: shakshuka with sourdough.'], ['12:16', 'Dhuhr.', 'p'], ['Afternoon', 'Films, games and snacks by the log burner. Sauna whenever you fancy it.'], ['16:00', 'Light the firepit as it gets dark.'], ['16:27', 'Maghrib.', 'p'], ['18:30', 'Dinner: lamb chops on the BBQ or hob, couscous and salad.']],
     facts: [['home', 'No driving today']], link: 'w-barn' },
-  { dow: 'Sun', num: 27, mon: 'Dec', title: 'Dyserth Waterfall', img: 'wales-np',
-    slots: [['10:30', 'Breakfast: scrambled eggs and smoked salmon on toast.'], ['13:00', 'Drive to Dyserth (15 min). Short walk to the waterfall, then up Graig Fawr if you feel like it.'], ['15:00', 'Home for snacks.'], ['16:00', 'Hot tub as it gets dark.'], ['19:00', 'Dinner: creamy chicken and mushroom pasta.']],
+  { dow: 'Sun', num: 27, mon: 'Dec', title: 'Dyserth Waterfall', img: 'wales-dyserth', pray: ['06:32', '12:17', '16:28'], sun: ['08:28', '16:01'],
+    slots: [['06:32', 'Fajr.', 'p'], ['10:30', 'Breakfast: scrambled eggs and smoked salmon on toast.'], ['12:17', 'Dhuhr before heading out.', 'p'], ['12:45', 'Drive to Dyserth (15 min). Short walk to the waterfall, then up Graig Fawr if you feel like it.'], ['14:30', 'Home for snacks.'], ['16:00', 'Hot tub as it gets dark.'], ['16:28', 'Maghrib.', 'p'], ['19:00', 'Dinner: creamy chicken and mushroom pasta.']],
     facts: [['walk', 'Up to 2 miles'], ['car', '15 min']], link: 'w-dyserth' },
-  { dow: 'Mon', num: 28, mon: 'Dec', title: 'Sunset at Talacre lighthouse', img: 'wales-talacre',
-    slots: [['10:30', 'Breakfast: smashed avocado and feta on toast with eggs.'], ['Afternoon', 'Slow afternoon at the barn.'], ['14:15', 'Drive to Talacre Beach (30 min).'], ['15:00', 'Walk along the beach to the lighthouse for the 15:55 sunset.'], ['17:00', 'Home for hot chocolate.'], ['19:00', 'Steak night with oven chips and peppercorn sauce. Marshmallows on the firepit.']],
+  { dow: 'Mon', num: 28, mon: 'Dec', title: 'Sunset at Talacre lighthouse', img: 'wales-talacre', pray: ['06:32', '12:17', '16:28'], sun: ['08:28', '16:02'],
+    slots: [['06:32', 'Fajr.', 'p'], ['10:30', 'Breakfast: smashed avocado and feta on toast with eggs.'], ['12:17', 'Dhuhr, then a slow afternoon at the barn.', 'p'], ['14:30', 'Drive to Talacre Beach (30 min).'], ['15:15', 'Walk along the beach to the lighthouse for the 16:02 sunset.'], ['16:28', 'Maghrib on the beach with your travel mats, or back at the barn by 17:15.', 'p'], ['17:15', 'Home for hot chocolate.'], ['19:00', 'Steak night with oven chips and peppercorn sauce. Marshmallows on the firepit.']],
     facts: [['walk', '2 miles, flat'], ['car', '30 min']], link: 'w-talacre' },
-  { dow: 'Tue', num: 29, mon: 'Dec', title: 'Check out and drive home', travel: true, img: 'wales-snowdonia',
-    slots: [['09:30', 'Last breakfast: use up the eggs, avocado and bread.'], ['10:30', 'Pack, and move everything from the fridge into the cool box.'], ['11:00', 'Check out (time to confirm with Thomas).'], ['11:15', 'Drive home, about 4 hours, with snacks for the road.']],
+  { dow: 'Tue', num: 29, mon: 'Dec', title: 'Check out and drive home', travel: true, img: 'wales-snowpeak', pray: ['06:32', '12:18', '16:29'], sun: ['08:28', '16:03'],
+    slots: [['06:32', 'Fajr.', 'p'], ['09:30', 'Last breakfast: use up the eggs, avocado and bread.'], ['10:30', 'Pack, and move everything from the fridge into the cool box.'], ['11:00', 'Check out (time to confirm with Thomas).'], ['11:15', 'Drive home, about 4 hours.'], ['12:30', 'Services stop for Dhuhr (12:18 onwards) and snacks.', 'p'], ['16:29', 'Maghrib at home.', 'p']],
     facts: [['car', '200 miles home']] }
 ];
 
 const WALES_EXP = [
-  { id: 'famau', title: 'Moel Famau and the Jubilee Tower', img: 'wales-tower', when: 'Fri 25 Dec, 12:45', kind: 'Walk', pick: true,
+  { id: 'famau', title: 'Moel Famau and the Jubilee Tower', img: 'wales-tower', when: 'Fri 25 Dec, 13:00', kind: 'Walk', pick: true,
     summary: 'The best walk in the area: a steady climb to the highest point of the Clwydian Range, with huge views on a clear day.',
     facts: [['walk', '3 miles return'], ['clock', '1.5 hours'], ['car', '25 min drive'], ['pound', 'Pay and display parking']],
     what: 'Moel Famau is the highest hill in the Clwydian Range (554 m). On top sits the Jubilee Tower, built in 1810 for George III’s golden jubilee. On a clear day you can see Snowdonia, the Wirral and Liverpool.',
@@ -322,11 +331,11 @@ const WALES_EXP = [
     cost: 'Free walk. Pay and display at the car park (a few pounds; bring coins in case the card reader is down).',
     booking: 'No booking needed.',
     bring: ['Walking boots or sturdy trainers', 'Waterproof jackets', 'Hats and gloves', 'A flask of hot chocolate', 'Phone with offline maps'],
-    tips: ['Arrive by 12:45 so you’re down well before the 15:55 sunset.', 'If it’s foggy, do the Talacre beach walk instead. You won’t see anything from the top.'],
+    tips: ['Pray Dhuhr at the barn and start walking by 13:00, so you’re down well before the 16:00 sunset.', 'If it’s foggy, do the Talacre beach walk instead. You won’t see anything from the top.'],
     map: 'Bwlch Penbarras car park Moel Famau' },
-  { id: 'talacre', title: 'Talacre Beach at sunset', img: 'wales-talacre2', when: 'Mon 28 Dec, 15:00', kind: 'Walk', pick: true,
+  { id: 'talacre', title: 'Talacre Beach at sunset', img: 'wales-talacre2', when: 'Mon 28 Dec, 15:15', kind: 'Walk', pick: true,
     summary: 'A flat, easy walk along a wide sandy beach to an old lighthouse standing on the sand, timed for sunset.',
-    facts: [['walk', '2 miles, flat'], ['clock', '1–1.5 hours'], ['car', '30 min drive'], ['sun', 'Sunset 15:55']],
+    facts: [['walk', '2 miles, flat'], ['clock', '1–1.5 hours'], ['car', '30 min drive'], ['sun', 'Sunset 16:02']],
     what: 'The Point of Ayr lighthouse dates from 1776 and stands on the beach at Talacre, at the mouth of the River Dee. It’s one of the most photographed spots in North Wales, especially at sunset.',
     expect: ['Park at the beach car park in Talacre village.', 'A short path through the dunes, then out onto the sand.', 'Walk to the lighthouse for sunset, then back in the dusk.', 'Flat and easy. Sand can be soft in places.'],
     cost: 'Free walk. Pay and display at the beach car park.',
@@ -334,7 +343,7 @@ const WALES_EXP = [
     bring: ['Warm layers and hats', 'Head torches for the walk back', 'A flask', 'Wellies or boots if it’s wet'],
     tips: ['Check the tide times. The lighthouse is easy to reach except at the very highest tides.', 'Stay for the colours after sunset, then head home.'],
     map: 'Talacre Beach car park' },
-  { id: 'dyserth', title: 'Dyserth Waterfall and Graig Fawr', img: 'wales-church', when: 'Sun 27 Dec, 13:00', kind: 'Short walk',
+  { id: 'dyserth', title: 'Dyserth Waterfall and Graig Fawr', img: 'wales-dyserth', when: 'Sun 27 Dec, 12:45', kind: 'Short walk',
     summary: 'A tall waterfall just off the road, plus an optional short climb up a National Trust hill with sea views.',
     facts: [['walk', 'Up to 2 miles'], ['clock', '1 hour'], ['car', '15 min drive']],
     what: 'Dyserth Waterfall drops about 20 m right in the village. Graig Fawr is a small limestone hill nearby, looked after by the National Trust, with views over the coast and the Vale of Clwyd.',
@@ -344,7 +353,7 @@ const WALES_EXP = [
     bring: ['Boots or trainers with grip', 'Waterproofs'],
     tips: ['Combine both, or just see the waterfall if you’re feeling lazy.'],
     map: 'Dyserth Waterfall' },
-  { id: 'village', title: 'Sunset stroll through Tremeirchion', img: 'wales-gaer', when: 'Thu 24 Dec, 15:15', kind: 'Stroll',
+  { id: 'village', title: 'Sunset stroll through Tremeirchion', img: 'wales-village', when: 'Thu 24 Dec, 15:15', kind: 'Stroll',
     summary: 'A short walk straight from the door to stretch your legs after the drive.',
     facts: [['walk', '1–2 miles'], ['clock', '30–45 min'], ['home', 'From the barn']],
     what: 'Tremeirchion is a small village on the slopes of the Clwydian Range, looking out over the Vale of Clwyd.',
@@ -353,7 +362,7 @@ const WALES_EXP = [
     bring: ['Head torches', 'Warm coats'],
     tips: ['Ask Thomas for his favourite short loop.'],
     map: 'Tremeirchion, Denbighshire' },
-  { id: 'barn', title: 'Hot tub, sauna and log fire', img: 'home-wales', when: 'Every day', kind: 'At the barn', pick: true,
+  { id: 'barn', title: 'Hot tub, sauna and log fire', img: 'stay-wales-2', when: 'Every day', kind: 'At the barn', pick: true,
     summary: 'The real point of the week: slow mornings, hot tub under the stars, sauna and a fire.',
     facts: [['tub', 'Private hot tub'], ['sun', 'Infrared sauna'], ['fire', 'Log burner and firepit']],
     what: 'The barn has its own hot tub under a pergola, an infrared sauna in a “Zen lounge” with a rainforest shower and daybed, a log burner and an outdoor firepit. You have the whole place to yourselves.',
@@ -362,7 +371,7 @@ const WALES_EXP = [
     bring: ['Swimwear', 'Dressing gowns and slippers', 'Flip-flops', 'Marshmallows for the firepit'],
     tips: ['Keep the hot tub cover on when you’re not using it, so it stays hot.'],
     map: 'Tremeirchion, Denbighshire' },
-  { id: 'llandudno', title: 'If it pours: Llandudno and the Great Orme', img: 'wales-snowdon', when: 'Any wet day', kind: 'Backup',
+  { id: 'llandudno', title: 'If it pours: Llandudno and the Great Orme', img: 'wales-clwyd', when: 'Any wet day', kind: 'Backup',
     summary: 'A scenic drive round the Great Orme headland and a stroll along a Victorian seafront.',
     facts: [['car', '45 min drive'], ['clock', 'Half a day']],
     what: 'Marine Drive is a one-way road round the Great Orme headland, with sea views the whole way. Llandudno has a long promenade and a pier.',
@@ -395,26 +404,28 @@ const WALES_TODO = [
   { id: 'wales-host', when: 'now', t: 'Message Thomas with your questions', d: 'Check-in and check-out times, how you get in (keys or gate code), and whether wood for the log burner is included.' },
   { id: 'wales-howto', when: 'before', t: 'Ask Thomas for instructions', link: 'w-barn', d: 'Hot tub (temperature, cover, when it’s ready), sauna (switching on, warm-up time), log burner, firepit and BBQ, heating and hot water, wifi and TV logins, bins and recycling, and what to do at check-out.' },
   { id: 'wales-fuel', when: 'now', t: 'Check the fuel estimate', link: 'wales-budget', d: 'Put your car’s mpg into the calculator on the Budget tab.' },
-  { id: 'wales-shop', when: 'before', t: 'Do the food shop (21–23 Dec)', link: 'wales-food', d: 'Use the list on the Food tab.' },
-  { id: 'wales-freeze', when: 'before', t: 'Cook and freeze the first-night curry', d: 'Freeze it flat in bags so it doubles as an ice pack.' },
+  { id: 'wales-shop', when: 'before', t: 'Big food shop by Sun 20 Dec', link: 'wales-food', d: 'Before the wedding. Meat, dry food, snacks and drinks. Freeze the meat.' },
+  { id: 'wales-fresh', when: 'before', t: 'Fresh bits on Wed 23 Dec', link: 'wales-food', d: 'Eggs, avocados, bread, salad and milk. A quick shop, or a delivery slot booked in advance.' },
+  { id: 'wales-freeze', when: 'before', t: 'Cook and freeze the first-night curry by 20 Dec', d: 'Freeze it flat in bags so it doubles as an ice pack.' },
   { id: 'wales-car', when: 'before', t: 'Check the car for a winter drive', d: 'Tyres, screenwash, and a scraper for frosty mornings.' },
   { id: 'wales-maps', when: 'before', t: 'Download maps offline', d: 'Google Maps offline for the Denbigh area. Signal is patchy on the hills.' },
   { id: 'wales-torch', when: 'before', t: 'Charge head torches and power banks', d: 'It’s dark by 4pm.' },
   { id: 'wales-firewood', when: 'day', t: 'Ask about firepit wood', link: 'w-barn', d: '£15 a load from the host.' },
+  { id: 'wales-prayer', when: 'before', t: 'Pack travel prayer mats and a qibla app', d: 'For Dhuhr on the drive and Maghrib out on walks. The qibla from the barn is roughly south-east.' },
   { id: 'wales-weather', when: 'day', t: 'Check the Met Office each morning', link: 'w-famau', d: 'Swap walk days around to get the best weather for Moel Famau.' }
 ];
 
 const WALES_PACK = {
   'Clothes': ['Walking boots', 'Waterproof jackets', 'Warm layers and fleeces', 'Hats, gloves and scarves', 'Thick socks', 'Comfy clothes for the barn', 'Slippers and dressing gowns', 'Swimwear for the hot tub', 'Flip-flops'],
   'Gear': ['Head torches', 'Flask', 'Small backpack', 'Power bank and chargers', 'Cool box and ice packs'],
-  'Other': ['Prayer mats', 'Board games, cards or books', 'Toiletries and medicines', 'Speaker (keep it low outside)']
+  'Other': ['Prayer mats and travel mats for walks', 'Turbah', 'Board games, cards or books', 'Toiletries and medicines', 'Speaker (keep it low outside)']
 };
 
 const WALES_ESSENTIALS = [
   ['Address', 'Tremeirchion, Denbighshire, North Wales (near St Asaph)'],
   ['Host', 'Thomas (Superhost, replies within an hour)'],
   ['Drive', 'About 200 miles each way via the M1, M6 and A55'],
-  ['Daylight', 'Sunrise about 8:20, sunset about 15:55'],
+  ['Daylight', 'Sunrise about 8:28, sunset about 16:00'],
   ['Weather', 'Usually 3–8°C, wet and windy, frost possible'],
   ['Parking', 'Free, one car, behind gates'],
   ['Emergency', '999. Nearest A&E: Glan Clwyd Hospital, Bodelwyddan'],
@@ -424,47 +435,47 @@ const WALES_ESSENTIALS = [
 
 const MRU_DAYS = [
   { dow: 'Sun', num: 3, mon: 'Jan', title: 'Fly to Mauritius', travel: true, img: 'mru-underwater',
-    slots: [['Day', 'Final pack. Check the documents list on the Packing tab.'], ['17:20', 'At the airport, three hours before the flight.'], ['20:20', 'Emirates departs. Overnight flight with a change in Dubai.']],
+    slots: [['Day', 'Final pack. Check the documents list on the Packing tab. Pray Dhuhr and Maghrib at home before leaving.', 'p'], ['17:20', 'At the airport, three hours before the flight.'], ['20:20', 'Emirates departs. Overnight flight with a change in Dubai. Fajr on board or in Dubai.']],
     facts: [['plane', 'Departs 20:20']] },
-  { dow: 'Mon', num: 4, mon: 'Jan', title: 'Arrive and transfer to the villa', travel: true, changed: true, img: 'mru-flic2',
-    slots: [['17:10', 'Land at Sir Seewoosagur Ramgoolam Airport.'], ['18:15', 'Through passport control and bags. Your transfer driver meets you in arrivals.'], ['19:30', 'Arrive at Solara West, just after sunset.'], ['20:00', 'Takeaway from HungryDodo and an early night.']],
+  { dow: 'Mon', num: 4, mon: 'Jan', title: 'Arrive and transfer to the villa', travel: true, changed: true, img: 'mru-flic2', pray: ['04:22', '12:17', '19:10'], sun: ['05:36', '18:55'],
+    slots: [['17:10', 'Land at Sir Seewoosagur Ramgoolam Airport.'], ['18:15', 'Through passport control and bags. Your transfer driver meets you in arrivals.'], ['19:15', 'Arrive at Solara West.'], ['19:30', 'Maghrib at the villa.', 'p'], ['20:00', 'Takeaway from HungryDodo and an early night.']],
     facts: [['car', '44 km, about 1 hr'], ['pound', '£100 budget']], link: 't-transfer' },
-  { dow: 'Tue', num: 5, mon: 'Jan', title: 'Car delivered, first shop', changed: true, img: 'mru-public',
-    slots: [['09:00', 'Hire car delivered to the villa. Photograph it all round.'], ['10:30', 'First shop at Super U in Tamarin or Winner’s in Cascavelle.'], ['12:30', 'Lunch at the villa, then the pool.'], ['18:30', 'Walk on Flic en Flac beach for the 19:00 sunset.'], ['19:30', 'Dinner at Sunset Garden.']],
+  { dow: 'Tue', num: 5, mon: 'Jan', title: 'Car delivered, first shop', changed: true, img: 'mru-public', pray: ['04:23', '12:18', '19:10'], sun: ['05:36', '18:55'],
+    slots: [['04:23', 'Fajr (jet lag may help!).', 'p'], ['09:00', 'Hire car delivered to the villa. Photograph it all round.'], ['10:30', 'First shop at Super U in Tamarin or Winner’s in Cascavelle.'], ['12:18', 'Dhuhr back at the villa, then lunch and the pool.', 'p'], ['18:30', 'Walk on Flic en Flac beach for the 18:55 sunset.'], ['19:10', 'Maghrib.', 'p'], ['19:45', 'Dinner at Sunset Garden.']],
     facts: [['car', 'Car delivered'], ['pound', '£50 budget']], link: 't-car' },
-  { dow: 'Wed', num: 6, mon: 'Jan', title: 'Port Louis', img: 'mru-caudan',
-    slots: [['09:15', 'Leave after the rush hour. Park at Caudan Waterfront (40 min).'], ['10:00', 'Central Market and Aapravasi Ghat.'], ['12:30', 'Biryani lunch at Star Deg or Happy Rajah.'], ['14:00', 'An-Nurr Meat Shop for halal meat, then Caudan Waterfront.'], ['16:00', 'Drive back before the evening rush.'], ['19:00', 'Cook at the villa.']],
+  { dow: 'Wed', num: 6, mon: 'Jan', title: 'Port Louis', img: 'mru-caudan', pray: ['04:24', '12:18', '19:10'], sun: ['05:37', '18:55'],
+    slots: [['04:24', 'Fajr.', 'p'], ['09:15', 'Leave after the rush hour. Park at Caudan Waterfront (40 min).'], ['10:00', 'Central Market and Aapravasi Ghat.'], ['12:18', 'Dhuhr in Port Louis. Ask the Jamaat where to pray.', 'p'], ['12:45', 'Biryani lunch at Star Deg or Happy Rajah.'], ['14:00', 'An-Nurr Meat Shop for halal meat, then Caudan Waterfront.'], ['16:00', 'Drive back before the evening rush.'], ['19:10', 'Maghrib, then cook at the villa.', 'p']],
     facts: [['car', '23 km, 40 min'], ['pound', '£200 budget']], link: 'm-portlouis' },
-  { dow: 'Thu', num: 7, mon: 'Jan', title: 'Private sunset catamaran', changed: true, weather: true, img: 'mru-catamaran',
-    slots: [['09:00', 'Slow beach morning.'], ['13:00', 'Lunch and rest.'], ['16:00', 'Drive to Black River (25 min).'], ['16:30', 'Meet the crew at the jetty.'], ['17:00', 'Private catamaran sets off.'], ['18:50', 'Sunset on the water.'], ['19:00', 'Back on shore, then dinner in Tamarin.']],
-    facts: [['car', '20 km, 25 min'], ['pound', '£200 budget']], link: 'm-catamaran',
+  { dow: 'Thu', num: 7, mon: 'Jan', title: 'Private sunset catamaran', changed: true, weather: true, img: 'mru-catamaran', pray: ['04:24', '12:19', '19:10'], sun: ['05:38', '18:56'],
+    slots: [['04:24', 'Fajr.', 'p'], ['09:00', 'Slow beach morning.'], ['12:19', 'Dhuhr, lunch and rest.', 'p'], ['16:00', 'Drive to Black River (25 min).'], ['16:30', 'Meet the crew at the jetty.'], ['17:00', 'Private catamaran sets off.'], ['18:56', 'Sunset on the water.'], ['19:10', 'Back on shore. Maghrib by the jetty with your mats, or at the villa by 19:35.', 'p'], ['20:00', 'Dinner in Tamarin.']],
+    facts: [['car', '20 km, 25 min'], ['pound', '£300 budget']], link: 'm-catamaran',
     note: 'Moved from the 14th so you can rebook if the weather cancels it. Backup: Saturday 9th.' },
-  { dow: 'Fri', num: 8, mon: 'Jan', title: 'Casela Nature Park', img: 'mru-casela',
-    slots: [['08:45', 'Leave the villa (10 min).'], ['09:00', 'Arrive at opening, before the heat.'], ['09:00–11:30', 'Safari and the activities you’ve booked.'], ['11:30', 'Leave in time for Jumu’ah prayers if you’re going.'], ['15:00', 'Pool at the villa.'], ['19:30', 'Dinner at Zub Express.']],
+  { dow: 'Fri', num: 8, mon: 'Jan', title: 'Casela Nature Park', img: 'mru-casela', pray: ['04:25', '12:19', '19:11'], sun: ['05:38', '18:56'],
+    slots: [['04:25', 'Fajr.', 'p'], ['08:45', 'Leave the villa (10 min).'], ['09:00', 'Arrive at opening, before the heat.'], ['09:00–11:15', 'Safari and the activities you’ve booked.'], ['12:19', 'Jumu’ah or Dhuhr. Leave Casela by 11:15 to get there in time.', 'p'], ['15:00', 'Pool at the villa.'], ['19:11', 'Maghrib.', 'p'], ['19:45', 'Dinner at Zub Express.']],
     facts: [['car', '5 km, 10 min'], ['pound', '£500 budget']], link: 'm-casela' },
-  { dow: 'Sat', num: 9, mon: 'Jan', title: 'Flic en Flac beach day', img: 'mru-flic3',
-    slots: [['08:30', 'Snorkel in the lagoon while it’s calm.'], ['11:00', 'Beach and pool.'], ['18:30', 'Sunset on the beach.'], ['19:30', 'Wood-oven pizza at Chez Pepe.']],
+  { dow: 'Sat', num: 9, mon: 'Jan', title: 'Flic en Flac beach day', img: 'mru-flic3', pray: ['04:26', '12:19', '19:11'], sun: ['05:39', '18:56'],
+    slots: [['04:26', 'Fajr.', 'p'], ['08:30', 'Snorkel in the lagoon while it’s calm.'], ['11:00', 'Beach and pool.'], ['12:19', 'Dhuhr.', 'p'], ['18:30', 'Sunset on the beach.'], ['19:11', 'Maghrib.', 'p'], ['19:45', 'Wood-oven pizza at Chez Pepe.']],
     facts: [['home', 'No driving'], ['pound', '£50 budget']], note: 'Backup day for the catamaran.' },
-  { dow: 'Sun', num: 10, mon: 'Jan', title: 'Black River Gorges', img: 'mru-gorges2',
-    slots: [['07:15', 'Leave the villa (40 min).'], ['08:00', 'Start the trail from the Pétrin visitor centre.'], ['10:30', 'Alexandra Falls viewpoint.'], ['12:30', 'Biryani at Tamarin Briani House on the way back.'], ['14:00', 'Pool and rest.']],
+  { dow: 'Sun', num: 10, mon: 'Jan', title: 'Black River Gorges', img: 'mru-gorges2', pray: ['04:27', '12:20', '19:11'], sun: ['05:40', '18:56'],
+    slots: [['04:27', 'Fajr, then an early breakfast.', 'p'], ['07:15', 'Leave the villa (40 min).'], ['08:00', 'Start the trail from the Pétrin visitor centre.'], ['10:30', 'Alexandra Falls viewpoint.'], ['11:30', 'Drive back towards Tamarin.'], ['12:20', 'Dhuhr at the villa, then biryani takeaway from Tamarin Briani House.', 'p'], ['14:00', 'Pool and rest.'], ['19:11', 'Maghrib.', 'p']],
     facts: [['car', '20 km, 40 min'], ['pound', '£100 budget']], link: 'm-gorges' },
-  { dow: 'Mon', num: 11, mon: 'Jan', title: 'Le Morne seaplane', changed: true, weather: true, img: 'mru-aerial',
-    slots: [['08:30', 'Drive to Le Morne (40 min).'], ['09:30', 'Seaplane flight (time to confirm when booking).'], ['11:00', 'Le Morne public beach.'], ['18:30', 'Sunset under Le Morne mountain.'], ['19:30', 'Dinner at Las Flamas Grill, Tamarin.']],
+  { dow: 'Mon', num: 11, mon: 'Jan', title: 'Le Morne seaplane', changed: true, weather: true, img: 'mru-aerial', pray: ['04:27', '12:20', '19:11'], sun: ['05:40', '18:56'],
+    slots: [['04:27', 'Fajr.', 'p'], ['08:30', 'Drive to Le Morne (40 min).'], ['09:30', 'Seaplane flight (time to confirm when booking).'], ['11:00', 'Le Morne public beach.'], ['12:20', 'Dhuhr on the beach with your travel mats.', 'p'], ['18:30', 'Sunset under Le Morne mountain.'], ['19:11', 'Maghrib on the beach.', 'p'], ['19:45', 'Dinner at Las Flamas Grill, Tamarin.']],
     facts: [['car', '31 km, 40 min'], ['pound', '£500 budget']], link: 'm-seaplane',
     note: 'Moved from the 13th so the 13th and 14th can take a rebooking.' },
-  { dow: 'Tue', num: 12, mon: 'Jan', title: 'Chamarel', img: 'mru-seven',
-    slots: [['08:00', 'Drive to Chamarel (45 min).'], ['08:45', 'Seven Coloured Earth and Chamarel Falls, before the crowds.'], ['12:00', 'Lunch at Le Chamarel Restaurant, on the terrace.'], ['14:00', 'Black River Gorges viewpoint on the way home.'], ['15:30', 'Pool.']],
+  { dow: 'Tue', num: 12, mon: 'Jan', title: 'Chamarel', img: 'mru-seven', pray: ['04:28', '12:21', '19:11'], sun: ['05:41', '18:56'],
+    slots: [['04:28', 'Fajr.', 'p'], ['08:00', 'Drive to Chamarel (45 min).'], ['08:45', 'Seven Coloured Earth and Chamarel Falls, before the crowds.'], ['12:21', 'Dhuhr, then lunch.', 'p'], ['12:45', 'Lunch at Le Chamarel Restaurant, on the terrace.'], ['14:00', 'Black River Gorges viewpoint on the way home.'], ['15:30', 'Pool.'], ['19:11', 'Maghrib.', 'p']],
     facts: [['car', '28 km, 45 min'], ['pound', '£100 budget']], link: 'm-chamarel' },
-  { dow: 'Wed', num: 13, mon: 'Jan', title: 'Water sports and couples spa', changed: true, img: 'mru-flic',
-    slots: [['09:00', 'Water sports at Flic en Flac on a calm morning.'], ['12:30', 'Lunch and rest.'], ['15:00', 'Couples spa.'], ['19:30', 'Dinner at Kingfisher.']],
+  { dow: 'Wed', num: 13, mon: 'Jan', title: 'Water sports and couples spa', changed: true, img: 'mru-flic', pray: ['04:29', '12:21', '19:11'], sun: ['05:42', '18:56'],
+    slots: [['04:29', 'Fajr.', 'p'], ['09:00', 'Water sports at Flic en Flac on a calm morning.'], ['12:21', 'Dhuhr, lunch and rest.', 'p'], ['15:00', 'Couples spa.'], ['19:11', 'Maghrib.', 'p'], ['19:45', 'Dinner at Kingfisher.']],
     facts: [['home', 'Local'], ['pound', '£300 budget']], link: 'm-watersports' },
-  { dow: 'Thu', num: 14, mon: 'Jan', title: 'Slow day, or a rebooked trip', changed: true, img: 'mru-sunset2',
-    slots: [['Day', 'Pool and beach, or the seaplane or catamaran if either was cancelled.'], ['18:30', 'Farewell sunset.'], ['19:30', 'Farewell dinner.']],
+  { dow: 'Thu', num: 14, mon: 'Jan', title: 'Slow day, or a rebooked trip', changed: true, img: 'mru-sunset2', pray: ['04:30', '12:21', '19:11'], sun: ['05:42', '18:56'],
+    slots: [['04:30', 'Fajr.', 'p'], ['Day', 'Pool and beach, or the seaplane or catamaran if either was cancelled.'], ['12:21', 'Dhuhr.', 'p'], ['18:30', 'Farewell sunset.'], ['19:11', 'Maghrib.', 'p'], ['19:45', 'Farewell dinner.']],
     facts: [['pound', '£50 budget']] },
-  { dow: 'Fri', num: 15, mon: 'Jan', title: 'Late checkout and fly home', travel: true, changed: true, img: 'mru-lemorne2',
-    slots: [['Morning', 'Pack. Ask Javed and Zareen for a late checkout.'], ['13:00', 'Last lunch.'], ['17:30', 'Fill up the car and drive to the airport (1 hr).'], ['18:30', 'Return the car at the airport and check in.'], ['22:30', 'Emirates departs.']],
+  { dow: 'Fri', num: 15, mon: 'Jan', title: 'Late checkout and fly home', travel: true, changed: true, img: 'mru-lemorne2', pray: ['04:31', '12:22', '19:11'], sun: ['05:43', '18:56'],
+    slots: [['04:31', 'Fajr.', 'p'], ['Morning', 'Pack. Ask Javed and Zareen for a late checkout.'], ['12:22', 'Jumu’ah or Dhuhr, then a last lunch.', 'p'], ['17:30', 'Fill up the car and drive to the airport (1 hr).'], ['18:30', 'Return the car at the airport and check in.'], ['19:11', 'Maghrib at the airport prayer room.', 'p'], ['22:30', 'Emirates departs.']],
     facts: [['car', '44 km, about 1 hr'], ['pound', '£100 budget']] },
-  { dow: 'Sat', num: 16, mon: 'Jan', title: 'Home', travel: true, slots: [['11:40', 'Land in the UK.']], facts: [] }
+  { dow: 'Sat', num: 16, mon: 'Jan', title: 'Home', travel: true, img: 'mru-sunset3', slots: [['11:40', 'Land in the UK.']], facts: [] }
 ];
 
 const MRU_ORIGINAL = [
@@ -505,7 +516,7 @@ const MRU_EXP = [
     vendor: 'Casela Nature Parks', url: 'https://caselaparks.com/frequently-asked-questions/',
     booking: 'Buy tickets online a few days before, and book add-ons about a week before.',
     bring: ['Closed-toe comfortable shoes', 'Light long sleeves', 'Hats and sunglasses', 'Suncream and mosquito repellent', 'Water bottles', 'Cards or cash (no outside food allowed)'],
-    tips: ['Leave by 11:30 if you’re going to Jumu’ah prayers.', 'No drones, and you can’t bring your own food in.'],
+    tips: ['Leave by 11:15 for Jumu’ah or Dhuhr (12:19).', 'No drones, and you can’t bring your own food in.'],
     map: 'Casela Nature Parks Cascavelle' },
   { id: 'chamarel', title: 'Chamarel: Seven Coloured Earth and the falls', img: 'mru-seven', when: 'Tue 12 Jan, 08:45', kind: 'Sightseeing', book: 'before',
     summary: 'Rippled dunes in seven shades of red, purple and gold, and the island’s tallest waterfall, then lunch with a view.',
@@ -545,7 +556,7 @@ const MRU_EXP = [
     bring: ['Reef-safe suncream', 'Water shoes', 'Rash vests or T-shirts', 'Cash in rupees', 'Dry bag'],
     tips: ['Ask the hosts which operator they trust.', 'Don’t stand on the coral.'],
     map: 'Flic en Flac public beach' },
-  { id: 'spa', title: 'Couples spa', img: 'mru-sunset2', when: 'Wed 13 Jan, 15:00', kind: 'Relax', book: 'before',
+  { id: 'spa', title: 'Couples spa', img: 'mru-beachsunset', when: 'Wed 13 Jan, 15:00', kind: 'Relax', book: 'before',
     summary: 'A side-by-side massage at one of the resort spas near Flic en Flac.',
     facts: [['clock', '1.5–2 hours'], ['pound', '£150–250 estimate'], ['home', 'Near the villa']],
     what: 'Several beach resorts around Flic en Flac and Wolmar have spas that take outside guests for couples treatments.',
@@ -605,7 +616,7 @@ const MRU_PACK = {
   'Documents': ['Passports (valid 6 months after return)', 'Driving licences', 'Travel insurance documents', 'Emirates and Airbnb confirmations offline', 'Car hire and transfer confirmations', 'Bank cards and some cash'],
   'Clothes': ['Swimwear, at least two each', 'Light, loose clothes', 'Modest clothes for the mosque and Port Louis', 'Light rain jackets', 'Trainers for the Gorges', 'Sandals', 'Water shoes for coral', 'Something nice for dinners'],
   'Sun and health': ['Reef-safe suncream SPF 50', 'After-sun', 'Hats and sunglasses', 'Mosquito repellent', 'Medicines and a small first aid kit', 'Rehydration sachets'],
-  'Gear': ['Adaptor (UK plugs fit many sockets, but bring one)', 'Snorkel set', 'Dry bag', 'Power bank', 'Prayer mats', 'Reusable water bottles']
+  'Gear': ['Adaptor (UK plugs fit many sockets, but bring one)', 'Snorkel set', 'Dry bag', 'Power bank', 'Prayer mats and travel mats', 'Turbah', 'Reusable water bottles']
 };
 
 const MRU_FOOD_SHOP = ['Bottled water, a large pack', 'Fruit: mangoes, lychees, pineapple', 'Bread and pastries', 'Eggs, butter, milk', 'Avocados', 'Breakfast cereal or granola', 'Snacks for day trips', 'Juice and soft drinks', 'Rice and pasta', 'Cooking oil and salt', 'Washing-up liquid and kitchen roll'];
@@ -697,7 +708,7 @@ const BUDGET_ROWS = [
   ['misc', 'Miscellaneous', 300, 0, 'mru']
 ];
 
-const CREDITS = [{"slug": "home-wales", "file": "Gaeaf_yr_Wyddfa.jpg", "author": "Mazaruni", "license": "CC BY-SA 4.0"}, {"slug": "home-mru", "file": "Mauritius_banner_Sunset.jpg", "author": "Damiano Luchetti", "license": "CC0"}, {"slug": "wales-snowdonia", "file": "Tryfan_in_snow_from_Y_Garn.jpg", "author": "Stemonitis", "license": "CC BY-SA 3.0"}, {"slug": "wales-famau", "file": "Moel_Famau_gyda_dron_-_Moel_Famau,_Clwydian_Hills,_Wales_(Area_of_Outstanding_Beauty)_29.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-tower", "file": "The_Jubilee_Tower_on_Moel_Famau_-_geograph.org.uk_-_3543166.jpg", "author": "Ian Greig ", "license": "CC BY-SA 2.0"}, {"slug": "wales-tower2", "file": "Moel_Famau_-_Jubilee_Tower_-_geograph.org.uk_-_1462755.jpg", "author": "John Charlton", "license": "CC BY-SA 2.0"}, {"slug": "wales-gaer", "file": "Moel_y_Gaer_-_geograph.org.uk_-_218368.jpg", "author": "Eirian Evans", "license": "CC BY-SA 2.0"}, {"slug": "wales-church", "file": "Eglwys_Llangwyfa,_Bryniau_Clwyd_-_The_Clwydian_Range_and_Dee_Valley_AONB,_Cymru_(Wales)_06.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-talacre", "file": "Goleudy_Talacre_a_thywynau_Gronant_-_Point_of_Ayr_Lighthouse_and_Talacre_and_Gronant_Dunes_SSSI_13.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-talacre2", "file": "Talacre-lighthouse2.jpg", "author": "Mattcoxonline at English Wikipedia", "license": "Public domain"}, {"slug": "wales-snowdon", "file": "Snowdon_massif.jpg", "author": "", "license": "CC BY-SA 3.0"}, {"slug": "wales-np", "file": "Snowdonia_National_Park.jpg", "author": "Udit Kapoor", "license": "CC BY-SA 4.0"}, {"slug": "mru-flic", "file": "Spiaggia_di_Flic_en_Flac_-_Mauritius.jpg", "author": "Raffaele pagani", "license": "CC BY-SA 4.0"}, {"slug": "mru-flic2", "file": "Mauritius_flic_en_flac_beach.jpg", "author": "Arne Müseler", "license": "CC BY-SA 3.0 de"}, {"slug": "mru-flic3", "file": "Flic_en_Flac_Beach_in_Mauiritius_(53697781931).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-sunset2", "file": "Mauritius_sunset,_July_2016.jpg", "author": "Bryn Pinzgauer", "license": "CC BY 2.0"}, {"slug": "mru-lemorne", "file": "Le_Morne_Peninsula_in_Mauritius_(53697779236).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-aerial", "file": "Aerial_view_of_the_peninsula_Le_Morne_in_Mauritius_(53698115579).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-underwater", "file": "Underwater_waterfall_Mauritius_HDR.jpg", "author": "Christopher Brown", "license": "CC0"}, {"slug": "mru-lemorne2", "file": "Le_Morne_mountain_morning_shadow.jpg", "author": "Gavish Barosee", "license": "CC BY-SA 4.0"}, {"slug": "mru-seven", "file": "Seven_Coloured_Earths_Geopark_in_Chamarel,_Mauritius_(53697998768).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-gorges", "file": "Chamarel_view_point,_Black_River_Gorges_National_Park,_Mauritius.JPG", "author": "User: (WT-shared) Shoestring at wts wikivoyage", "license": "CC BY-SA 4.0"}, {"slug": "mru-gorges2", "file": "Mauritius_Black-River-Gorges-National-Park-01.jpg", "author": "CEphoto, Uwe Aranas", "license": "CC BY-SA 3.0"}, {"slug": "mru-falls", "file": "Chamarel_Waterfall,_Black_River_Gorges_National_Park,_Mauritius.JPG", "author": "User: (WT-shared) Shoestring at wts wikivoyage", "license": "CC BY-SA 4.0"}, {"slug": "mru-catamaran", "file": "Catemaran_at_sunset.jpg", "author": "Hein waschefort", "license": "CC BY-SA 3.0"}, {"slug": "mru-caudan", "file": "Mauritius_Port-Louis_CaudanWaterfront.JPG", "author": "B.navez", "license": "CC BY-SA 3.0"}, {"slug": "mru-portlouis", "file": "Evening_Port_Louis.jpg", "author": "Peter Kuchar (pkuchar)", "license": "CC BY-SA 3.0"}, {"slug": "mru-casela", "file": "Zebras_in_Casela_Nature_Parks,_Mauritius.jpg", "author": "7oanna", "license": "CC BY-SA 4.0"}, {"slug": "mru-troucerf", "file": "Sunset_from_Trou_au_Cerf_crater,_Mauritius,_2007-09-09.jpg", "author": "Hansueli Krapf", "license": "CC BY-SA 3.0"}, {"slug": "mru-bassin", "file": "Grand_Bassin,_Mauritius.jpg", "author": "Starts", "license": "CC BY-SA 4.0"}, {"slug": "mru-public", "file": "Public_Beach,_Flic_en_Flac,_Mauritius_002.JPG", "author": "User: (WT-shared) Shoestring at wts wikivoyage", "license": "CC BY-SA 1.0"}];
+const CREDITS = [{"slug": "home-wales", "file": "Gaeaf_yr_Wyddfa.jpg", "author": "Mazaruni", "license": "CC BY-SA 4.0"}, {"slug": "wales-snowdonia", "file": "Tryfan_in_snow_from_Y_Garn.jpg", "author": "Stemonitis", "license": "CC BY-SA 3.0"}, {"slug": "wales-famau", "file": "Moel_Famau_gyda_dron_-_Moel_Famau,_Clwydian_Hills,_Wales_(Area_of_Outstanding_Beauty)_29.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-tower", "file": "The_Jubilee_Tower_on_Moel_Famau_-_geograph.org.uk_-_3543166.jpg", "author": "Ian Greig ", "license": "CC BY-SA 2.0"}, {"slug": "wales-church", "file": "Eglwys_Llangwyfa,_Bryniau_Clwyd_-_The_Clwydian_Range_and_Dee_Valley_AONB,_Cymru_(Wales)_06.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-talacre", "file": "Goleudy_Talacre_a_thywynau_Gronant_-_Point_of_Ayr_Lighthouse_and_Talacre_and_Gronant_Dunes_SSSI_13.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-talacre2", "file": "Goleudy_Talacre_a_thywynau_Gronant_-_Point_of_Ayr_Lighthouse_and_Talacre_and_Gronant_Dunes_SSSI_04.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "mru-flic", "file": "Spiaggia_di_Flic_en_Flac_-_Mauritius.jpg", "author": "Raffaele pagani", "license": "CC BY-SA 4.0"}, {"slug": "mru-flic2", "file": "Mauritius_flic_en_flac_beach.jpg", "author": "Arne Müseler", "license": "CC BY-SA 3.0 de"}, {"slug": "mru-flic3", "file": "Flic_en_Flac_Beach_in_Mauiritius_(53697781931).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-sunset2", "file": "Mauritius_sunset,_July_2016.jpg", "author": "Bryn Pinzgauer", "license": "CC BY 2.0"}, {"slug": "mru-lemorne", "file": "Le_Morne_Peninsula_in_Mauritius_(53697779236).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-aerial", "file": "Aerial_view_of_the_peninsula_Le_Morne_in_Mauritius_(53698115579).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-underwater", "file": "Underwater_waterfall_Mauritius_HDR.jpg", "author": "Christopher Brown", "license": "CC0"}, {"slug": "mru-lemorne2", "file": "Le_Morne_mountain_morning_shadow.jpg", "author": "Gavish Barosee", "license": "CC BY-SA 4.0"}, {"slug": "mru-seven", "file": "Seven_Coloured_Earths_Geopark_in_Chamarel,_Mauritius_(53697998768).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-gorges", "file": "Mauritius_Black-River-Gorges-National-Park-01.jpg", "author": "CEphoto, Uwe Aranas", "license": "CC BY-SA 3.0"}, {"slug": "mru-gorges2", "file": "Mauritius_Black-River-Gorges-National-Park-01.jpg", "author": "CEphoto, Uwe Aranas", "license": "CC BY-SA 3.0"}, {"slug": "mru-falls", "file": "Cascada_Chamarel,_parque_nacional_Gargantas_del_Río_Negro,_Mauricio,_2025-09-25,_DD_14.jpg", "author": "Diego Delso", "license": "CC BY-SA 4.0"}, {"slug": "mru-catamaran", "file": "Sunset_at_Mont_Choisy_Beach,_Mauritius_(53696897517).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-caudan", "file": "Mauritius_Port-Louis_CaudanWaterfront.JPG", "author": "B.navez", "license": "CC BY-SA 3.0"}, {"slug": "mru-portlouis", "file": "Evening_Port_Louis.jpg", "author": "Peter Kuchar (pkuchar)", "license": "CC BY-SA 3.0"}, {"slug": "mru-casela", "file": "Zebras_in_Casela_Nature_Parks,_Mauritius.jpg", "author": "7oanna", "license": "CC BY-SA 4.0"}, {"slug": "mru-troucerf", "file": "Sunset_from_Trou_au_Cerf_crater,_Mauritius,_2007-09-09.jpg", "author": "Hansueli Krapf", "license": "CC BY-SA 3.0"}, {"slug": "mru-bassin", "file": "Grand_Bassin,_Mauritius.jpg", "author": "Starts", "license": "CC BY-SA 4.0"}, {"slug": "mru-public", "file": "Flic_en_Flac_beach_.jpg", "author": "Gavish Barosee", "license": "CC BY-SA 4.0"}, {"slug": "wales-village", "file": "Dyffryn_Clwyd_(Vale_of_Clwyd)_uwch_ben_(above)_Llangynhafal,_Sir_Ddinbych,_Cymru_(Wales)_12.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "mru-beachsunset", "file": "Sunset_at_Flic_en_Flac_Beach_in_Mauritius_(53696897952).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "mru-sunset3", "file": "Sunset_over_the_Indian_Ocean_at_Flic_en_Flac_Beach,_Mauritius_(53697787236).jpg", "author": "\"dronepicr\"", "license": "CC BY 2.0"}, {"slug": "wales-dyserth", "file": "Rhaeadr_Dyserth_Waterfall,_Sir_Ddinbych,_Wales_-_Bryniau_Clwyd_AONB_02.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}, {"slug": "wales-snowlake", "file": "Snowdonia_in_Winter,_Fujifilm_(46895439682).jpg", "author": "Scott Wylie from UK", "license": "CC BY 2.0"}, {"slug": "wales-snowpeak", "file": "Snowdonia_in_Winter,_Fujifilm_(39983043193).jpg", "author": "Scott Wylie from UK", "license": "CC BY 2.0"}, {"slug": "wales-clwyd", "file": "DSC_0122_Clwydian_Range_(7197929950).jpg", "author": "paul_p!", "license": "CC BY 2.0"}, {"slug": "wales-hills", "file": "Dyffryn_Clwyd_(Vale_of_Clwyd)_uwch_ben_(above)_Llangynhafal,_Sir_Ddinbych,_Cymru_(Wales)_13.jpg", "author": "Llywelyn2000", "license": "CC BY-SA 4.0"}];
 return { CREDITS, WALES_DAYS, WALES_EXP, WALES_MEALS, WALES_SHOP, WALES_TODO, WALES_PACK, WALES_ESSENTIALS, MRU_DAYS, MRU_ORIGINAL, MRU_EXP, MRU_TODO, MRU_PACK, MRU_FOOD_SHOP, PLACES, MRU_ESSENTIALS, APPS_MRU, APPS_WALES, TRANSPORT, BUDGET_ROWS };
 })();
 
@@ -751,11 +762,15 @@ document.addEventListener('error', (e) => { if (e.target && e.target.tagName ===
 const ext = (url, label) => `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(label)}</a>`;
 
 /* ================= Content ================= */
+const WEDDING = new Date('2026-12-21T12:00:00Z');
 const WALES_START = new Date('2026-12-24T10:00:00Z');
 const MRU_START = new Date('2027-01-03T20:20:00Z');
 const JOURNEY = [
   { when: 'Now', cls: 'home', t: 'Book the Mauritius essentials', d: 'Insurance, car, airport transfer, seaplane and catamaran.' },
-  { when: '21–23 Dec', cls: 'wales', t: 'Wales food shop', d: 'Buy everything on the list and freeze the meat.' },
+  { when: 'By 20 Dec', cls: 'wales', t: 'Wales food shop', d: 'The big shop before the wedding. Freeze the meat and the curry.' },
+  { when: '21 Dec', cls: 'gold', t: 'The wedding', d: 'Sabira and Abbas get married.' },
+  { when: '22 Dec', cls: 'gold', t: 'The reception', d: 'Celebrating with family and friends.' },
+  { when: '23 Dec', cls: 'wales', t: 'Rest and pack', d: 'Fresh food (eggs, avocados, bread) and pack the car.' },
   { when: '24–29 Dec', cls: 'wales', t: 'North Wales', d: 'Five slow nights in the Tremeirchion barn.' },
   { when: '30 Dec – 2 Jan', cls: 'home', t: 'Home between trips', d: 'Laundry and repack. Online check-in opens 1 Jan.' },
   { when: '3 Jan', cls: 'mru', t: 'Fly to Mauritius', d: 'Emirates 20:20, via Dubai.' },
@@ -764,7 +779,7 @@ const JOURNEY = [
 ];
 const WHEN = { now: ['Book now', 'now'], before: ['Before you go', 'before'], day: ['On the trip', 'day'] };
 const BANNERS = {
-  wales: { overview: 'home-wales', itinerary: 'wales-famau', activities: 'wales-tower', food: 'wales-church', todo: 'wales-gaer', packing: 'wales-snowdonia', budget: 'wales-np', essentials: 'wales-talacre' },
+  wales: { overview: 'home-wales', itinerary: 'wales-famau', activities: 'wales-tower', food: 'wales-church', todo: 'wales-hills', packing: 'wales-snowdonia', budget: 'wales-snowlake', essentials: 'wales-talacre' },
   mauritius: { overview: 'mru-sunset2', itinerary: 'mru-flic2', activities: 'mru-aerial', food: 'mru-portlouis', todo: 'mru-flic3', packing: 'mru-flic', transport: 'mru-lemorne', budget: 'mru-gorges2', essentials: 'mru-lemorne2' }
 };
 /* detail pages: w-<id>, m-<id>, t-<id> */
@@ -856,7 +871,8 @@ function dayCard(d) {
   return `<article class="day${d.changed && state.plan !== 'original' ? ' changed' : ''}">
     ${photo(d.img, '', d.title, `<div class="datechip"><span>${d.dow}</span><b>${d.num}</b><span>${d.mon}</span></div>`)}
     <div class="body"><div class="day-title"><h3>${esc(d.title)}</h3>${d.weather ? '<span class="pill before">Weather-dependent</span>' : ''}${d.travel ? '<span class="pill">Travel</span>' : ''}</div>
-    ${d.slots && d.slots.length ? `<div class="slots">${d.slots.map(([k, v]) => `<div class="slot"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('')}</div>` : ''}
+    ${d.slots && d.slots.length ? `<div class="slots">${d.slots.map(([k, v, t]) => `<div class="slot${t === 'p' ? ' pray' : ''}"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('')}</div>` : ''}
+    ${d.pray ? `<div class="prayers"><span>Fajr <b>${d.pray[0]}</b></span><span>Sunrise ${d.sun[0]}</span><span>Dhuhr <b>${d.pray[1]}</b></span><span>Sunset ${d.sun[1]}</span><span>Maghrib <b>${d.pray[2]}</b></span></div>` : ''}
     ${factRow(d.facts)}${d.note ? `<div class="note">${esc(d.note)}</div>` : ''}
     ${d.link ? `<div>${moreLink(d.link, 'Everything about this day')}</div>` : ''}</div></article>`;
 }
@@ -885,7 +901,7 @@ function viewHome() {
       <div class="center"><div class="card"><span class="eyebrow">24 December 2026 – 16 January 2027</span>
         <h1 style="margin-top:8px">Sabira &amp; Abbas’<br><em>Honeymoon</em></h1>
         <p class="lead">Five slow, cosy nights in a stone barn in the Welsh hills, then eleven sunny nights by the sea in Mauritius.</p>
-        <div class="counts">${count(dw, 'Wales', 'w')}${count(dm, 'Mauritius', 'm')}</div></div></div>
+        <div class="counts">${count(daysUntil(WEDDING), 'the wedding', 'g')}${count(dw, 'Wales', 'w')}${count(dm, 'Mauritius', 'm')}</div></div></div>
     </section>
     <div class="wrap">
       <div class="dests">
@@ -933,34 +949,35 @@ function walesPage(sec) {
   const b = budgetRows('wales');
   const pages = {
     overview: () => `
-      <div class="stay">${photo('wales-church', 'wales-bg', 'Green fields and a small chapel in the Clwydian Range')}
+      <div class="stay">${photo('stay-wales-1', 'wales-bg', 'The barn courtyard at night with the hot tub and fairy lights')}
         <div class="panel"><span class="eyebrow">Your stay</span><h2>The barn at Tremeirchion</h2>
           <p class="muted">A converted stone barn for two on the edge of the Clwydian Range, looking over the Vale of Clwyd. Your host is Thomas.</p>
           <div class="amen"><span>${ic('tub')}Private hot tub</span><span>${ic('sun')}Infrared sauna</span><span>${ic('fire')}Log burner and firepit</span><span>${ic('cook')}Full kitchen and BBQ</span><span>${ic('park')}Gated parking</span><span>${ic('wifi')}Wifi</span></div>
           <div class="linkrow">${moreLink('w-barn', 'Hot tub, sauna and fire')}${ext('https://www.airbnb.co.uk/rooms/17906338', 'Open the listing')}</div></div></div>
+      <div class="gallery">${[2, 3, 4, 5, 6].map(n => photo('stay-wales-' + n, 'wales-bg', 'Inside the barn')).join('')}</div>
       <section class="sect" style="margin-top:12px"><div class="head"><h2>A slow day at the barn</h2><p class="muted">No alarms, no lunch. One gentle walk if you feel like it, and the evenings are for the hot tub and the fire.</p></div>
-        <div class="rhythm"><div><b>10:00</b><span class="small">Wake up whenever</span></div><div><b>10:30</b><span class="small">Late breakfast: eggs, avocado, toast</span></div><div><b>12:30</b><span class="small">One easy walk, or none</span></div><div><b>15:00</b><span class="small">Snacks and a hot drink</span></div><div><b>16:00</b><span class="small">Hot tub or sauna as it gets dark</span></div><div><b>19:00</b><span class="small">Dinner, then the log burner</span></div></div></section>
+        <div class="rhythm"><div><b>06:31</b><span class="small">Fajr, then back to bed</span></div><div><b>10:00</b><span class="small">Wake up whenever</span></div><div><b>10:30</b><span class="small">Late breakfast: eggs, avocado, toast</span></div><div><b>12:16</b><span class="small">Dhuhr, then one easy walk (or none)</span></div><div><b>15:00</b><span class="small">Snacks and a hot drink</span></div><div><b>16:25</b><span class="small">Maghrib, then the hot tub as it gets dark</span></div><div><b>19:00</b><span class="small">Dinner, then the log burner</span></div></div></section>
       <div class="grid2">
         <div class="panel raised"><h2>Key details</h2><dl class="kv">
           <dt>Dates</dt><dd>Thu 24 – Tue 29 December, 5 nights</dd><dt>Drive</dt><dd>About 200 miles each way, 4–5 hours on Christmas Eve</dd>
-          <dt>Food</dt><dd>All cooked at the barn. Shop at home 21–23 Dec</dd><dt>Daylight</dt><dd>Sunrise 8:20, sunset 15:55</dd></dl>
+          <dt>Food</dt><dd>All cooked at the barn. Big shop by 20 Dec (before the wedding), fresh bits on the 23rd</dd><dt>Daylight</dt><dd>Sunrise 8:20, sunset 15:55</dd></dl>
           <div class="linkrow"><button class="btn" data-go="wales-itinerary" type="button">See the week</button><button class="btn ghost" data-go="wales-food" type="button">Meals and shopping</button></div></div>
         <div class="stack"><div class="panel raised"><h2>Progress</h2>${progress(todoIds('wales'), 'to-dos')}${progress(shopIds, 'shopping bought')}${progress(packIds(WALES_PACK, 'wales'), 'packed')}</div>
           <div class="note tip">Check the Met Office each morning and swap the walk days around. Moel Famau is only worth it on a clear day.</div></div></div>`,
-    itinerary: () => `<div class="head"><h2>Your week, day by day</h2><p class="muted">Rough timings only. Nothing is booked, so move anything around.</p></div><div class="days">${WALES_DAYS.map(dayCard).join('')}</div>`,
+    itinerary: () => `<div class="head"><h2>Your week, day by day</h2><p class="muted">Rough timings only, with Fajr, Dhuhr and Maghrib built in (highlighted in gold). Nothing is booked, so move anything around.</p></div><div class="days">${WALES_DAYS.map(dayCard).join('')}</div>`,
     activities: () => `<div class="head"><h2>Our best picks</h2><p class="muted">Two proper walks, a couple of short ones, and plenty of time at the barn. Tap one for everything you need to know.</p></div>
       <div class="grid3">${WALES_EXP.map(x => xCard('w-' + x.id)).join('')}</div>
       <div class="head"><h2>Handy apps</h2></div>${appCards(APPS_WALES)}`,
     food: () => `<div class="panel raised"><div class="head"><h2>Meal plan</h2><p class="muted small">Late breakfasts, snacks in the afternoon and a proper dinner. No lunch.</p></div>
         <div class="table-wrap"><table class="meals"><thead><tr><th>Day</th><th>Late breakfast</th><th>Snacks</th><th>Dinner</th></tr></thead>
         <tbody>${WALES_MEALS.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>
-      <div class="toolbar"><div class="head"><h2>Shopping list</h2><p class="muted">Buy it all at home on 21–23 December. Shops near the barn are shut on Christmas Day.</p></div><div class="stack" style="min-width:220px">${progress(shopIds, 'bought')}<button class="btn ghost" id="clearShop" type="button">Untick everything</button></div></div>
+      <div class="toolbar"><div class="head"><h2>Shopping list</h2><p class="muted">Do the big shop by Sunday 20 December, before the wedding, and pick up the fresh bits (eggs, avocados, bread, salad, milk) on the 23rd. Shops near the barn are shut on Christmas Day.</p></div><div class="stack" style="min-width:220px">${progress(shopIds, 'bought')}<button class="btn ghost" id="clearShop" type="button">Untick everything</button></div></div>
       <div class="grid3">${WALES_SHOP.map(g => `<div class="panel"><h3>${esc(g.cat)}</h3><div class="checklist">${g.items.map(i => checkItem('s-' + slug(i), i)).join('')}</div></div>`).join('')}</div>
       <div class="note tip">Pack the cool box last: frozen curry and meat at the bottom, eggs and avocados on top.</div>`,
     todo: () => `<div class="toolbar"><h2>To-do</h2>${progress(todoIds('wales'), 'done')}</div><div class="grid2">${todoBlocks(WALES_TODO, '')}</div>`,
     packing: () => `<div class="toolbar"><div class="head"><h2>Packing</h2><p class="muted">Cold, wet and windy outside. Cosy inside.</p></div>${progress(packIds(WALES_PACK, 'wales'), 'packed')}</div><div class="grid3">${packBlocks(WALES_PACK, 'wales')}</div>`,
     budget: () => tripBudget('wales'),
-    essentials: () => `<div class="grid2"><div class="panel"><h2>Need to know</h2><dl class="kv">${WALES_ESSENTIALS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
+    essentials: () => prayerTable(WALES_DAYS, 'Tremeirchion') + `<div class="grid2"><div class="panel"><h2>Need to know</h2><dl class="kv">${WALES_ESSENTIALS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
       <div class="stack"><h2>Useful apps</h2>${appCards(APPS_WALES)}</div></div>`
   };
   return shell('wales', sec, (pages[sec] || pages.overview)());
@@ -970,11 +987,12 @@ let placeFilter = 'All';
 function mruPage(sec) {
   const pages = {
     overview: () => `
-      <div class="stay">${photo('mru-flic3', '', 'Flic en Flac beach lined with trees')}
+      <div class="stay">${photo('stay-mru-1', '', 'The villa terrace looking over the pool to the sea')}
         <div class="panel"><span class="eyebrow">Your stay</span><h2>Solara West, Flic en Flac</h2>
           <p class="muted">A seafront villa in Bambous near Flic en Flac, with a private pool and sunset views. Your hosts are Javed and Zareen.</p>
           <div class="amen"><span>${ic('pool')}Private pool</span><span>${ic('wave')}Seafront</span><span>${ic('sun')}Sunset views</span><span>${ic('cook')}Modern kitchen</span><span>${ic('wifi')}Fast wifi</span><span>${ic('heart')}Fenced garden</span></div>
           <div class="linkrow">${ext('https://www.airbnb.co.uk/rooms/1357946069051895868', 'Open the listing')}${ext(maps('Flic en Flac, Mauritius'), 'Map')}</div></div></div>
+      <div class="gallery">${[7, 2, 3, 4, 5, 6].map(n => photo('stay-mru-' + n, '', 'Inside Solara West')).join('')}</div>
       <div class="grid2">
         <div class="panel raised"><h2>Key details</h2><dl class="kv">
           <dt>Outbound</dt><dd>Emirates, Sun 3 Jan 20:20, lands Mon 4 Jan 17:10</dd>
@@ -990,7 +1008,7 @@ function mruPage(sec) {
       <section class="sect" style="margin-top:12px"><div class="head"><h2>Highlights</h2></div><div class="picks">${MRU_EXP.filter(x => x.pick).map(x => xCard('m-' + x.id)).join('')}${TRANSPORT.filter(x => x.pick).map(x => xCard('t-' + x.id)).join('')}</div></section>`,
     itinerary: () => {
       const orig = state.plan === 'original';
-      return `<div class="toolbar"><div class="head"><h2>Day by day</h2><p class="muted small">${orig ? 'Your original order from the spreadsheet.' : 'Rough timings. Days outlined in gold have changed from your spreadsheet.'}</p></div>
+      return `<div class="toolbar"><div class="head"><h2>Day by day</h2><p class="muted small">${orig ? 'Your original order from the spreadsheet.' : 'Rough timings, with Fajr, Dhuhr and Maghrib highlighted. Days outlined in gold have changed from your spreadsheet.'}</p></div>
         <div class="seg" role="group" aria-label="Itinerary version"><button type="button" data-plan="suggested" aria-pressed="${!orig}">Full plan</button><button type="button" data-plan="original" aria-pressed="${orig}">Your original</button></div></div>
         <div class="days">${orig ? MRU_ORIGINAL.map(([dow, num, t, bud]) => dayCard({ dow, num, mon: 'Jan', title: t, slots: [], facts: [['pound', gbp(bud) + ' budget']] })).join('') : MRU_DAYS.map(dayCard).join('')}</div>`;
     },
@@ -1014,7 +1032,7 @@ function mruPage(sec) {
       <div class="panel"><h3>Driving tips</h3><ul class="small"><li>Drive on the left, like the UK.</li><li>Speed cameras are common, so stick to the limits.</li><li>Port Louis traffic is heavy 7:30–9:30am and 4:30–6:30pm.</li><li>Avoid mountain roads after dark.</li><li>Photograph the car when it’s delivered.</li></ul></div>
       <div class="head"><h2>Apps</h2></div>${appCards(APPS_MRU.slice(2, 5))}`,
     budget: () => tripBudget('mru'),
-    essentials: () => `<div class="grid2"><div class="panel"><h2>Need to know</h2><dl class="kv">${MRU_ESSENTIALS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
+    essentials: () => prayerTable(MRU_DAYS, 'Flic en Flac') + `<div class="grid2"><div class="panel"><h2>Need to know</h2><dl class="kv">${MRU_ESSENTIALS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
       <div class="stack"><h2>Useful apps</h2>${appCards(APPS_MRU.slice(5))}</div></div>`
   };
   return shell('mauritius', sec, (pages[sec] || pages.overview)());
@@ -1054,6 +1072,13 @@ function viewDetail(key) {
     </div></div>`;
 }
 
+function prayerTable(days, place) {
+  const rows = days.filter(d => d.pray);
+  return `<div class="panel raised"><div class="head"><h2>Prayer times in ${place}</h2><p class="small muted">Calculated for ${place} with the Shia Ithna Ashari (Jafari) method: Fajr at 16° and Maghrib when the sun is 4° below the horizon, about 25 minutes after sunset. Treat them as a guide and check with the local Jamaat. Times are also on every day of the itinerary.</p></div>
+    <div class="table-wrap"><table><thead><tr><th>Day</th><th class="num">Fajr</th><th class="num">Sunrise</th><th class="num">Dhuhr</th><th class="num">Sunset</th><th class="num">Maghrib</th></tr></thead>
+    <tbody>${rows.map(d => `<tr><td>${d.dow} ${d.num} ${d.mon}</td><td class="num"><b>${d.pray[0]}</b></td><td class="num muted">${d.sun[0]}</td><td class="num"><b>${d.pray[1]}</b></td><td class="num muted">${d.sun[1]}</td><td class="num"><b>${d.pray[2]}</b></td></tr>`).join('')}</tbody></table></div></div>`;
+}
+
 /* ================= Budget ================= */
 function budgetTable(rows, groups) {
   const cost = sum(rows, 'cost'), paid = sum(rows, 'paid');
@@ -1081,13 +1106,13 @@ function tripBudget(trip) {
     ${budgetTable(budgetRows(trip))}${w ? fuelPanel() : `<p class="muted small">Car hire is about 10 days at £38, which is £380, plus about £40 for the arrival transfer. ${moreLink('mauritius-transport', 'Getting around')}</p>`}`;
 }
 function viewBudget() {
-  return `<section class="banner">${photo('home-mru', '', '')}<div class="wrap inner"><span class="eyebrow">Both trips</span><h1>Budget</h1></div></section>
+  return `<section class="banner">${photo('mru-beachsunset', '', '')}<div class="wrap inner"><span class="eyebrow">Both trips</span><h1>Budget</h1></div></section>
     <div class="wrap page view">
     <p class="muted">Edit any number and it saves. Wales fuel comes from the calculator on the Wales budget tab.</p>
     ${budgetTable(budgetRows(), [['wales', 'North Wales'], ['mru', 'Mauritius']])}</div>`;
 }
 function viewCredits() {
-  return `<div class="wrap page view"><div class="head"><span class="eyebrow">Photos</span><h1>Photo credits</h1><p class="muted">All photos are from Wikimedia Commons and are used under the licence shown. Tap a name to see the original.</p></div>
+  return `<div class="wrap page view"><div class="head"><span class="eyebrow">Photos</span><h1>Photo credits</h1><p class="muted">Photos of the barn and the villa are from the two Airbnb listings. Everything else is from Wikimedia Commons, used under the licence shown. Tap a name to see the original.</p></div>
     <div class="credits">${CREDITS.map(c => `<div class="credit">${photo(c.slug, '', '')}<div><a href="https://commons.wikimedia.org/wiki/File:${encodeURIComponent(c.file)}" target="_blank" rel="noopener">${esc(c.file.replace(/_/g, ' ').replace(/\.(jpe?g|png)$/i, ''))}</a><br><span class="muted">${esc(c.author || 'Unknown author')} · ${esc(c.license || 'see source')}</span></div></div>`).join('')}</div></div>`;
 }
 

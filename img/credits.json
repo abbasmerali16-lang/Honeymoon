@@ -6,12 +6,6 @@
     "license": "CC BY-SA 4.0"
   },
   {
-    "slug": "home-mru",
-    "file": "Mauritius_banner_Sunset.jpg",
-    "author": "Damiano Luchetti",
-    "license": "CC0"
-  },
-  {
     "slug": "wales-snowdonia",
     "file": "Tryfan_in_snow_from_Y_Garn.jpg",
     "author": "Stemonitis",
@@ -30,18 +24,6 @@
     "license": "CC BY-SA 2.0"
   },
   {
-    "slug": "wales-tower2",
-    "file": "Moel_Famau_-_Jubilee_Tower_-_geograph.org.uk_-_1462755.jpg",
-    "author": "John Charlton",
-    "license": "CC BY-SA 2.0"
-  },
-  {
-    "slug": "wales-gaer",
-    "file": "Moel_y_Gaer_-_geograph.org.uk_-_218368.jpg",
-    "author": "Eirian Evans",
-    "license": "CC BY-SA 2.0"
-  },
-  {
     "slug": "wales-church",
     "file": "Eglwys_Llangwyfa,_Bryniau_Clwyd_-_The_Clwydian_Range_and_Dee_Valley_AONB,_Cymru_(Wales)_06.jpg",
     "author": "Llywelyn2000",
@@ -55,20 +37,8 @@
   },
   {
     "slug": "wales-talacre2",
-    "file": "Talacre-lighthouse2.jpg",
-    "author": "Mattcoxonline at English Wikipedia",
-    "license": "Public domain"
-  },
-  {
-    "slug": "wales-snowdon",
-    "file": "Snowdon_massif.jpg",
-    "author": "",
-    "license": "CC BY-SA 3.0"
-  },
-  {
-    "slug": "wales-np",
-    "file": "Snowdonia_National_Park.jpg",
-    "author": "Udit Kapoor",
+    "file": "Goleudy_Talacre_a_thywynau_Gronant_-_Point_of_Ayr_Lighthouse_and_Talacre_and_Gronant_Dunes_SSSI_04.jpg",
+    "author": "Llywelyn2000",
     "license": "CC BY-SA 4.0"
   },
   {
@@ -127,9 +97,9 @@
   },
   {
     "slug": "mru-gorges",
-    "file": "Chamarel_view_point,_Black_River_Gorges_National_Park,_Mauritius.JPG",
-    "author": "User: (WT-shared) Shoestring at wts wikivoyage",
-    "license": "CC BY-SA 4.0"
+    "file": "Mauritius_Black-River-Gorges-National-Park-01.jpg",
+    "author": "CEphoto, Uwe Aranas",
+    "license": "CC BY-SA 3.0"
   },
   {
     "slug": "mru-gorges2",
@@ -139,15 +109,15 @@
   },
   {
     "slug": "mru-falls",
-    "file": "Chamarel_Waterfall,_Black_River_Gorges_National_Park,_Mauritius.JPG",
-    "author": "User: (WT-shared) Shoestring at wts wikivoyage",
+    "file": "Cascada_Chamarel,_parque_nacional_Gargantas_del_Río_Negro,_Mauricio,_2025-09-25,_DD_14.jpg",
+    "author": "Diego Delso",
     "license": "CC BY-SA 4.0"
   },
   {
     "slug": "mru-catamaran",
-    "file": "Catemaran_at_sunset.jpg",
-    "author": "Hein waschefort",
-    "license": "CC BY-SA 3.0"
+    "file": "Sunset_at_Mont_Choisy_Beach,_Mauritius_(53696897517).jpg",
+    "author": "\"dronepicr\"",
+    "license": "CC BY 2.0"
   },
   {
     "slug": "mru-caudan",
@@ -181,8 +151,56 @@
   },
   {
     "slug": "mru-public",
-    "file": "Public_Beach,_Flic_en_Flac,_Mauritius_002.JPG",
-    "author": "User: (WT-shared) Shoestring at wts wikivoyage",
-    "license": "CC BY-SA 1.0"
+    "file": "Flic_en_Flac_beach_.jpg",
+    "author": "Gavish Barosee",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "slug": "wales-village",
+    "file": "Dyffryn_Clwyd_(Vale_of_Clwyd)_uwch_ben_(above)_Llangynhafal,_Sir_Ddinbych,_Cymru_(Wales)_12.jpg",
+    "author": "Llywelyn2000",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "slug": "mru-beachsunset",
+    "file": "Sunset_at_Flic_en_Flac_Beach_in_Mauritius_(53696897952).jpg",
+    "author": "\"dronepicr\"",
+    "license": "CC BY 2.0"
+  },
+  {
+    "slug": "mru-sunset3",
+    "file": "Sunset_over_the_Indian_Ocean_at_Flic_en_Flac_Beach,_Mauritius_(53697787236).jpg",
+    "author": "\"dronepicr\"",
+    "license": "CC BY 2.0"
+  },
+  {
+    "slug": "wales-dyserth",
+    "file": "Rhaeadr_Dyserth_Waterfall,_Sir_Ddinbych,_Wales_-_Bryniau_Clwyd_AONB_02.jpg",
+    "author": "Llywelyn2000",
+    "license": "CC BY-SA 4.0"
+  },
+  {
+    "slug": "wales-snowlake",
+    "file": "Snowdonia_in_Winter,_Fujifilm_(46895439682).jpg",
+    "author": "Scott Wylie from UK",
+    "license": "CC BY 2.0"
+  },
+  {
+    "slug": "wales-snowpeak",
+    "file": "Snowdonia_in_Winter,_Fujifilm_(39983043193).jpg",
+    "author": "Scott Wylie from UK",
+    "license": "CC BY 2.0"
+  },
+  {
+    "slug": "wales-clwyd",
+    "file": "DSC_0122_Clwydian_Range_(7197929950).jpg",
+    "author": "paul_p!",
+    "license": "CC BY 2.0"
+  },
+  {
+    "slug": "wales-hills",
+    "file": "Dyffryn_Clwyd_(Vale_of_Clwyd)_uwch_ben_(above)_Llangynhafal,_Sir_Ddinbych,_Cymru_(Wales)_13.jpg",
+    "author": "Llywelyn2000",
+    "license": "CC BY-SA 4.0"
   }
 ]
