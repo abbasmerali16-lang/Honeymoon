@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Wales &amp; Mauritius Honeymoon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap">
+<style>
+/* Layout: travel-app shell. Home = full-bleed landscape hero, journey timeline, two destination cards.
+   Each destination = banner + sticky section bar (Overview, Itinerary, Activities, Food, To-do, Packing, Getting around, Essentials). */
+:root {
+  --bg: #ffffff;
+  --surface: #f3f6f5;
+  --card: #ffffff;
+  --fg: #1b2424;
+  --muted: #5a6968;
+  --line: #e0e6e5;
+  --accent: #0e7c7b;
+  --accent-soft: #e1f1f0;
+  --accent-ink: #ffffff;
+  --sun: #b87514;
+  --sun-soft: #fbf0dc;
+  --moss: #3d6b47;
+  --moss-soft: #e5eee6;
+  --coral: #cf4a46;
+  --coral-soft: #fbe6e5;
+  --shadow: 0 1px 2px rgba(20,40,40,.06), 0 8px 24px rgba(20,40,40,.08);
+  --font: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --r: 18px;
+  --topbar: 61px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1515; --surface: #172020; --card: #1a2424; --fg: #e9f1f0; --muted: #9bb0ae; --line: #2a3838;
+    --accent: #3fb8b2; --accent-soft: #163130; --accent-ink: #062020;
+    --sun: #f0b45a; --sun-soft: #2f2616; --moss: #8cc196; --moss-soft: #1b2b1f; --coral: #f08a87; --coral-soft: #3a1f1e;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1515; --surface: #172020; --card: #1a2424; --fg: #e9f1f0; --muted: #9bb0ae; --line: #2a3838;
+  --accent: #3fb8b2; --accent-soft: #163130; --accent-ink: #062020;
+  --sun: #f0b45a; --sun-soft: #2f2616; --moss: #8cc196; --moss-soft: #1b2b1f; --coral: #f08a87; --coral-soft: #3a1f1e;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; line-height: 1.55; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+a { color: var(--accent); }
+h1, h2, h3 { line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: 30px; font-weight: 800; letter-spacing: -.02em; }
+h2 { font-size: 21px; font-weight: 700; letter-spacing: -.01em; }
+h3 { font-size: 16px; font-weight: 700; }
+p { margin: 0; }
+ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 7; background: var(--bg); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 16px; padding-block: 12px; min-height: var(--topbar); }
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 19px; color: var(--accent); letter-spacing: -.02em; text-decoration: none; white-space: nowrap; }
+.brand svg { width: 26px; height: 26px; }
+.mainnav { display: flex; gap: 4px; flex: 1; justify-content: center; }
+.navbtn { appearance: none; border: 0; background: none; font: inherit; font-weight: 600; font-size: 14.5px; color: var(--muted); padding: 8px 14px; border-radius: 999px; cursor: pointer; display: flex; align-items: center; gap: 7px; }
+.navbtn:hover { background: var(--surface); color: var(--fg); }
+.navbtn[aria-current="true"] { color: var(--fg); background: var(--surface); }
+.navbtn svg { width: 18px; height: 18px; }
+.sync { font-size: 12px; color: var(--muted); white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.sync .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.sync.ok .dot { background: var(--accent); }
+.sync.local .dot { background: var(--sun); }
+.bottom { display: none; }
+@media (max-width: 760px) {
+  :root { --topbar: 54px; }
+  .top .mainnav { display: none; }
+  .top .wrap { justify-content: space-between; padding-block: 10px; }
+  .bottom { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; background: var(--bg); border-top: 1px solid var(--line);
+    padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); justify-content: space-around; }
+  .bottom .navbtn { flex-direction: column; gap: 2px; font-size: 11px; padding: 6px 10px; border-radius: 10px; }
+  .bottom .navbtn[aria-current="true"] { color: var(--accent); background: none; }
+  main { padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+  h1 { font-size: 25px; }
+}
+
+main { padding-block: 0 56px; }
+.view { display: grid; gap: 32px; }
+.head { display: grid; gap: 6px; }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.on-photo { color: #ffffff; opacity: .92; }
+
+.hero { position: relative; border-radius: 0 0 28px 28px; overflow: hidden; min-height: 380px; display: grid; align-items: end; color: #ffffff; }
+.hero svg.scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,30,35,0) 35%, rgba(10,30,35,.55) 100%); }
+.hero .inner { position: relative; z-index: 1; display: grid; gap: 14px; padding-block: 120px 32px; }
+.hero h1 { font-family: var(--display); font-weight: 600; font-size: clamp(38px, 7vw, 64px); letter-spacing: -.02em; line-height: 1.02; }
+.hero p { font-size: 16px; max-width: 46ch; opacity: .95; }
+.counts { display: flex; flex-wrap: wrap; gap: 10px; }
+.count { background: rgba(255,255,255,.18); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.3); border-radius: 14px; padding: 10px 14px; display: grid; }
+.count b { font-size: 24px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.count span { font-size: 12px; opacity: .9; }
+
+.dests { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; padding-top: 32px; }
+.dest { display: grid; gap: 12px; color: inherit; cursor: pointer; background: none; border: 0; padding: 0; text-align: left; font: inherit; }
+.photo { position: relative; aspect-ratio: 4 / 3; max-width: 100%; border-radius: var(--r); overflow: hidden; }
+.photo svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.photo .badge { position: absolute; top: 12px; left: 12px; background: #ffffff; color: #1b2424; font-weight: 700; font-size: 12.5px; padding: 6px 10px; border-radius: 999px; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+.dest .meta { display: grid; gap: 6px; }
+.dest .row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.dest:hover .photo { filter: brightness(1.05); }
+.dest:focus-visible, .navbtn:focus-visible, .sub button:focus-visible, .chip:focus-visible, .seg button:focus-visible, .btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.dest .go { font-weight: 700; color: var(--accent); font-size: 14px; }
+
+.journey { display: grid; }
+.leg { display: grid; grid-template-columns: 96px 18px 1fr; gap: 12px; align-items: stretch; }
+.leg .when { font-size: 13px; font-weight: 700; text-align: right; padding-top: 1px; font-variant-numeric: tabular-nums; }
+.leg .rail { position: relative; min-height: 54px; }
+.leg .rail::before { content: ""; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+.leg:first-child .rail::before { top: 8px; }
+.leg:last-child .rail::before { bottom: auto; height: 8px; }
+.leg .rail i { position: absolute; left: 3px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--card); border: 3px solid var(--muted); }
+.leg.wales .rail i { border-color: var(--moss); }
+.leg.mru .rail i { border-color: var(--accent); }
+.leg.home .rail i { border-color: var(--sun); }
+.leg .what { padding-bottom: 18px; display: grid; gap: 2px; min-width: 0; }
+
+.banner { position: relative; overflow: hidden; border-radius: 0 0 28px 28px; min-height: 220px; display: grid; align-items: end; color: #ffffff; }
+.banner svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.banner::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,25,25,0) 30%, rgba(10,25,25,.55) 100%); }
+.banner .inner { position: relative; z-index: 1; padding-block: 80px 22px; display: grid; gap: 4px; }
+.banner h1 { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 5vw, 46px); }
+.sub { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--topbar)); z-index: 6; background: var(--bg); border-bottom: 1px solid var(--line); }
+.sub .wrap { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-block: 8px; }
+.sub .wrap::-webkit-scrollbar { display: none; }
+.sub button { appearance: none; border: 0; background: none; font: inherit; font-weight: 600; font-size: 14px; color: var(--muted); padding: 8px 12px; border-radius: 999px; cursor: pointer; white-space: nowrap; display: flex; gap: 6px; align-items: center; }
+.sub button svg { width: 16px; height: 16px; }
+.sub button:hover { background: var(--surface); color: var(--fg); }
+.sub button[aria-current="true"] { background: var(--fg); color: var(--bg); }
+.page { padding-top: 28px; }
+
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; align-items: start; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; align-items: start; }
+.stack { display: grid; gap: 20px; min-width: 0; }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; display: grid; gap: 14px; min-width: 0; }
+.panel.raised { box-shadow: var(--shadow); border-color: transparent; }
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+.stat { background: var(--surface); border-radius: 12px; padding: 14px; display: grid; gap: 2px; min-width: 0; }
+.stat b { font-size: 20px; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.bar { height: 8px; background: var(--surface); border-radius: 999px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+.facts { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--muted); }
+.facts span { display: inline-flex; gap: 5px; align-items: center; }
+.facts svg { width: 15px; height: 15px; flex: none; }
+.note { font-size: 13.5px; background: var(--sun-soft); color: var(--fg); border-radius: 12px; padding: 10px 14px; }
+.note.tip { background: var(--accent-soft); }
+.note.moss { background: var(--moss-soft); }
+.linkrow { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13.5px; font-weight: 600; }
+.kv { display: grid; grid-template-columns: minmax(100px, auto) 1fr; gap: 8px 16px; font-size: 14px; margin: 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-weight: 600; min-width: 0; }
+
+.pill { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+.pill.now { background: var(--coral-soft); color: var(--coral); }
+.pill.before { background: var(--sun-soft); color: var(--sun); }
+.pill.day { background: var(--accent-soft); color: var(--accent); }
+.pill.wales { background: var(--moss-soft); color: var(--moss); }
+.pill.mru { background: var(--accent-soft); color: var(--accent); }
+.pill.grey { background: var(--surface); color: var(--muted); }
+
+.days { display: grid; gap: 14px; }
+.day { display: grid; grid-template-columns: 60px 1fr; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; }
+.day.changed { border-color: var(--accent); }
+.day.travel { background: var(--surface); }
+.date { display: grid; justify-items: center; align-content: start; }
+.date .dow { font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--muted); letter-spacing: .06em; }
+.date .num { font-size: 26px; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.date .mon { font-size: 12px; color: var(--muted); }
+.day-body { display: grid; gap: 10px; min-width: 0; }
+.day-title { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.slots { display: grid; gap: 6px; }
+.slot { display: grid; grid-template-columns: 90px 1fr; gap: 10px; font-size: 14px; }
+.slot b { font-size: 11.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); padding-top: 2px; }
+@media (max-width: 480px) { .day { grid-template-columns: 1fr; gap: 8px; } .date { justify-items: start; grid-auto-flow: column; justify-content: start; gap: 6px; align-items: baseline; } .date .num { font-size: 20px; } .slot { grid-template-columns: 1fr; gap: 0; } .leg { grid-template-columns: 78px 18px 1fr; } }
+
+.seg { display: inline-flex; background: var(--surface); border-radius: 999px; padding: 4px; gap: 4px; }
+.seg button { appearance: none; border: 0; background: none; font: inherit; font-size: 13.5px; font-weight: 600; color: var(--muted); padding: 7px 14px; border-radius: 999px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--fg); box-shadow: var(--shadow); }
+.toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { appearance: none; border: 1px solid var(--line); background: var(--card); color: var(--fg); font: inherit; font-size: 13.5px; font-weight: 600; padding: 7px 14px; border-radius: 999px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+
+.checklist { display: grid; }
+.check { display: grid; grid-template-columns: 24px 1fr auto; gap: 12px; align-items: start; padding: 12px 0; border-top: 1px solid var(--line); cursor: pointer; }
+.check:first-child { border-top: 0; padding-top: 0; }
+.check input { appearance: none; width: 22px; height: 22px; border: 2px solid var(--line); border-radius: 7px; margin: 1px 0 0; cursor: pointer; display: grid; place-items: center; background: var(--card); }
+.check input:checked { background: var(--accent); border-color: var(--accent); }
+.check input:checked::after { content: ""; width: 6px; height: 11px; border: solid var(--accent-ink); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg) translate(-1px, -1px); }
+.check input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.check .txt { display: grid; gap: 2px; min-width: 0; }
+.check .t { font-weight: 600; }
+.check.is-done .t { text-decoration: line-through; color: var(--muted); }
+.check .d { font-size: 13px; color: var(--muted); }
+.glance { display: grid; grid-template-columns: 56px 1fr; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.glance:first-child { border-top: 0; padding-top: 0; }
+.progress { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 200px; flex: 1; }
+.progress .bar { flex: 1; }
+
+.act { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; display: grid; min-width: 0; }
+.act .strip { height: 8px; }
+.act .body { padding: 16px 18px 18px; display: grid; gap: 10px; }
+.act .top-row { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
+
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 700; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; vertical-align: middle; }
+tfoot td { font-weight: 800; border-bottom: 0; }
+.money { width: 96px; font: inherit; font-variant-numeric: tabular-nums; text-align: right; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--fg); }
+.money:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+
+.places { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.place { border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 4px; background: var(--card); }
+.place a { font-size: 13px; font-weight: 600; }
+.app { border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: grid; gap: 6px; background: var(--card); }
+.app .use { font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.stay { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+@media (max-width: 760px) { .stay { grid-template-columns: 1fr; } }
+.amen { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px 16px; font-size: 14px; }
+.amen span { display: flex; gap: 8px; align-items: center; }
+.amen svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
+.btn { display: inline-flex; align-items: center; justify-self: start; gap: 6px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14px; padding: 10px 16px; border-radius: 10px; text-decoration: none; border: 0; cursor: pointer; font-family: inherit; }
+.btn.ghost { background: none; color: var(--fg); border: 1px solid var(--line); }
+@media (prefers-reduced-motion: no-preference) { .page, .home { animation: fade .25s ease; } @keyframes fade { from { opacity: .5; transform: translateY(4px); } to { opacity: 1; transform: none; } } }
+</style>
+
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Honeymoon home">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M16 27s-10-6.2-10-13.2A5.8 5.8 0 0 1 16 10a5.8 5.8 0 0 1 10 3.8C26 20.8 16 27 16 27Z" fill="currentColor"/><path d="M8 19c3-1.6 5-1.6 8 0s5 1.6 8 0" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
+      honeymoon
+    </a>
+    <nav class="mainnav" id="topNav" aria-label="Main"></nav>
+    <div class="sync" id="sync"><span class="dot"></span><span id="syncText">Connecting…</span></div>
+  </div>
+</header>
+<nav class="bottom" id="bottomNav" aria-label="Main"></nav>
+<main id="main"></main>
+
+<script>
+/* ================= Icons & helpers ================= */
+const ICONS = {
+  home: '<path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/>',
+  wales: '<path d="M2 19 8.5 9l4 6 3-4L22 19z"/><circle cx="17" cy="6" r="2"/>',
+  mauritius: '<path d="M3 17c2.5-1.6 4.5-1.6 7 0s4.5 1.6 7 0 3.5-1 4-1M3 21c2.5-1.6 4.5-1.6 7 0s4.5 1.6 7 0 3.5-1 4-1"/><circle cx="12" cy="9" r="4"/>',
+  budget: '<circle cx="12" cy="12" r="9"/><path d="M14.5 8.5c-.5-1-1.5-1.5-2.5-1.5-1.7 0-3 1-3 2.3 0 3 5.5 1.7 5.5 4.6 0 1.3-1.3 2.3-3 2.3-1.1 0-2.2-.6-2.6-1.6M12 5.5V7M12 17v1.5"/>',
+  overview: '<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+  itinerary: '<rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
+  activities: '<path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
+  food: '<path d="M7 3v8a2 2 0 0 0 2 2v8M5 3v5M9 3v5M17 21V3c-2 1-3 4-3 8h3"/>',
+  todo: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 12 3 3 5-6"/>',
+  packing: '<rect x="5" y="7" width="14" height="13" rx="2"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M9 11v5M15 11v5"/>',
+  transport: '<path d="M5 16V11l2-5h10l2 5v5M5 16h14M5 16v2M19 16v2"/><circle cx="8" cy="13" r=".8"/><circle cx="16" cy="13" r=".8"/>',
+  essentials: '<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/>',
+  walk: '<circle cx="13" cy="4.5" r="1.8"/><path d="m9 21 2.5-7.5L14 16v5M11.5 13.5 12 9l-3 1.5V14M12 9l3 3 3 .5"/>',
+  car: '<path d="M5 16V11l2-5h10l2 5v5M5 16h14M5 16v2M19 16v2"/><circle cx="8" cy="13" r=".8"/><circle cx="16" cy="13" r=".8"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  pound: '<path d="M16 7.5A3.5 3.5 0 0 0 9.5 9V18M7 13h6M7 18h10"/>',
+  pin: '<path d="M12 21s7-6 7-11.5A7 7 0 0 0 5 9.5C5 15 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  fire: '<path d="M12 21c-3.5 0-6-2.4-6-5.6 0-3.6 3-5.4 3.6-9.4 2.6 1.6 4 3.8 4 6.2 1-.6 1.7-1.8 1.9-3 1.6 1.6 2.5 3.8 2.5 6.2C18 18.6 15.5 21 12 21Z"/>',
+  tub: '<path d="M3 12h18v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM6 12V6a2 2 0 0 1 4 0M6 20l-1 2M18 20l1 2"/>',
+  pool: '<path d="M2 18c2 1.4 3.5 1.4 5 0s3.5-1.4 5 0 3.5 1.4 5 0 3-1 5 0M8 15V5a2 2 0 0 1 4 0M16 15V5a2 2 0 0 0-4 0M8 9h8"/>',
+  cook: '<path d="M4 11h16v7a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3zM2 11h20M9 7c0-1 1-1 1-2s-1-1-1-2M14 7c0-1 1-1 1-2s-1-1-1-2"/>',
+  wave: '<path d="M2 12c2.5-2 4.5-2 7 0s4.5 2 7 0 4-1.5 6-.5"/>',
+  wifi: '<path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1"/>',
+  park: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M10 16V8h3a2.5 2.5 0 0 1 0 5h-3"/>',
+  heart: '<path d="M12 20s-7-4.4-7-9.6A4 4 0 0 1 12 8a4 4 0 0 1 7 2.4C19 15.6 12 20 12 20Z"/>',
+  plane: '<path d="M2 16l20-6-3-3-6 3-7-4-2 1 5 5-4 2-2-1-1 1z"/>'
+};
+const ic = (n) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[n] || ''}</svg>`;
+const maps = (q) => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q);
+const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48);
+const gbp = (n) => '£' + Math.round(n).toLocaleString('en-GB');
+const daysUntil = (d) => Math.ceil((d - new Date()) / 86400000);
+
+/* ================= Content ================= */
+const WALES_START = new Date('2026-12-24T12:00:00Z');
+const MRU_START = new Date('2027-01-03T20:20:00Z');
+
+const JOURNEY = [
+  { when: 'Now', cls: 'home', t: 'Book the Mauritius essentials', d: 'Insurance, car, airport transfer, seaplane and catamaran.' },
+  { when: '21–23 Dec', cls: 'wales', t: 'Wales food shop', d: 'Buy everything on the list and freeze the meat.' },
+  { when: '24–29 Dec', cls: 'wales', t: 'North Wales', d: 'Five nights in the Tremeirchion barn. A walk a day, cooking in.' },
+  { when: '30 Dec – 2 Jan', cls: 'home', t: 'Home between trips', d: 'Laundry, repack, online check-in opens 1 Jan.' },
+  { when: '3 Jan', cls: 'mru', t: 'Fly to Mauritius', d: 'Emirates 20:20, via Dubai.' },
+  { when: '4–15 Jan', cls: 'mru', t: 'Mauritius', d: 'Eleven nights at Solara West, Flic en Flac.' },
+  { when: '16 Jan', cls: 'home', t: 'Land home', d: '11:40.' }
+];
+
+const WALES_DAYS = [
+  { dow: 'Thu', num: 24, mon: 'Dec', title: 'Drive to the barn', travel: true,
+    slots: [['Morning', 'Load the car. Cool box last, straight from the freezer.'], ['Afternoon', 'Drive to Tremeirchion and unpack. If you arrive before 3pm, take the short loop through the village.'], ['Evening', 'Reheat the curry from home with rice and naan. First evening in the hot tub.']],
+    facts: [['clock', 'Sunset 3:55pm'], ['walk', 'Village loop, 1–2 miles']], q: 'Tremeirchion, Denbighshire',
+    note: 'Check-in time is still to confirm with Thomas.' },
+  { dow: 'Fri', num: 25, mon: 'Dec', title: 'Christmas Day on Moel Famau',
+    slots: [['Morning', 'Croissants and coffee. Leave by 10am for Bwlch Penbarras car park.'], ['Midday', 'Walk up to the Jubilee Tower, the top of the Clwydian Range. About 3 miles return.'], ['Afternoon', 'Sauna, then a film by the log burner.'], ['Evening', 'Christmas dinner: roast chicken thighs and potatoes, honey carrots, gravy and dessert.']],
+    facts: [['car', '25 min drive'], ['walk', '3 miles, 1.5 hrs']], q: 'Bwlch Penbarras car park Moel Famau',
+    note: 'Every shop and café is shut today, and the car park gets busy, so go early.' },
+  { dow: 'Sat', num: 26, mon: 'Dec', title: 'Offa’s Dyke from Bodfari',
+    slots: [['Morning', 'Slow start. Shakshuka brunch.'], ['Midday', 'Offa’s Dyke Path from Bodfari up to the Iron Age hillfort on Moel y Gaer. About 3 miles.'], ['Evening', 'Lamb chops on the BBQ or hob, couscous and salad. Firepit and hot chocolate.']],
+    facts: [['car', '10 min drive'], ['walk', '3 miles, 1.5–2 hrs']], q: 'Bodfari, Denbighshire', note: 'Boxing Day. Most shops are shut or on short hours.' },
+  { dow: 'Sun', num: 27, mon: 'Dec', title: 'Dyserth Waterfall and Graig Fawr',
+    slots: [['Morning', 'Lie-in and a cooked breakfast with halal sausages and eggs.'], ['Midday', 'Dyserth Waterfall, then the short climb up Graig Fawr for views to the coast.'], ['Evening', 'Creamy chicken and mushroom pasta. Board games.']],
+    facts: [['car', '15 min drive'], ['walk', '2–3 miles']], q: 'Dyserth Waterfall' },
+  { dow: 'Mon', num: 28, mon: 'Dec', title: 'Talacre Beach and lighthouse',
+    slots: [['Morning', 'Drive to Talacre. A flat walk along the beach and dunes to the Point of Ayr lighthouse.'], ['Afternoon', 'Hot tub and sauna.'], ['Evening', 'Steak night with oven chips and peppercorn sauce. Marshmallows on the firepit.']],
+    facts: [['car', '30 min drive'], ['walk', '2–3 miles, flat']], q: 'Talacre Beach lighthouse', note: 'Bank holiday, as Boxing Day falls on a Saturday.' },
+  { dow: 'Tue', num: 29, mon: 'Dec', title: 'Check out and head home', travel: true,
+    slots: [['Morning', 'Use up the eggs and bread. Pack the cool box from the fridge.'], ['Late morning', 'Check out, then a short walk round St Asaph cathedral and the river, or Loggerheads Country Park on the way.'], ['Lunch', 'Lunch out on the drive home.']],
+    facts: [['car', '10 min to St Asaph']], q: 'St Asaph Cathedral' }
+];
+
+const WALES_ACTS = [
+  { t: 'Moel Famau and the Jubilee Tower', day: '25 Dec', kind: 'Walk', d: 'The highest point of the Clwydian Range, with views to Snowdonia on a clear day. A steady climb on a good path.', facts: [['walk', '3 miles return'], ['car', '25 min'], ['park', 'Bwlch Penbarras car park']], q: 'Bwlch Penbarras car park Moel Famau' },
+  { t: 'Offa’s Dyke Path and Moel y Gaer', day: '26 Dec', kind: 'Walk', d: 'A stretch of the national trail from Bodfari up to an Iron Age hillfort. Quiet and close to the barn.', facts: [['walk', '3 miles'], ['car', '10 min']], q: 'Bodfari, Denbighshire' },
+  { t: 'Dyserth Waterfall and Graig Fawr', day: '27 Dec', kind: 'Walk', d: 'A tall waterfall a few steps from the road, then a short climb up a National Trust hill with coast views.', facts: [['walk', '2–3 miles'], ['car', '15 min']], q: 'Dyserth Waterfall' },
+  { t: 'Talacre Beach and Point of Ayr lighthouse', day: '28 Dec', kind: 'Walk', d: 'Wide sandy beach and dunes with an old lighthouse standing on the sand. Flat and easy.', facts: [['walk', '2–3 miles'], ['car', '30 min']], q: 'Talacre Beach lighthouse' },
+  { t: 'Village loop from the barn', day: '24 Dec', kind: 'Walk', d: 'Walk straight out of the door through Tremeirchion, with views across the Vale of Clwyd.', facts: [['walk', '1–2 miles'], ['car', 'From the door']], q: 'Tremeirchion, Denbighshire' },
+  { t: 'Loggerheads Country Park', day: 'Spare', kind: 'Walk', d: 'Wooded riverside paths along the Leete. Sheltered, so good on a windy day.', facts: [['walk', '2–4 miles'], ['car', '30 min']], q: 'Loggerheads Country Park' },
+  { t: 'Great Orme and Llandudno', day: 'Rainy day', kind: 'Drive', d: 'Drive the Marine Drive round the Great Orme, then walk along Llandudno promenade and pier.', facts: [['car', '45 min']], q: 'Great Orme Marine Drive Llandudno' },
+  { t: 'Conwy Castle and town walls', day: 'Rainy day', kind: 'Visit', d: 'Walk the medieval town walls and harbour. Check winter opening for the castle.', facts: [['car', '40 min']], q: 'Conwy Castle' },
+  { t: 'Chester walls and the Rows', day: 'From 27 Dec', kind: 'Visit', d: 'The city walls make a 2-mile loop. Shops reopen after Boxing Day.', facts: [['car', '35 min']], q: 'Chester city walls' },
+  { t: 'A day in the barn', day: 'Any day', kind: 'Rest', d: 'Hot tub, sauna, log burner, a long breakfast and a film.', facts: [['tub', 'Hot tub and sauna']], q: 'Tremeirchion, Denbighshire' }
+];
+
+const WALES_MEALS = [
+  ['Thu 24', 'On the road', 'Sandwiches on the drive', 'Curry from home, rice, naan'],
+  ['Fri 25', 'Croissants, eggs', 'Snacks on the walk', 'Roast chicken tray bake, carrots, gravy, dessert'],
+  ['Sat 26', 'Shakshuka brunch', '—', 'Lamb chops, couscous, salad'],
+  ['Sun 27', 'Sausages, eggs, beans', 'Soup in a flask, wraps', 'Creamy chicken and mushroom pasta'],
+  ['Mon 28', 'Granola, fruit', 'Picnic at Talacre', 'Steak, oven chips, peppercorn sauce'],
+  ['Tue 29', 'Use up eggs and bread', 'Lunch out on the way home', '—']
+];
+
+const WALES_SHOP = [
+  { cat: 'Halal meat (freeze what you’ll use after day 2)', items: ['Chicken thighs, about 1kg (Christmas dinner)', 'Lamb chops, 6 to 8', '2 steaks', 'Chicken breast, 2 (pasta night)', 'Halal sausages and beef bacon (breakfasts)', 'Home-made curry, frozen flat in bags (first night)'] },
+  { cat: 'Fresh', items: ['Eggs, 12', 'Milk, 2 litres', 'Butter', 'Cheese', 'Potatoes, 1.5kg', 'Carrots', 'Onions, 4', 'Garlic and ginger', 'Tomatoes and 2 peppers (shakshuka)', 'Mushrooms', 'Salad bag and cucumber', 'Lemons', 'Fresh coriander', 'Double cream (pasta and peppercorn sauce)', 'Fruit for breakfasts'] },
+  { cat: 'Bread and breakfast', items: ['Croissants', 'Sliced bread or bagels', 'Naan, 4', 'Wraps', 'Granola or oats', 'Jam and honey', 'Orange juice', 'Baked beans'] },
+  { cat: 'Cupboard', items: ['Basmati rice', 'Pasta', 'Couscous', 'Chopped tomatoes, 2 tins', 'Gravy granules (check they’re halal)', 'Stock cubes', 'Soup for the flask, 2 cartons', 'Frozen oven chips'] },
+  { cat: 'Treats', items: ['Hot chocolate', 'Marshmallows for the firepit (check they’re halal)', 'Dates', 'Christmas dessert', 'Chocolates and biscuits', 'Crisps for the walks'] },
+  { cat: 'Kitchen basics to bring', items: ['Olive oil', 'Salt and pepper', 'Small spice kit: cumin, garam masala, chilli, turmeric, paprika', 'Tea bags and coffee', 'Foil and zip bags', 'Kitchen roll', 'Cool box and ice packs'] }
+];
+
+const WALES_TODO = [
+  { id: 'wales-host', when: 'now', t: 'Message Thomas', d: 'Ask for check-in and check-out times, whether wood for the log burner is included, and what kitchen basics are there (oil, salt, washing-up liquid, coffee pods).' },
+  { id: 'wales-budget', when: 'now', t: 'Add the barn cost to the budget', d: 'On the Budget page.' },
+  { id: 'wales-shop', when: 'before', t: 'Do the food shop (21–23 Dec)', d: 'Use the list on the Food tab. Shops near the barn are shut on the 25th and on short hours on the 26th and 28th.' },
+  { id: 'wales-freeze', when: 'before', t: 'Cook and freeze the first-night curry', d: 'Freeze it flat in bags so it doubles as an ice pack.' },
+  { id: 'wales-car', when: 'before', t: 'Check the car for a winter drive', d: 'Tyres, screenwash, and a scraper for frosty mornings.' },
+  { id: 'wales-maps', when: 'before', t: 'Download the walks offline', d: 'OS Maps or AllTrails, plus Google Maps offline for the Denbigh area. Signal is patchy on the hills.' },
+  { id: 'wales-torch', when: 'before', t: 'Charge head torches and power banks', d: 'It’s dark by 4pm.' },
+  { id: 'wales-firewood', when: 'day', t: 'Ask about firepit wood', d: '£15 a load from the host.' },
+  { id: 'wales-weather', when: 'day', t: 'Check the Met Office each morning', d: 'Swap the walk for a rainy-day idea if it’s wild.' }
+];
+
+const WALES_PACK = {
+  'Clothes and walking': ['Walking boots', 'Waterproof jackets and trousers', 'Warm layers and fleeces', 'Hats, gloves and scarves', 'Thick socks', 'Comfy clothes for the barn', 'Slippers and dressing gowns', 'Swimwear for the hot tub', 'Flip-flops for the hot tub'],
+  'Gear': ['Head torches', 'Day backpack', 'Flask', 'Water bottles', 'Power bank and chargers', 'Cool box and ice packs'],
+  'Other': ['Prayer mats', 'Board games or books', 'Toiletries and medicines', 'Phone tripod for photos']
+};
+
+const WALES_ESSENTIALS = [
+  ['Address', 'Tremeirchion, Denbighshire, North Wales (near St Asaph)'],
+  ['Host', 'Thomas (Superhost, replies within an hour)'],
+  ['Daylight', 'Sunrise about 8:20am, sunset about 3:55pm'],
+  ['Weather', 'Usually 3–8°C, wet and windy, frost possible'],
+  ['Parking', 'One car, behind gates'],
+  ['Emergency', '999. Nearest A&E: Glan Clwyd Hospital, Bodelwyddan'],
+  ['Christmas hours', 'Closed 25 Dec. Short hours 26 and 28 Dec'],
+  ['House rules', 'No smoking inside (£100 charge). Keep music low in the courtyard.']
+];
+
+const MRU_DAYS = [
+  { dow: 'Sun', num: 3, mon: 'Jan', title: 'Fly to Mauritius', travel: true,
+    slots: [['Day', 'Final pack, and check the documents list on the Packing tab.'], ['Afternoon', 'Get to the airport by 17:20, three hours before departure.'], ['Evening', 'Emirates departs 20:20. Overnight flight with a change in Dubai.']],
+    facts: [['plane', 'Departs 20:20']] },
+  { dow: 'Mon', num: 4, mon: 'Jan', title: 'Arrive, transfer to the villa', travel: true, changed: true,
+    slots: [['17:10', 'Land at Sir Seewoosagur Ramgoolam Airport. Allow about an hour for passport control and bags.'], ['18:15', 'Your pre-booked transfer driver meets you in arrivals. About an hour to the villa.'], ['Evening', 'Arrive around 19:30, just after sunset. Settle in, takeaway from HungryDodo, early night.']],
+    facts: [['car', '44 km, about 1 hr'], ['pound', '£100']], note: 'Booking a transfer means no driving in the dark after a long flight.' },
+  { dow: 'Tue', num: 5, mon: 'Jan', title: 'Car delivered, first shop', changed: true,
+    slots: [['Morning', 'Hire car delivered to the villa. Check it over and photograph any marks.'], ['Midday', 'First big shop at Super U in Tamarin or Winner’s in Cascavelle. The list is on the Food tab.'], ['Afternoon', 'Pool and rest.'], ['Evening', 'Sunset on Flic en Flac beach, then dinner at Sunset Garden.']],
+    facts: [['car', 'Car delivered'], ['pound', '£50']] },
+  { dow: 'Wed', num: 6, mon: 'Jan', title: 'Port Louis',
+    slots: [['Morning', 'Drive in after the rush hour and park at Caudan Waterfront. Walk to the Central Market and Aapravasi Ghat, the UNESCO site.'], ['Lunch', 'Biryani at Star Deg or Happy Rajah.'], ['Afternoon', 'Stop at An-Nurr Meat Shop for halal meat, then browse Caudan Waterfront.'], ['Evening', 'Cook at the villa.']],
+    facts: [['car', '23 km, 40 min'], ['pound', '£200']] },
+  { dow: 'Thu', num: 7, mon: 'Jan', title: 'Private sunset catamaran', changed: true, weather: true,
+    slots: [['Morning', 'Slow beach morning.'], ['Afternoon', 'Drive to Rivière Noire for the private catamaran, usually leaving mid-afternoon.'], ['Evening', 'Sunset on the water at about 19:00.']],
+    facts: [['car', '20 km, 25 min'], ['pound', '£200']], note: 'Moved from the 14th so there’s time to rebook if the weather cancels it. Backup day: Saturday 9th.' },
+  { dow: 'Fri', num: 8, mon: 'Jan', title: 'Casela Nature Park',
+    slots: [['Morning', 'Arrive at opening, before the heat. Safari, animal encounters and any add-ons you’ve booked.'], ['Midday', 'If you’re going to Jumu’ah prayers, leave Casela by about 11:30.'], ['Afternoon', 'Pool at the villa.'], ['Evening', 'Dinner at Zub Express.']],
+    facts: [['car', '5 km, 10 min'], ['pound', '£500']] },
+  { dow: 'Sat', num: 9, mon: 'Jan', title: 'Flic en Flac beach day',
+    slots: [['Morning', 'Snorkel in the lagoon while it’s calm.'], ['Afternoon', 'Beach and pool.'], ['Evening', 'Wood-oven pizza at Chez Pepe.']],
+    facts: [['car', 'No driving'], ['pound', '£50']], note: 'Backup day for the catamaran.' },
+  { dow: 'Sun', num: 10, mon: 'Jan', title: 'Black River Gorges',
+    slots: [['Morning', 'Start the trail by 8am. Alexandra Falls viewpoint and a forest trail from the Pétrin visitor centre.'], ['Lunch', 'Biryani at Tamarin Briani House on the way back.'], ['Afternoon', 'Rest by the pool.']],
+    facts: [['car', '20 km, 40 min'], ['pound', '£100']], note: 'Trails get slippery after rain. Take water, snacks and rain jackets.' },
+  { dow: 'Mon', num: 11, mon: 'Jan', title: 'Le Morne seaplane', changed: true, weather: true,
+    slots: [['Morning', 'Seaplane flight over the underwater waterfall and Le Morne. Morning flights usually have calmer air.'], ['Afternoon', 'Le Morne public beach.'], ['Evening', 'Sunset at Le Morne, then dinner in Tamarin at Las Flamas Grill.']],
+    facts: [['car', '31 km, 40 min'], ['pound', '£500']], note: 'Moved from the 13th so the 13th and 14th can take a rebooking.' },
+  { dow: 'Tue', num: 12, mon: 'Jan', title: 'Chamarel',
+    slots: [['Morning', 'Seven Coloured Earth and Chamarel Falls viewpoint, early before the crowds.'], ['Lunch', 'Le Chamarel Restaurant, on the terrace with the view.'], ['Afternoon', 'Drive back via the Black River Gorges viewpoint.']],
+    facts: [['car', '28 km, 45 min'], ['pound', '£100']] },
+  { dow: 'Wed', num: 13, mon: 'Jan', title: 'Water sports and couples spa', changed: true,
+    slots: [['Morning', 'Water sports at Flic en Flac on a calm morning: glass-bottom boat, kayak or parasailing.'], ['Afternoon', 'Couples spa.'], ['Evening', 'Dinner at Kingfisher.']],
+    facts: [['car', 'Local'], ['pound', '£300']] },
+  { dow: 'Thu', num: 14, mon: 'Jan', title: 'Slow day, or a rebooked trip', changed: true,
+    slots: [['Day', 'Pool and beach, or the seaplane or catamaran if either was cancelled.'], ['Evening', 'Farewell sunset dinner.']],
+    facts: [['pound', '£50']] },
+  { dow: 'Fri', num: 15, mon: 'Jan', title: 'Late checkout and fly home', travel: true, changed: true,
+    slots: [['Morning', 'Pack. Ask Javed and Zareen for a late checkout.'], ['Lunch', 'Last lunch, then fill up the car.'], ['18:30', 'Drive to the airport and return the car there.'], ['22:30', 'Emirates departs.']],
+    facts: [['car', '44 km, about 1 hr'], ['pound', '£100']] },
+  { dow: 'Sat', num: 16, mon: 'Jan', title: 'Home', travel: true, slots: [['11:40', 'Land in the UK.']], facts: [] }
+];
+const MRU_ORIGINAL = [
+  ['Mon', 4, 'Arrival in MRU', 100], ['Tue', 5, 'Relax and supermarket shop', 50], ['Wed', 6, 'Port Louis', 200], ['Thu', 7, 'Flic en Flac', 50],
+  ['Fri', 8, 'Casela Nature Park', 500], ['Sat', 9, 'Flic en Flac', 50], ['Sun', 10, 'Black River Gorges trail', 100], ['Mon', 11, 'Flic en Flac water sports and spa', 300],
+  ['Tue', 12, 'Chamarel', 100], ['Wed', 13, 'Le Morne seaplane', 500], ['Thu', 14, 'Rivière Noire private sunset catamaran', 200], ['Fri', 15, 'Depart from MRU', 100]
+];
+
+const MRU_ACTS = [
+  { t: 'Le Morne seaplane', day: 'Mon 11 Jan', kind: 'Book now', when: 'now', d: 'A scenic flight over the “underwater waterfall” off Le Morne. Few seats and fully weather-dependent.', book: 'GetYourGuide or the operator directly. Choose free cancellation.', facts: [['pin', 'Le Morne, 31 km'], ['pound', '£500 budget']], q: 'Le Morne Brabant Mauritius' },
+  { t: 'Private sunset catamaran', day: 'Thu 7 Jan', kind: 'Book now', when: 'now', d: 'Just the two of you on the west coast lagoon, with sunset on the water.', book: 'GetYourGuide or Viator. Ask about halal food on board.', facts: [['pin', 'Rivière Noire, 20 km'], ['pound', '£200 budget']], q: 'Rivière Noire Mauritius' },
+  { t: 'Couples spa', day: 'Wed 13 Jan', kind: 'Book ahead', when: 'before', d: 'A couples massage on your slow day. Ask Javed and Zareen for a local recommendation.', book: 'Book 1–2 weeks ahead.', facts: [['pin', 'Flic en Flac'], ['pound', 'Part of £300']], q: 'spa Flic en Flac Mauritius' },
+  { t: 'Casela Nature Park', day: 'Fri 8 Jan', kind: 'Book ahead', when: 'before', d: 'Safari, animal encounters, zip lines and more, ten minutes from the villa.', book: 'Entry online a few days before. Add-ons a week ahead.', facts: [['pin', 'Cascavelle, 5 km'], ['pound', '£500 budget']], q: 'Casela Nature Park' },
+  { t: 'Le Chamarel Restaurant', day: 'Tue 12 Jan', kind: 'Book ahead', when: 'before', d: 'Lunch with a view over the west coast.', book: 'Reserve a terrace table.', facts: [['pin', 'Chamarel'], ['pound', 'Part of £100']], q: 'Le Chamarel Restaurant' },
+  { t: 'Port Louis', day: 'Wed 6 Jan', kind: 'No booking', when: 'day', d: 'Central Market, Aapravasi Ghat, Caudan Waterfront, biryani, and the halal butcher.', book: 'Just go. Park at Caudan.', facts: [['pin', '23 km'], ['pound', '£200 budget']], q: 'Caudan Waterfront Port Louis' },
+  { t: 'Black River Gorges National Park', day: 'Sun 10 Jan', kind: 'No booking', when: 'day', d: 'Rainforest trails, waterfalls and viewpoints in the hills.', book: 'Free entry.', facts: [['pin', 'Pétrin, 20 km'], ['pound', '£100 budget']], q: 'Black River Gorges National Park Petrin' },
+  { t: 'Seven Coloured Earth and Chamarel Falls', day: 'Tue 12 Jan', kind: 'No booking', when: 'day', d: 'Layers of coloured sand dunes and the island’s tallest waterfall.', book: 'Pay at the gate.', facts: [['pin', 'Chamarel, 28 km']], q: 'Seven Coloured Earth Chamarel' },
+  { t: 'Flic en Flac water sports', day: 'Wed 13 Jan', kind: 'No booking', when: 'day', d: 'Glass-bottom boat, kayaks, snorkelling or parasailing from the beach.', book: 'Book on the beach on a calm morning.', facts: [['pin', 'Flic en Flac'], ['pound', 'Part of £300']], q: 'Flic en Flac public beach' },
+  { t: 'Le Morne public beach', day: 'Mon 11 Jan', kind: 'No booking', when: 'day', d: 'One of the island’s best beaches, under the Le Morne mountain.', book: 'Free.', facts: [['pin', 'Le Morne']], q: 'Le Morne public beach' },
+  { t: 'Grand Bassin (Ganga Talao)', day: 'Optional', kind: 'Optional', when: '', d: 'A sacred crater lake with large statues, close to Black River Gorges. Easy to add on the 10th.', book: 'Free.', facts: [['pin', 'Near the Gorges']], q: 'Grand Bassin Mauritius' },
+  { t: 'Trou aux Cerfs crater', day: 'Optional', kind: 'Optional', when: '', d: 'A dormant volcano crater with a walk round the rim. Pair it with lunch at Istanbul Bagatelle in Moka.', book: 'Free.', facts: [['pin', 'Curepipe, 30 min']], q: 'Trou aux Cerfs' }
+];
+
+const MRU_TODO = [
+  { id: 'insurance', when: 'now', t: 'Buy travel insurance', d: 'Do it now so it covers anything before you fly. Check it covers cyclone and weather disruption. Budget £200.' },
+  { id: 'car', when: 'now', t: 'Book the hire car with delivery', d: 'Kia Picanto, about £38 a day. Ask for delivery to the villa on 5 January and return at the airport on the 15th. If they won’t deliver, collect it at the airport on arrival and skip the transfer.' },
+  { id: 'transfer', when: 'now', t: 'Book the airport transfer for 4 January', d: 'Landing 17:10. Ask Javed and Zareen for their trusted driver, or book a private transfer online.' },
+  { id: 'seaplane', when: 'now', t: 'Book the Le Morne seaplane for 11 January', d: 'Free cancellation, and ask how rebooking works.' },
+  { id: 'catamaran', when: 'now', t: 'Book the private sunset catamaran for 7 January', d: 'Private boats sell out in peak season. Free cancellation.' },
+  { id: 'spa', when: 'before', t: 'Book the couples spa for 13 January', d: '1–2 weeks ahead.' },
+  { id: 'hosts', when: 'before', t: 'Message Javed and Zareen', d: 'Check-in time, late checkout on the 15th, transfer driver, nearest halal butcher, and a spa recommendation.' },
+  { id: 'jamaat', when: 'before', t: 'Contact the Khoja Shia Jamaat', d: 'Mosque and Friday prayer times, community contacts and halal food tips.' },
+  { id: 'casela', when: 'before', t: 'Buy Casela tickets and add-ons', d: 'Entry a few days before, add-ons a week before.' },
+  { id: 'chamarel-rest', when: 'before', t: 'Reserve lunch at Le Chamarel Restaurant', d: 'Terrace table, 12 January.' },
+  { id: 'butcher', when: 'before', t: 'Call An-Nurr Meat Shop in Port Louis', d: 'Check opening days before the 6th.' },
+  { id: 'bank', when: 'before', t: 'Sort cards and cash', d: 'Use a card with no foreign transaction fees. Get some Mauritian rupees at the airport for markets and tips.' },
+  { id: 'phone', when: 'before', t: 'Sort phone data', d: 'Check your roaming plan or buy a travel eSIM.' },
+  { id: 'checkin', when: 'before', t: 'Online check-in with Emirates (from 1 Jan)', d: 'Choose seats together.' },
+  { id: 'offline', when: 'before', t: 'Download offline maps and confirmations', d: 'Google Maps offline for the whole island, and save every booking confirmation to your phone.' },
+  { id: 'halal', when: 'day', t: 'Confirm halal status at restaurants', d: 'Most places on the list are walk-in.' },
+  { id: 'watersports', when: 'day', t: 'Book water sports on the beach', d: 'On a calm morning.' },
+  { id: 'cyclone', when: 'day', t: 'Check the weather each morning', d: 'Follow the hosts’ advice if a cyclone warning is issued.' },
+  { id: 'fuel', when: 'day', t: 'Refuel before returning the car', d: 'On the 15th, on the way to the airport.' }
+];
+
+const MRU_PACK = {
+  'Documents': ['Passports (valid 6 months after return)', 'Driving licences', 'Travel insurance documents', 'Emirates and Airbnb confirmations offline', 'Car hire and transfer confirmations', 'Bank cards and some cash'],
+  'Clothes': ['Swimwear, at least two each', 'Light, loose clothes', 'Modest clothes for the mosque and Port Louis', 'Light rain jackets', 'Trainers for the Gorges', 'Sandals', 'Water shoes for coral', 'Something nice for dinners'],
+  'Sun and health': ['Reef-safe suncream SPF 50', 'After-sun', 'Hats and sunglasses', 'Mosquito repellent', 'Medicines and a small first aid kit', 'Rehydration sachets'],
+  'Gear': ['Adaptor (UK plugs fit many sockets, but bring one)', 'Snorkel set', 'Dry bag', 'Power bank', 'Prayer mats', 'Reusable water bottles']
+};
+
+const MRU_FOOD_SHOP = ['Bottled water, a large pack', 'Fruit: mangoes, lychees, pineapple', 'Bread and pastries', 'Eggs, butter, milk', 'Breakfast cereal or granola', 'Snacks for day trips', 'Juice and soft drinks', 'Rice and pasta', 'Cooking oil and salt', 'Washing-up liquid and kitchen roll'];
+
+const PLACES = [
+  ['Flic en Flac', 'Zub Express', 'European and Indian'], ['Flic en Flac', 'Sunset Garden', 'Indian and Chinese'],
+  ['Flic en Flac', 'Kingfisher', 'Creole and Chinese-Mauritian'], ['Flic en Flac', 'Chez Pepe', 'Wood-oven pizza, pasta'],
+  ['Flic en Flac', 'Jeanno Burger', 'Burgers'], ['Flic en Flac', 'Ti Baz Burger', 'Burgers'], ['Flic en Flac', 'Jumbo', 'Supermarket'],
+  ['Cascavelle', 'Panarottis', 'Italian, pizza'], ['Cascavelle', "Winner's", 'Supermarket'],
+  ['Tamarin', 'Tamarin Briani House', 'Biryani'], ['Tamarin', 'Las Flamas Grill', 'Grill'], ['Tamarin', 'Super U', 'Supermarket'],
+  ['Rivière Noire', "Monop'", 'Deli and butcher'],
+  ['Port Louis', 'Star Deg', 'Mauritian biryani'], ['Port Louis', 'Happy Rajah', 'Biryani, curry, roti'], ['Port Louis', 'Namaste', 'Mughlai curries, tandoor'],
+  ['Port Louis', 'Brasserie Chic', 'Steaks, salads, pasta'], ['Port Louis', 'An-Nurr Meat Shop', 'Butcher'],
+  ['Moka', 'Istanbul Bagatelle', 'Turkish grill'], ['Chamarel', 'Le Chamarel Restaurant', 'Fine dining with views'],
+  ['Delivery', 'HungryDodo', 'Takeaway app'], ['Delivery', 'Delivery Dodo', 'Takeaway app']
+];
+
+const MRU_ESSENTIALS = [
+  ['Villa', 'Solara West, Bambous, near Flic en Flac'],
+  ['Hosts', 'Javed and Zareen (Superhosts, reply within an hour)'],
+  ['Time', 'GMT+4, four hours ahead of the UK'],
+  ['Weather', '24–31°C, humid, short heavy showers. Cyclone season runs January to March'],
+  ['Sunset', 'About 19:00'],
+  ['Money', 'Mauritian rupee (MUR). Cards work widely; carry cash for markets and tips'],
+  ['Plugs', 'Type C and G. UK plugs fit G sockets'],
+  ['Driving', 'On the left. Speed cameras are common'],
+  ['Water', 'Drink bottled water'],
+  ['Emergency', 'Police 999, ambulance (SAMU) 114'],
+  ['Villa note', 'The listing shows no smoke or carbon monoxide alarm. Consider packing a small travel CO alarm.']
+];
+
+const APPS_MRU = [
+  { name: 'GetYourGuide', use: 'Book activities', d: 'Seaplane, catamaran and Casela. Most listings allow free cancellation up to 24 hours before, which helps in rainy season.', url: 'https://www.getyourguide.com/' },
+  { name: 'Viator', use: 'Compare prices', d: 'Similar listings. Check both, as the same trip can differ in price.', url: 'https://www.viator.com/' },
+  { name: 'Yugo', use: 'Taxi app', d: 'The local ride-hailing app. Handy for a dinner out without the car. Uber doesn’t operate in Mauritius.', url: 'https://apps.apple.com/app/id1410764129' },
+  { name: 'Waze', use: 'Driving', d: 'Live traffic around Port Louis.', url: 'https://www.waze.com/' },
+  { name: 'Google Maps', use: 'Offline maps', d: 'Download the whole island and star the restaurants.', url: 'https://www.google.com/maps' },
+  { name: 'HungryDodo', use: 'Takeaway', d: 'Delivery to the villa.', url: 'https://www.hungrydodo.mu/' },
+  { name: 'Mauritius Meteorological Services', use: 'Cyclone warnings', d: 'The official source for alerts.', url: 'http://metservice.intnet.mu/' }
+];
+const APPS_WALES = [
+  { name: 'OS Maps or AllTrails', use: 'Walks', d: 'Route maps and GPS that work offline on the hills.', url: 'https://www.alltrails.com/' },
+  { name: 'Met Office', use: 'Weather', d: 'Pick each day’s walk to suit the forecast.', url: 'https://www.metoffice.gov.uk/' },
+  { name: 'Google Maps', use: 'Offline maps', d: 'Download the Denbigh and St Asaph area.', url: 'https://www.google.com/maps' }
+];
+
+const BUDGET_ROWS = [
+  ['wales', 'Wales barn (Tremeirchion)', 0, 0, 'wales'],
+  ['walesfood', 'Wales food shop', 150, 0, 'wales'],
+  ['walesfuel', 'Wales fuel and parking', 80, 0, 'wales'],
+  ['flights', 'Flights to Mauritius', 1711, 1711, 'mru'],
+  ['villa', 'Solara West villa', 2233, 1290, 'mru'],
+  ['activities', 'Activities and food', 2250, 0, 'mru'],
+  ['car', 'Car hire and transfers', 500, 0, 'mru'],
+  ['insurance', 'Travel insurance', 200, 0, 'mru'],
+  ['misc', 'Miscellaneous', 300, 0, 'mru']
+];
+
+const WHEN = { now: ['Book now', 'now'], before: ['Before you go', 'before'], day: ['On the trip', 'day'] };
+
+/* ================= State: shared store when hosted on Claude, this device otherwise ================= */
+const state = { checks: {}, budget: {}, plan: 'suggested' };
+let docRef = null, docExists = false, mode = 'connecting';
+const LS = 'honeymoon-state-v1';
+try { const s = JSON.parse(localStorage.getItem(LS) || 'null'); if (s) Object.assign(state, s); } catch (e) {}
+function saveLocal() { try { localStorage.setItem(LS, JSON.stringify(state)); } catch (e) {} }
+let pending = {}, timer = null, writing = false;
+function queue(patch) {
+  for (const k in patch) {
+    if (typeof patch[k] === 'object' && patch[k] !== null) {
+      pending[k] = pending[k] || {};
+      for (const j in patch[k]) pending[k][j] = (typeof patch[k][j] === 'object' && patch[k][j] !== null) ? Object.assign({}, pending[k][j], patch[k][j]) : patch[k][j];
+    } else pending[k] = patch[k];
+  }
+  saveLocal();
+  clearTimeout(timer); timer = setTimeout(flush, 600);
+}
+async function flush() {
+  if (!docRef || writing || !Object.keys(pending).length) return;
+  writing = true;
+  const patch = pending; pending = {};
+  try {
+    if (docExists) await docRef.update(patch);
+    else { await docRef.set(JSON.parse(JSON.stringify(state))); docExists = true; }
+    setSync('ok');
+  } catch (e) { setSync(e && e.code === 'invalid_argument' ? 'readonly' : 'local'); }
+  writing = false;
+  if (Object.keys(pending).length) flush();
+}
+function setSync(m) {
+  mode = m;
+  const el = document.getElementById('sync');
+  el.className = 'sync ' + (m === 'ok' ? 'ok' : m === 'connecting' ? '' : 'local');
+  document.getElementById('syncText').textContent = m === 'ok' ? 'Saved for both of you' : m === 'connecting' ? 'Connecting…' : m === 'readonly' ? 'View only' : 'Saved on this device';
+}
+async function connect() {
+  if (!(window.claude && window.claude.use)) { setSync('local'); return; }
+  const t = setTimeout(() => { if (mode === 'connecting') setSync('local'); }, 10000);
+  let db = null;
+  try { db = await window.claude.use('db'); } catch (e) { db = null; }
+  if (!db) { clearTimeout(t); setSync('local'); return; }
+  docRef = db.doc('trip/state');
+  docRef.onSnapshot((snap) => {
+    if (!snap.metadata.fromCache) { clearTimeout(t); if (mode === 'connecting') setSync('ok'); }
+    if (!snap.exists) return;
+    docExists = true;
+    const d = snap.data() || {};
+    state.checks = Object.assign({}, d.checks || {}, pending.checks || {});
+    state.budget = JSON.parse(JSON.stringify(d.budget || {}));
+    if (pending.budget) for (const k in pending.budget) state.budget[k] = Object.assign({}, state.budget[k], pending.budget[k]);
+    state.plan = pending.plan || d.plan || state.plan;
+    saveLocal();
+    render(true);
+  }, () => { clearTimeout(t); setSync('local'); });
+}
+
+/* ================= Building blocks ================= */
+const isChecked = (id) => !!state.checks[id];
+function checkItem(id, title, desc, extra) {
+  const on = isChecked(id);
+  return `<label class="check${on ? ' is-done' : ''}" for="c-${id}"><input type="checkbox" id="c-${id}" data-check="${id}" ${on ? 'checked' : ''}>
+    <span class="txt"><span class="t">${esc(title)}</span>${desc ? `<span class="d">${esc(desc)}</span>` : ''}</span><span>${extra || ''}</span></label>`;
+}
+function progress(ids, label) {
+  const done = ids.filter(isChecked).length, pct = ids.length ? Math.round(done / ids.length * 100) : 0;
+  return `<div class="progress"><span>${done} of ${ids.length} ${label}</span><div class="bar"><i style="width:${pct}%"></i></div></div>`;
+}
+const factRow = (arr) => arr && arr.length ? `<div class="facts">${arr.map(([i, t]) => `<span>${ic(i)}${esc(t)}</span>`).join('')}</div>` : '';
+function budgetRows(trip) {
+  return BUDGET_ROWS.filter(r => !trip || r[4] === trip).map(([k, name, cost, paid, tr]) => { const o = state.budget[k] || {}; return { k, name, tr, cost: o.cost ?? cost, paid: o.paid ?? paid }; });
+}
+const sum = (rows, f) => rows.reduce((a, r) => a + (+r[f] || 0), 0);
+const todoIds = (trip) => trip === 'wales' ? WALES_TODO.map(t => t.id) : MRU_TODO.map(t => 'b-' + t.id);
+function dayCard(d, extra) {
+  return `<article class="day${d.changed ? ' changed' : ''}${d.travel ? ' travel' : ''}"><div class="date"><span class="dow">${d.dow}</span><span class="num">${d.num}</span><span class="mon">${d.mon}</span></div>
+    <div class="day-body"><div class="day-title"><h3>${esc(d.title)}</h3>${d.weather ? '<span class="pill before">Weather-dependent</span>' : ''}${d.travel ? '<span class="pill grey">Travel</span>' : ''}</div>
+    ${d.slots && d.slots.length ? `<div class="slots">${d.slots.map(([k, v]) => `<div class="slot"><b>${esc(k)}</b><span>${esc(v)}</span></div>`).join('')}</div>` : ''}
+    ${factRow(d.facts)}${d.note ? `<div class="note">${esc(d.note)}</div>` : ''}
+    ${d.q ? `<div class="linkrow"><a href="${maps(d.q)}" target="_blank" rel="noopener">Open in Maps</a></div>` : ''}${extra || ''}</div></article>`;
+}
+
+/* ================= Art ================= */
+function homeArt() {
+  return `<svg class="scene" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="hsky" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#93a9a8"/><stop offset=".45" stop-color="#c9b8a0"/><stop offset=".7" stop-color="#f2b36c"/><stop offset="1" stop-color="#f7cf8e"/></linearGradient>
+      <linearGradient id="hsea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2fb5b0"/><stop offset="1" stop-color="#0b5f74"/></linearGradient>
+      <linearGradient id="fadeR" x1="0" y1="0" x2="1" y2="0"><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset=".62" stop-color="#fff" stop-opacity="1"/></linearGradient>
+      <mask id="seaMask"><rect width="1200" height="520" fill="url(#fadeR)"/></mask>
+    </defs>
+    <rect width="1200" height="520" fill="url(#hsky)"/>
+    <circle cx="930" cy="300" r="70" fill="#fff0cf" opacity=".95"/>
+    <g mask="url(#seaMask)"><rect y="300" width="1200" height="220" fill="url(#hsea)"/>
+      <path d="M500 350c40-8 70-8 110 0s70 8 110 0 70-8 110 0 70 8 110 0 70-8 110 0 70 8 110 0" stroke="#c8f1ec" stroke-opacity=".5" stroke-width="3" fill="none"/>
+      <path d="M520 400c40-8 70-8 110 0s70 8 110 0 70-8 110 0 70 8 110 0 70-8 110 0 70 8 110 0" stroke="#c8f1ec" stroke-opacity=".35" stroke-width="3" fill="none"/></g>
+    <path d="M0 300 C120 230 240 250 360 280 S560 240 680 300 V520 H0Z" fill="#7d9a83"/>
+    <path d="M0 360 C140 310 260 330 380 350 S560 330 640 370 V520 H0Z" fill="#567a5d"/>
+    <path d="M0 420 C160 390 300 400 420 420 S560 410 620 430 V520 H0Z" fill="#355640"/>
+    <path d="M980 300 C1020 230 1060 215 1090 240 C1110 228 1150 240 1200 300Z" fill="#33584a"/>
+    <path d="M1100 300 L1100 205" stroke="#2c241c" stroke-width="7"/>
+    <path d="M1100 205 c-36 4-54 22-62 36 M1100 205 c32 0 54 14 64 32 M1100 205 c-14-26-40-32-54-28 M1100 205 c10-26 36-32 50-26" stroke="#24493a" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M160 412 h70 v-30 l-35-22 -35 22z" fill="#d6cbb9"/><rect x="186" y="392" width="14" height="20" fill="#f4c76a"/>
+    <path d="M760 360 l34 0 l-8 10 h-20z M776 360 v-40 l20 32z" fill="#ffffff"/>
+  </svg>`;
+}
+function walesArt() {
+  return `<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><linearGradient id="wsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8c9c4"/><stop offset="1" stop-color="#eceee2"/></linearGradient></defs>
+    <rect width="400" height="250" fill="url(#wsky)"/><circle cx="300" cy="78" r="26" fill="#f6e7c4"/>
+    <path d="M0 150 C60 110 120 120 170 140 S270 100 330 118 400 120 400 120 V250 H0Z" fill="#8fa892"/>
+    <path d="M0 180 C70 150 140 160 200 176 S320 150 400 168 V250 H0Z" fill="#5f7f63"/>
+    <path d="M0 214 C90 192 180 200 250 210 S360 196 400 204 V250 H0Z" fill="#3c5a42"/>
+    <rect x="96" y="176" width="44" height="26" fill="#d9cfc0"/><path d="M92 178 L118 160 L144 178Z" fill="#5a4c40"/><rect x="112" y="188" width="10" height="14" fill="#f4c76a"/>
+  </svg>`;
+}
+function mruArt() {
+  return `<svg viewBox="0 0 400 250" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs><linearGradient id="msky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6b56b"/><stop offset=".55" stop-color="#f7d7a1"/><stop offset="1" stop-color="#fbe9c7"/></linearGradient>
+    <linearGradient id="msea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2bb3b1"/><stop offset="1" stop-color="#0b6d82"/></linearGradient></defs>
+    <rect width="400" height="250" fill="url(#msky)"/><circle cx="200" cy="140" r="38" fill="#fff1d2"/>
+    <path d="M250 140 C280 96 300 90 320 104 C334 96 352 104 368 140Z" fill="#3e6a5a"/>
+    <rect y="140" width="400" height="110" fill="url(#msea)"/>
+    <path d="M0 170c30-6 50-6 80 0s50 6 80 0 50-6 80 0 50 6 80 0 50-6 80 0" stroke="#bdeeea" stroke-opacity=".6" stroke-width="2" fill="none"/>
+    <path d="M60 140 L60 92" stroke="#3b2f25" stroke-width="4"/><path d="M60 92 c-20 2-30 12-34 20 M60 92 c18 0 30 8 36 18 M60 92 c-8-14-22-18-30-16 M60 92 c6-14 20-18 28-14" stroke="#2f5a46" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path transform="translate(170 6)" d="M150 168 l18 0 l-4 6 h-10z M159 168 v-20 l10 16z" fill="#ffffff"/>
+  </svg>`;
+}
+
+/* ================= Home ================= */
+function viewHome() {
+  const dw = daysUntil(WALES_START), dm = daysUntil(MRU_START);
+  const all = budgetRows(); const cost = sum(all, 'cost'), paid = sum(all, 'paid');
+  const urgent = [
+    ...MRU_TODO.filter(t => t.when === 'now' && !isChecked('b-' + t.id)).map(t => ['b-' + t.id, t.t, t.d, 'mru']),
+    ...WALES_TODO.filter(t => t.when === 'now' && !isChecked(t.id)).map(t => [t.id, t.t, t.d, 'wales'])
+  ].slice(0, 5);
+  const count = (n, where) => `<div class="count"><b>${n > 0 ? n : n === 0 ? 'Today' : '✓'}</b><span>${n > 1 ? 'days until ' + where : n === 1 ? 'day until ' + where : where}</span></div>`;
+  return `<div class="home view">
+    <section class="hero">${homeArt()}
+      <div class="wrap inner"><span class="eyebrow on-photo">December 2026 – January 2027</span>
+        <h1>From Welsh hills<br>to the Indian Ocean</h1>
+        <p>Five quiet nights in a stone barn in North Wales, then eleven nights by the sea in Mauritius.</p>
+        <div class="counts">${count(dw, 'Wales')}${count(dm, 'Mauritius')}</div>
+      </div></section>
+    <div class="wrap view">
+      <div class="dests">
+        <button class="dest" data-go="wales" type="button"><div class="photo">${walesArt()}<span class="badge">24 – 29 Dec</span></div>
+          <div class="meta"><div class="row"><h2>North Wales</h2><span class="pill wales">5 nights</span></div><span class="muted">Stone barn with a hot tub in Tremeirchion. A walk a day and cooking in.</span>
+          ${progress(todoIds('wales'), 'to-dos done')}<span class="go">Open the Wales plan →</span></div></button>
+        <button class="dest" data-go="mauritius" type="button"><div class="photo">${mruArt()}<span class="badge">3 – 16 Jan</span></div>
+          <div class="meta"><div class="row"><h2>Mauritius</h2><span class="pill mru">11 nights</span></div><span class="muted">Seafront villa with a pool in Flic en Flac. Seaplane, catamaran, gorges and beaches.</span>
+          ${progress(todoIds('mru'), 'to-dos done')}<span class="go">Open the Mauritius plan →</span></div></button>
+      </div>
+      <div class="grid2">
+        <div class="panel raised"><h2>The journey</h2><div class="journey">${JOURNEY.map(j => `<div class="leg ${j.cls}"><span class="when">${esc(j.when)}</span><span class="rail"><i></i></span><div class="what"><b>${esc(j.t)}</b><span class="muted small">${esc(j.d)}</span></div></div>`).join('')}</div></div>
+        <div class="stack">
+          <div class="panel raised"><h2>Book these now</h2>
+            <div class="checklist">${urgent.length ? urgent.map(([id, t, d, tr]) => checkItem(id, t, d, `<span class="pill ${tr}">${tr === 'wales' ? 'Wales' : 'Mauritius'}</span>`)).join('') : '<p class="muted">All the urgent bookings are done.</p>'}</div></div>
+          <div class="panel raised"><div class="toolbar"><h2>Budget</h2><button class="btn ghost" data-go="budget" type="button">Open budget</button></div>
+            <div class="stat-row"><div class="stat"><span class="muted small">Total</span><b>${gbp(cost)}</b></div><div class="stat"><span class="muted small">Paid</span><b>${gbp(paid)}</b></div><div class="stat"><span class="muted small">To pay</span><b>${gbp(cost - paid)}</b></div></div>
+            <div class="bar"><i style="width:${cost ? Math.min(100, paid / cost * 100) : 0}%"></i></div></div>
+        </div>
+      </div>
+    </div></div>`;
+}
+
+/* ================= Destination pages ================= */
+const SECTIONS = {
+  wales: [['overview', 'Overview', 'overview'], ['itinerary', 'Itinerary', 'itinerary'], ['activities', 'Walks', 'walk'], ['food', 'Food', 'food'], ['todo', 'To-do', 'todo'], ['packing', 'Packing', 'packing'], ['essentials', 'Essentials', 'essentials']],
+  mauritius: [['overview', 'Overview', 'overview'], ['itinerary', 'Itinerary', 'itinerary'], ['activities', 'Activities', 'activities'], ['food', 'Food', 'food'], ['todo', 'To-do', 'todo'], ['packing', 'Packing', 'packing'], ['transport', 'Getting around', 'transport'], ['essentials', 'Essentials', 'essentials']]
+};
+function shell(trip, sec, body) {
+  const w = trip === 'wales';
+  return `<section class="banner">${w ? walesArt() : mruArt()}<div class="wrap inner"><span class="eyebrow on-photo">${w ? '24 – 29 December 2026' : '3 – 16 January 2027'}</span><h1>${w ? 'North Wales' : 'Mauritius'}</h1></div></section>
+    <nav class="sub" aria-label="${w ? 'Wales' : 'Mauritius'} sections"><div class="wrap">${SECTIONS[trip].map(([id, label, icon]) => `<button type="button" data-go="${trip}${id === 'overview' ? '' : '-' + id}" aria-current="${id === sec}">${ic(icon)}${label}</button>`).join('')}</div></nav>
+    <div class="wrap page view">${body}</div>`;
+}
+function todoBlocks(list, prefix) {
+  return ['now', 'before', 'day'].map(g => {
+    const items = list.filter(t => t.when === g); if (!items.length) return '';
+    return `<div class="panel"><div class="toolbar"><h2>${WHEN[g][0]}</h2><span class="pill ${g}">${items.filter(t => !isChecked(prefix + t.id)).length} left</span></div>
+      <div class="checklist">${items.map(t => checkItem(prefix + t.id, t.t, t.d)).join('')}</div></div>`;
+  }).join('');
+}
+const packIds = (pack, key) => Object.values(pack).flat().map(i => 'p-' + key + '-' + slug(i));
+const packBlocks = (pack, key) => Object.entries(pack).map(([cat, items]) => `<div class="panel"><h3>${esc(cat)}</h3><div class="checklist">${items.map(i => checkItem('p-' + key + '-' + slug(i), i)).join('')}</div></div>`).join('');
+const appCards = (apps) => `<div class="grid3">${apps.map(a => `<div class="app"><span class="use">${esc(a.use)}</span><h3>${esc(a.name)}</h3><p class="small muted">${esc(a.d)}</p><a class="small" href="${a.url}" target="_blank" rel="noopener">Open</a></div>`).join('')}</div>`;
+function actCards(list, color) {
+  return `<div class="grid3">${list.map(a => `<article class="act"><div class="strip" style="background:${color}"></div><div class="body">
+      <div class="top-row"><span class="eyebrow">${esc(a.day)}</span><span class="pill ${a.when || 'grey'}">${esc(a.kind)}</span></div>
+      <h3>${esc(a.t)}</h3><p class="small">${esc(a.d)}</p>${a.book ? `<p class="small muted"><b>Booking:</b> ${esc(a.book)}</p>` : ''}${factRow(a.facts)}
+      <div class="linkrow"><a href="${maps(a.q)}" target="_blank" rel="noopener">Open in Maps</a></div>
+      <div class="checklist">${checkItem('a-' + slug(a.t), 'Done it')}</div></div></article>`).join('')}</div>`;
+}
+
+function walesPage(sec) {
+  const shopIds = WALES_SHOP.flatMap(g => g.items.map(i => 's-' + slug(i)));
+  const b = budgetRows('wales');
+  const pages = {
+    overview: () => `
+      <div class="stay"><div class="photo">${walesArt()}</div>
+        <div class="panel"><span class="eyebrow">Your stay</span><h2>Stone barn in Tremeirchion</h2>
+          <p class="muted">A converted 19th-century barn for two in the Clwydian Range, near St Asaph. Host: Thomas.</p>
+          <div class="amen"><span>${ic('tub')}Private hot tub</span><span>${ic('fire')}Log burner and firepit</span><span>${ic('sun')}Infrared sauna</span><span>${ic('cook')}Two-ring gas hob</span><span>${ic('cook')}Combi microwave oven</span><span>${ic('fire')}BBQ area</span><span>${ic('park')}Gated parking</span><span>${ic('walk')}Walks from the door</span></div>
+          <div class="linkrow"><a href="https://www.airbnb.co.uk/rooms/17906338" target="_blank" rel="noopener">Open listing</a><a href="${maps('Tremeirchion, Denbighshire')}" target="_blank" rel="noopener">Map</a></div></div></div>
+      <div class="grid2">
+        <div class="panel raised"><h2>The week at a glance</h2><div>${WALES_DAYS.map(d => `<div class="glance"><b>${d.dow} ${d.num}</b><span>${esc(d.title)}</span></div>`).join('')}</div>
+          <button class="btn" data-go="wales-itinerary" type="button">Full itinerary</button></div>
+        <div class="stack">
+          <div class="panel raised"><h2>Progress</h2>${progress(todoIds('wales'), 'to-dos')}${progress(shopIds, 'shopping items')}${progress(packIds(WALES_PACK, 'wales'), 'packed')}</div>
+          <div class="panel raised"><h2>Budget</h2><div class="stat-row"><div class="stat"><span class="muted small">Total</span><b>${gbp(sum(b, 'cost'))}</b></div><div class="stat"><span class="muted small">To pay</span><b>${gbp(sum(b, 'cost') - sum(b, 'paid'))}</b></div></div>
+            <p class="small muted">Add the barn cost on the Budget page.</p></div>
+          <div class="note moss">The kitchen is small, with two gas rings, a combi microwave oven and an under-counter fridge. Bring a cool box and freeze the meat for later in the week.</div>
+        </div></div>`,
+    itinerary: () => `<div class="head"><h2>Day by day</h2><p class="muted">Sunset is around 3:55pm, so walks are planned for late morning and midday. Swap any day for a rainy-day idea on the Walks tab.</p></div>
+      ${progress(WALES_DAYS.map(d => 'w-' + d.num), 'days enjoyed')}
+      <div class="days">${WALES_DAYS.map(d => dayCard(d, `<div class="checklist">${checkItem('w-' + d.num, 'We did this day')}</div>`)).join('')}</div>`,
+    activities: () => `<div class="head"><h2>Walks and days out</h2><p class="muted">One walk for each day, plus ideas for wet or windy days. All within 45 minutes of the barn.</p></div>${actCards(WALES_ACTS, 'var(--moss)')}`,
+    food: () => `<div class="head"><h2>Meal plan</h2><p class="muted">Everything is cooked on two gas rings, a combi microwave oven, or the BBQ.</p></div>
+      <div class="panel"><div class="table-wrap"><table><thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr></thead><tbody>${WALES_MEALS.map(r => `<tr><td><b>${r[0]}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody></table></div></div>
+      <div class="toolbar"><div class="head"><h2>Shopping list</h2><p class="muted">Buy everything between 21 and 23 December, before you leave.</p></div><button class="btn ghost" id="clearShop" type="button">Untick all</button></div>
+      ${progress(shopIds, 'in the basket')}
+      <div class="grid3">${WALES_SHOP.map(g => `<div class="panel"><h3>${esc(g.cat)}</h3><div class="checklist">${g.items.map(i => checkItem('s-' + slug(i), i)).join('')}</div></div>`).join('')}</div>
+      <div class="note moss">Cool box tip: freeze the lamb, steaks and chicken breast, and pack them in the cool box. Move one day’s meat into the fridge each morning to defrost.</div>`,
+    todo: () => `<div class="toolbar"><h2>To-do</h2>${progress(todoIds('wales'), 'done')}</div><div class="grid2">${todoBlocks(WALES_TODO, '')}</div>`,
+    packing: () => `<div class="toolbar"><div class="head"><h2>Packing</h2><p class="muted">Cold, wet and dark by 4pm. Pack for the hills and for the hot tub.</p></div>${progress(packIds(WALES_PACK, 'wales'), 'packed')}</div><div class="grid3">${packBlocks(WALES_PACK, 'wales')}</div>`,
+    essentials: () => `<div class="grid2"><div class="panel"><h2>Need to know</h2><dl class="kv">${WALES_ESSENTIALS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
+      <div class="stack"><h2>Useful apps</h2>${appCards(APPS_WALES)}</div></div>`
+  };
+  return shell('wales', sec, (pages[sec] || pages.overview)());
+}
+
+let placeFilter = 'All';
+function mruPage(sec) {
+  const b = budgetRows('mru');
+  const pages = {
+    overview: () => `
+      <div class="stay"><div class="photo">${mruArt()}</div>
+        <div class="panel"><span class="eyebrow">Your stay</span><h2>Solara West, Flic en Flac</h2>
+          <p class="muted">Seafront villa in Bambous near Flic en Flac, with a private pool and sunset views. Hosts: Javed and Zareen.</p>
+          <div class="amen"><span>${ic('pool')}Private pool</span><span>${ic('wave')}Seafront, beach access</span><span>${ic('sun')}Sunset views</span><span>${ic('cook')}Modern kitchen</span><span>${ic('wifi')}Fast wifi</span><span>${ic('heart')}Fenced garden</span></div>
+          <div class="linkrow"><a href="https://www.airbnb.co.uk/rooms/1357946069051895868" target="_blank" rel="noopener">Open listing</a><a href="${maps('Flic en Flac, Mauritius')}" target="_blank" rel="noopener">Map</a></div></div></div>
+      <div class="grid2">
+        <div class="panel raised"><h2>Key details</h2><dl class="kv">
+          <dt>Outbound</dt><dd>Emirates, Sun 3 Jan 20:20, lands Mon 4 Jan 17:10</dd>
+          <dt>Return</dt><dd>Emirates, Fri 15 Jan 22:30, lands Sat 16 Jan 11:40</dd>
+          <dt>Arrival</dt><dd>Private transfer to the villa (to book)</dd>
+          <dt>Car</dt><dd>Kia Picanto, delivered 5 Jan, returned at the airport 15 Jan (to book)</dd>
+          <dt>Villa</dt><dd>11 nights, £943 still to pay</dd></dl>
+          <button class="btn" data-go="mauritius-itinerary" type="button">Full itinerary</button></div>
+        <div class="stack">
+          <div class="panel raised"><h2>Progress</h2>${progress(todoIds('mru'), 'to-dos')}${progress(packIds(MRU_PACK, 'mru'), 'packed')}</div>
+          <div class="panel raised"><h2>Budget</h2><div class="stat-row"><div class="stat"><span class="muted small">Total</span><b>${gbp(sum(b, 'cost'))}</b></div><div class="stat"><span class="muted small">To pay</span><b>${gbp(sum(b, 'cost') - sum(b, 'paid'))}</b></div></div></div>
+          <div class="note tip">January is the hottest, wettest month and the start of cyclone season. The west coast is the driest side. Do outdoor trips in the morning, and keep the weather-dependent ones early in the trip.</div>
+        </div></div>`,
+    itinerary: () => {
+      const orig = state.plan === 'original';
+      return `<div class="toolbar"><div class="head"><h2>Day by day</h2><p class="muted small">${orig ? 'Your original order from the spreadsheet.' : 'Days outlined in teal have changed from your spreadsheet.'}</p></div>
+        <div class="seg" role="group" aria-label="Itinerary version"><button type="button" data-plan="suggested" aria-pressed="${!orig}">Full plan</button><button type="button" data-plan="original" aria-pressed="${orig}">Your original</button></div></div>
+        <div class="days">${orig ? MRU_ORIGINAL.map(([dow, num, t, bud]) => dayCard({ dow, num, mon: 'Jan', title: t, slots: [], facts: [['pound', gbp(bud)]] })).join('') : MRU_DAYS.map(d => dayCard(d)).join('')}</div>`;
+    },
+    activities: () => `<div class="head"><h2>Activities</h2><p class="muted">What each one is, when it’s planned, and whether to book now.</p></div>${actCards(MRU_ACTS, 'var(--accent)')}
+      <div class="head"><h2>Booking apps</h2><p class="muted">You don’t need a planner app like Wanderlog, because this site does that job.</p></div>${appCards(APPS_MRU.slice(0, 2))}`,
+    food: () => {
+      const areas = ['All', ...new Set(PLACES.map(p => p[0]))];
+      const shown = PLACES.filter(p => placeFilter === 'All' || p[0] === placeFilter);
+      return `<div class="grid2"><div class="panel"><h2>First shop on 5 January</h2><p class="small muted">Super U in Tamarin or Winner’s in Cascavelle. Buy halal meat in Port Louis on the 6th or at Monop’ in Rivière Noire.</p>
+          <div class="checklist">${MRU_FOOD_SHOP.map(i => checkItem('ms-' + slug(i), i)).join('')}</div></div>
+        <div class="panel"><h2>Eating halal</h2><ul class="small"><li>Port Louis has the most choice. Star Deg and Happy Rajah are well known for biryani.</li><li>Ask if a place is halal before ordering. Many are but don’t always say so.</li><li>The Khoja Shia Jamaat can recommend places and a butcher.</li><li>HungryDodo and Delivery Dodo deliver to the villa.</li></ul></div></div>
+        <div class="head"><h2>Restaurants and shops</h2><p class="muted">From your spreadsheet. Filter by area.</p></div>
+        <div class="chips" role="group" aria-label="Filter by area">${areas.map(a => `<button type="button" class="chip" data-area="${esc(a)}" aria-pressed="${a === placeFilter}">${esc(a)}</button>`).join('')}</div>
+        <div class="places">${shown.map(p => `<div class="place"><span class="eyebrow">${esc(p[0])}</span><h3>${esc(p[1])}</h3><span class="muted small">${esc(p[2])}</span>${p[0] !== 'Delivery' ? `<a href="${maps(p[1] + ' ' + p[0] + ' Mauritius')}" target="_blank" rel="noopener">Open in Maps</a>` : ''}</div>`).join('')}</div>`;
+    },
+    todo: () => `<div class="toolbar"><h2>To-do</h2>${progress(todoIds('mru'), 'done')}</div><div class="grid2">${todoBlocks(MRU_TODO, 'b-')}</div>`,
+    packing: () => `<div class="toolbar"><div class="head"><h2>Packing</h2><p class="muted">Hot, humid and sunny with short downpours. Repack at home between 30 December and 2 January.</p></div>${progress(packIds(MRU_PACK, 'mru'), 'packed')}</div><div class="grid3">${packBlocks(MRU_PACK, 'mru')}</div>`,
+    transport: () => `<div class="head"><h2>Getting around</h2><p class="muted">Uber doesn’t operate in Mauritius. A hire car is the best choice for your plan, because most days involve a 20 to 45 minute drive to a different part of the island.</p></div>
+      <div class="grid2">
+        <div class="panel raised"><span class="pill now" style="justify-self:start">Recommended</span><h3>Transfer on arrival, then a hire car</h3><ul class="small">
+          <li><b>4 Jan:</b> private transfer from the airport. About 1 hour, booked in advance.</li>
+          <li><b>5 Jan:</b> Kia Picanto delivered to the villa. Your spreadsheet has it from Les Pailles, near Port Louis, so ask whether they deliver.</li>
+          <li><b>15 Jan:</b> return the car at the airport before your flight.</li>
+          <li>If they won’t deliver, collect it at the airport on arrival and skip the transfer.</li></ul>
+          <p class="small muted">About £380 for 10 days plus the transfer, within your £500 budget.</p></div>
+        <div class="panel"><h3>Taxis and the Yugo app</h3><p class="small">Yugo is the local ride-hailing app, and DodoGo is another. Good for a dinner out without driving. Agree the fare before getting into a street taxi.</p>
+          <p class="small muted">Using taxis for every trip would cost more than the car, and you’d wait for pick-ups from the villa.</p></div>
+        <div class="panel"><h3>Driving tips</h3><ul class="small"><li>Drive on the left, like the UK.</li><li>Speed cameras are common, so stick to the limits.</li><li>Port Louis traffic is heavy from 7 to 9am and 4 to 6pm.</li><li>Avoid mountain roads after dark.</li><li>Photograph the car when it’s delivered.</li></ul></div>
+      </div>
+      <div class="head"><h2>Apps</h2></div>${appCards(APPS_MRU.slice(2, 5))}`,
+    essentials: () => `<div class="grid2"><div class="panel"><h2>Need to know</h2><dl class="kv">${MRU_ESSENTIALS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
+      <div class="stack"><h2>Useful apps</h2>${appCards(APPS_MRU.slice(5))}</div></div>`
+  };
+  return shell('mauritius', sec, (pages[sec] || pages.overview)());
+}
+
+function viewBudget() {
+  const rows = budgetRows(); const cost = sum(rows, 'cost'), paid = sum(rows, 'paid');
+  const group = (tr, label) => `<tr><td colspan="4" class="eyebrow" style="padding-top:18px">${label}</td></tr>` + rows.filter(r => r.tr === tr).map(r => `<tr><td>${esc(r.name)}</td>
+    <td class="num"><input class="money" id="cost-${r.k}" inputmode="decimal" data-b="${r.k}" data-f="cost" value="${r.cost}" aria-label="${esc(r.name)} cost"></td>
+    <td class="num"><input class="money" id="paid-${r.k}" inputmode="decimal" data-b="${r.k}" data-f="paid" value="${r.paid}" aria-label="${esc(r.name)} paid"></td>
+    <td class="num" id="left-${r.k}">${gbp(r.cost - r.paid)}</td></tr>`).join('');
+  return `<div class="wrap page view">
+    <div class="head"><span class="eyebrow">Both trips</span><h1>Budget</h1><p class="muted">Edit any number and it saves. Add the Wales barn cost when you have it.</p></div>
+    <div class="stat-row"><div class="stat"><span class="muted small">Total</span><b id="bTotal">${gbp(cost)}</b></div><div class="stat"><span class="muted small">Paid</span><b id="bPaid">${gbp(paid)}</b></div><div class="stat"><span class="muted small">Still to pay</span><b id="bLeft">${gbp(cost - paid)}</b></div></div>
+    <div class="panel"><div class="table-wrap"><table><thead><tr><th>Item</th><th class="num">Cost (£)</th><th class="num">Paid (£)</th><th class="num">Left</th></tr></thead>
+      <tbody>${group('wales', 'North Wales')}${group('mru', 'Mauritius')}</tbody>
+      <tfoot><tr><td>Total</td><td class="num" id="fCost">${gbp(cost)}</td><td class="num" id="fPaid">${gbp(paid)}</td><td class="num" id="fLeft">${gbp(cost - paid)}</td></tr></tfoot></table></div></div>
+    <p class="muted small">Car hire is 10 days at £38, which is £380 and leaves about £120 for the arrival transfer.</p></div>`;
+}
+
+/* ================= Router ================= */
+const NAV = [['home', 'Home'], ['wales', 'Wales'], ['mauritius', 'Mauritius'], ['budget', 'Budget']];
+let cur = { page: 'home', sec: '' };
+function parseHash() {
+  const h = (location.hash || '').slice(1);
+  if (h === 'budget') return { page: 'budget', sec: '' };
+  const m = h.match(/^(wales|mauritius)(?:-([a-z]+))?$/);
+  if (m) { const sec = m[2] || 'overview'; return { page: m[1], sec: SECTIONS[m[1]].some(s => s[0] === sec) ? sec : 'overview' }; }
+  return { page: 'home', sec: '' };
+}
+function renderNav() {
+  const html = NAV.map(([id, label]) => `<button type="button" class="navbtn" data-go="${id}" aria-current="${cur.page === id}">${ic(id)}<span>${label}</span></button>`).join('');
+  document.getElementById('topNav').innerHTML = html;
+  document.getElementById('bottomNav').innerHTML = html;
+}
+function render(fromSync) {
+  if (fromSync && document.activeElement && document.activeElement.classList.contains('money')) return;
+  const y = window.scrollY;
+  renderNav();
+  document.getElementById('main').innerHTML = cur.page === 'wales' ? walesPage(cur.sec) : cur.page === 'mauritius' ? mruPage(cur.sec) : cur.page === 'budget' ? viewBudget() : viewHome();
+  if (fromSync) window.scrollTo(0, y);
+}
+function route() {
+  const next = parseHash();
+  const samePage = next.page === cur.page;
+  cur = next;
+  render(false);
+  if (!samePage) window.scrollTo(0, 0);
+  else { const banner = document.querySelector('.banner'); if (banner && window.scrollY > banner.offsetHeight) window.scrollTo(0, banner.offsetHeight); }
+  const active = document.querySelector('.sub button[aria-current="true"]'); if (active && active.scrollIntoView) active.scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+
+document.addEventListener('click', (e) => {
+  const go = e.target.closest('[data-go]');
+  if (go) { e.preventDefault(); if (location.hash.slice(1) === go.dataset.go) route(); else location.hash = go.dataset.go; return; }
+  const p = e.target.closest('[data-plan]');
+  if (p) { state.plan = p.dataset.plan; queue({ plan: state.plan }); render(true); return; }
+  const a = e.target.closest('[data-area]');
+  if (a) { placeFilter = a.dataset.area; render(true); return; }
+  if (e.target.id === 'clearShop') {
+    const patch = {}; WALES_SHOP.forEach(g => g.items.forEach(i => { const id = 's-' + slug(i); if (state.checks[id]) { state.checks[id] = false; patch[id] = false; } }));
+    queue({ checks: patch }); render(true);
+  }
+});
+document.addEventListener('change', (e) => {
+  const c = e.target.closest('[data-check]');
+  if (c) { const id = c.dataset.check; state.checks[id] = c.checked; queue({ checks: { [id]: c.checked } }); render(true); }
+});
+document.addEventListener('input', (e) => {
+  const m = e.target.closest('[data-b]'); if (!m) return;
+  const k = m.dataset.b, f = m.dataset.f;
+  const v = parseFloat(String(m.value).replace(/[£,\s]/g, '')); const val = isNaN(v) ? 0 : v;
+  state.budget[k] = Object.assign({}, state.budget[k], { [f]: val });
+  queue({ budget: { [k]: { [f]: val } } });
+  const rows = budgetRows(); const cost = sum(rows, 'cost'), paid = sum(rows, 'paid'); const r = rows.find(x => x.k === k);
+  document.getElementById('left-' + k).textContent = gbp(r.cost - r.paid);
+  for (const [id, v2] of [['bTotal', cost], ['bPaid', paid], ['bLeft', cost - paid], ['fCost', cost], ['fPaid', paid], ['fLeft', cost - paid]]) document.getElementById(id).textContent = gbp(v2);
+});
+window.addEventListener('hashchange', route);
+route();
+connect();
+</script>
+
+</body>
+</html>
