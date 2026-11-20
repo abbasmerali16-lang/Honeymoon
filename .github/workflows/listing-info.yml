@@ -8,6 +8,7 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Fetch and print listing text
         run: |
           UA="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
@@ -15,27 +16,4 @@ jobs:
             k=${pair%%:*}; id=${pair##*:}
             curl -sfL -A "$UA" -H "Accept-Language: en-GB" "https://www.airbnb.co.uk/rooms/$id" -o $k.html
           done
-          cat > p.py <<'PY'
-          import json,re,sys,html
-          for k in ['wales','mru']:
-              s=open(k+'.html',encoding='utf-8').read()
-              out=[]
-              for m in re.finditer(r'<script[^>]*type="application/json"[^>]*>(.*?)</script>',s,re.S):
-                  try: d=json.loads(html.unescape(m.group(1)) if m.group(1).startswith('&') else m.group(1))
-                  except Exception: continue
-                  def walk(x):
-                      if isinstance(x,dict):
-                          for v in x.values(): walk(v)
-                      elif isinstance(x,list):
-                          for v in x: walk(v)
-                      elif isinstance(x,str) and len(x)>3 and not x.startswith('http') and not re.fullmatch(r'[A-Za-z0-9_:=+/.-]+',x): out.append(x)
-                  walk(d)
-              seen=set()
-              print('=====',k)
-              for x in out:
-                  x=re.sub(r'\s+',' ',x).strip()
-                  if x in seen or len(x)<4: continue
-                  seen.add(x); print('>>',x[:600])
-          PY
-          sed -i 's/^          //' p.py
-          python3 p.py
+          python3 .github/scripts/listing_text.py
