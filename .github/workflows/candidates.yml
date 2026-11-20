@@ -1,0 +1,60 @@
+name: Fetch photo candidates
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/candidates.yml, img/queries.txt]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch
+        env:
+          UA: "HoneymoonPlannerSite/1.0 (GitHub Actions; static site build)"
+        run: |
+          set +e
+          sudo apt-get install -y -qq imagemagick jq >/dev/null
+          mkdir -p cand
+          echo "[" > cand/candidates.json; first=1
+          add() { [ $first -eq 0 ] && echo "," >> cand/candidates.json; first=0; echo "$1" >> cand/candidates.json; }
+          # 1) hi-res versions of current photos
+          while IFS='|' read -r slug file; do
+            [ -z "$slug" ] && continue
+            enc=$(jq -rn --arg f "$file" '$f|@uri')
+            curl -sfL -A "$UA" "https://commons.wikimedia.org/wiki/Special:FilePath/${enc}?width=2400" -o /tmp/x && convert /tmp/x -auto-orient -resize '2400x2400>' -strip -quality 82 "cand/hi-$slug.jpg" && echo "HI $slug $(identify -format '%wx%h' cand/hi-$slug.jpg)"
+            sleep 1
+          done < img/sources.txt
+          # 2) Commons search candidates
+          while IFS='|' read -r key q; do
+            [ -z "$key" ] && continue
+            res=$(curl -sf -A "$UA" -G "https://commons.wikimedia.org/w/api.php" --data-urlencode action=query --data-urlencode generator=search --data-urlencode "gsrsearch=$q filetype:bitmap" --data-urlencode gsrnamespace=6 --data-urlencode gsrlimit=25 --data-urlencode prop=imageinfo --data-urlencode "iiprop=size|url|extmetadata|mime" --data-urlencode iiurlwidth=2400 --data-urlencode format=json)
+            n=0
+            echo "$res" | jq -c '.query.pages // {} | to_entries | map(.value) | sort_by(.index) | .[] | select(.imageinfo[0].mime=="image/jpeg" and .imageinfo[0].width>=2400 and .imageinfo[0].width>=.imageinfo[0].height) | {t:.title, u:.imageinfo[0].thumburl, a:(.imageinfo[0].extmetadata.Artist.value // ""), l:(.imageinfo[0].extmetadata.LicenseShortName.value // "")}' | head -6 | while read -r row; do
+              n=$((n+1)); u=$(echo "$row" | jq -r .u)
+              curl -sfL -A "$UA" "$u" -o /tmp/y && convert /tmp/y -auto-orient -resize '2400x2400>' -strip -quality 82 "cand/$key-$n.jpg" && echo "$row" | jq -c --arg s "$key-$n" '. + {slug:$s}' >> cand/rows.txt
+              sleep 1
+            done
+          done < img/queries.txt
+          # 3) Airbnb listing photos
+          for pair in "wales:17906338" "mru:1357946069051895868"; do
+            k=${pair%%:*}; id=${pair##*:}
+            curl -sfL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36" -H "Accept-Language: en-GB" "https://www.airbnb.co.uk/rooms/$id" -o /tmp/page.html
+            echo "page $k $(wc -c < /tmp/page.html)"
+            grep -oE 'https://a0\.muscache\.com/im/pictures/[^"?\\ ]+\.(jpe?g|JPE?G|webp|png)' /tmp/page.html | grep -v -i 'user\|avatar\|profile' | awk '!s[$0]++' | head -24 > /tmp/urls.txt
+            echo "urls $k $(wc -l < /tmp/urls.txt)"
+            i=0
+            while read -r u; do i=$((i+1)); curl -sfL "$u?im_w=1920" -o /tmp/z && convert /tmp/z -auto-orient -strip -quality 84 "cand/listing-$k-$i.jpg" && echo "L $k $i $(identify -format '%wx%h' cand/listing-$k-$i.jpg)"; done < /tmp/urls.txt
+          done
+          [ -f cand/rows.txt ] && jq -s . cand/rows.txt > cand/candidates.json || echo "[]" > cand/candidates.json
+          rm -f cand/rows.txt
+          exit 0
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898213+github-actions[bot]@users.noreply.github.com"
+          git add cand
+          git diff --cached --quiet || git commit -m "Photo candidates"
+          git push
