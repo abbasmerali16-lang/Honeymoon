@@ -478,6 +478,7 @@ const WALES_TODO = [
   { id: 'wales-eta', when: 'before', t: 'Send Thomas your exact arrival time by 16:00 on 23 Dec', link: 'w-arrive', d: 'He needs it at least 24 hours before. Aim for 16:00 on Christmas Eve.' },
   { id: 'wales-manual', when: 'before', t: 'Read the House Manual in the Airbnb app', link: 'wales', d: 'You agree to it when you book. It covers the hot tub, sauna, rules and local tips.' },
   { id: 'wales-howto', when: 'before', t: 'Ask Thomas for instructions', link: 'w-barn', d: 'Hot tub (temperature, cover, when it’s ready), sauna (switching on, warm-up time), log burner, firepit and BBQ, heating and hot water, wifi and TV logins, bins and recycling, and what to do at check-out.' },
+  { id: 'wales-cash', when: 'before', t: 'Have {left:wales} ready in the bank account', link: 'wales-budget', d: 'Everything still to pay for Wales: the food shop, fuel and parking. The amount updates from the Budget tab.' },
   { id: 'wales-fuel', when: 'now', t: 'Check the fuel estimate', link: 'wales-budget', d: 'Put your car’s mpg into the calculator on the Budget tab.' },
   { id: 'wales-shop', when: 'before', t: 'Big food shop by Sun 20 Dec', link: 'wales-food', d: 'Before the wedding. Meat, dry food, snacks and drinks. Freeze the meat.' },
   { id: 'wales-fresh', when: 'before', t: 'Fresh bits on Wed 23 Dec', link: 'wales-food', d: 'Eggs, avocados, bread, salad and milk. A quick shop, or a delivery slot booked in advance.' },
@@ -679,6 +680,7 @@ const MRU_TODO = [
   { id: 'casela', when: 'before', t: 'Buy Casela tickets and add-ons', d: 'Entry a few days before, add-ons a week before.', link: 'm-casela' },
   { id: 'chamarel-rest', when: 'before', t: 'Reserve lunch at Le Chamarel Restaurant', d: 'Terrace table, 12 January.', link: 'm-chamarel' },
   { id: 'butcher', when: 'before', t: 'Call An-Nurr Meat Shop in Port Louis', d: 'Check opening days before the 6th.', link: 'm-portlouis' },
+  { id: 'cash', when: 'before', t: 'Have {left:mru} ready in the bank account', link: 'mauritius-budget', d: 'Everything still to pay for Mauritius: the rest of the villa, activities and food, car and transfers, insurance and extras. The amount updates from the Budget tab.' },
   { id: 'bank', when: 'before', t: 'Sort cards and cash', d: 'A card with no foreign transaction fees, and some rupees for markets and tips.' },
   { id: 'phone', when: 'before', t: 'Sort phone data', d: 'Check your roaming plan or buy a travel eSIM.' },
   { id: 'checkin', when: 'before', t: 'Online check-in with Emirates (from 1 Jan)', d: 'Choose seats together.' },
@@ -925,8 +927,9 @@ async function connect() {
 
 /* ================= Building blocks ================= */
 const isChecked = (id) => !!state.checks[id];
+const fillAmt = (s) => String(s || '').replace(/\{left:(\w+)\}/g, (_, tr) => { const r = budgetRows(tr); return gbp(sum(r, 'cost') - sum(r, 'paid')); });
 function checkItem(id, title, desc, side) {
-  const on = isChecked(id);
+  const on = isChecked(id); title = fillAmt(title); desc = fillAmt(desc);
   return `<label class="check${on ? ' is-done' : ''}" for="c-${id}"><input type="checkbox" id="c-${id}" data-check="${id}" ${on ? 'checked' : ''}>
     <span class="txt"><span class="t">${esc(title)}</span>${desc ? `<span class="d">${esc(desc)}</span>` : ''}</span><span class="side">${side || ''}</span></label>`;
 }
@@ -1236,7 +1239,7 @@ function printDay(d) {
   return `<div class="pday"><h3>${d.dow} ${d.num} ${d.mon} · ${esc(d.title)}${d.pray ? `<span>Fajr ${d.pray[0]} · Dhuhr ${d.pray[1]} · Maghrib ${d.pray[2]}</span>` : ''}</h3>
     ${(d.slots || []).map(([t, v, p]) => `<div class="pslot${p === 'p' ? ' pray' : ''}"><b>${esc(t)}</b><span>${esc(v)}</span></div>`).join('')}${d.note ? `<div class="pslot"><b></b><span><i>${esc(d.note)}</i></span></div>` : ''}</div>`;
 }
-const pbox = (t) => `<div class="box"><span>${esc(t)}</span></div>`;
+const pbox = (t) => `<div class="box"><span>${esc(fillAmt(t))}</span></div>`;
 function printAct(x) {
   return `<div class="act"><h3>${esc(x.title)} <span class="muted small">· ${esc(x.when)}</span></h3><p>${esc(x.summary)}</p>
     <p><b>Cost:</b> ${esc(x.cost)}</p><p><b>Booking:</b> ${esc(x.booking)}</p>${x.vendor ? `<p><b>Who with:</b> ${esc(x.vendor)}</p>` : ''}
